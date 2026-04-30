@@ -1,0 +1,16 @@
+L;Train;Bus;51;0.1;2
+L;Train;Avion;24;0;0
+L;Bus;Avion;46;0;4
+J;Bus;Avion;24;0;6
+F;Train;Bus;47;0;8
+N;Train;Bus;33;0;20
+O;Train;Bus;79;0.1;14
+I;Bus;Avion;71;0.1;4
+M;Train;Bus;69;0.1;0
+K;Train;Bus;46;0;6
+K;Train;Avion;65;0.1;12
+K;Bus;Avion;35;0;4
+C;Bus;Avion;63;0.1;4
+E;Train;Avion;88;0.1;6
+B;Train;Bus;76;0.1;12
+A;Train;Bus;57;0.1;8
