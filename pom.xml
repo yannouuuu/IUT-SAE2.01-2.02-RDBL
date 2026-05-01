@@ -124,12 +124,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.6.3</version>
                 <configuration>
-                    <source>11</source>
-                    <additionalOptions>
-                        <additionalOption>--add-reads=sae.transport.comparison=ALL-UNNAMED</additionalOption>
-                    </additionalOptions>
+                    <source>24</source>
+                    <encoding>UTF-8</encoding>
+                    <doclint>none</doclint>
+                    <show>private</show>
                 </configuration>
             </plugin>
             <plugin>
