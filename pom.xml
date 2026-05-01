@@ -126,10 +126,10 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.6.3</version>
                 <configuration>
-                    <source>24</source>
+                    <source>${maven.compiler.source}</source>
                     <encoding>UTF-8</encoding>
                     <doclint>none</doclint>
-                    <show>private</show>
+                    <show>protected</show>
                     <sourceFileExcludes>
                         <exclude>**/module-info.java</exclude>
                     </sourceFileExcludes>
