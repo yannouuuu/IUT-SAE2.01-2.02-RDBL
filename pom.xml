@@ -41,7 +41,7 @@
             <artifactId>sae-s2</artifactId>
             <version>2026</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/sae_s2_2026.jar</systemPath>
+            <systemPath>${project.basedir}/lib/sae-s2-2026.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>sae.transport.comparison</groupId>
