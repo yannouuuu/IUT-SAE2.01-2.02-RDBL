@@ -7,10 +7,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CoutTest {
+    private Cout cout;
 
     @BeforeEach
     void setUp() {
-        Cout cout = new Cout(60.0, 80.0, 1.7);
+        cout = new Cout(60.0, 80.0, 1.7);
     }
 
     @Test
