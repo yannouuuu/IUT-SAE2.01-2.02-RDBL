@@ -43,7 +43,7 @@ IUT-SAE2.01-2.02/
 ├── pom.xml                                   ← fichier de config Maven (voir ci-dessous)
 │
 ├── lib/                                      ← bibliothèques JAR fournies manuellement
-│   ├── sae_s2_2026.jar                       ← JAR fourni par l'IUT (k plus courts chemins)
+│   ├── sae-s2-2026.jar                       ← JAR fourni par l'IUT (k plus courts chemins)
 │   ├── jgrapht-core-1.5.1.jar                ← bibliothèque de graphes JGraphT
 │   ├── jheaps-0.14.jar                       ← structure de tas utilisée par JGraphT
 │   └── Licences/                             ← licences open source des JAR ci-dessus
@@ -147,7 +147,7 @@ Maven compile les classes de test (`src/test/java/`) et les exécute avec JUnit 
 | **JavaFX FXML**     | 21.0.7  | Liaison fichiers `.fxml` ↔ contrôleurs                                   | Via Maven (auto)            |
 | **JavaFX Graphics** | 21.0.7  | Moteur de rendu graphique                                                | Via Maven (auto)            |
 | **JUnit Jupiter**   | 5.10.0  | Tests unitaires                                                          | Via Maven (auto, test only) |
-| **sae_s2_2026.jar** |  2026   | Fourni par l'IUT — calcul des k plus courts chemins dans un graphe valué | `lib/` (local)              |
+| **sae-s2-2026.jar** |  2026   | Fourni par l'IUT — calcul des k plus courts chemins dans un graphe valué | `lib/` (local)              |
 | **jgrapht-core**    | 1.5.1   | Construction de graphes valués (sommets = lieux, arêtes = connexions)    | `lib/` (local)              |
 | **jheaps**          |  0.14   | Structure de tas utilisée en interne par JGraphT                         | `lib/` (local)              |
 
