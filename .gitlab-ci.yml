@@ -17,7 +17,7 @@ deploy_to_yannouuuu_github:
     - git remote add github https://$GITHUB_TOKEN@github.com/yannouuuu/IUT-SAE2.01-2.02-RDBL
     - git fetch github || true
     - git ls-remote --exit-code github main && git merge -X ours github/main --allow-unrelated-histories || true
-    - git push github HEAD:main
+    - git push github HEAD:refs/heads/main
     - git push github --tags
   only:
     - main
