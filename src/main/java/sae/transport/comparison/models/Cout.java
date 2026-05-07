@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * Représente le coût d'une connexion selon les différents critères d'évaluation.
- * Les valeurs sont stockées dans une table associative reliant
+ * Les valeurs sont stockées dans un tableau associatif reliant
  * chaque {@link TypeCout} à sa valeur numérique.
  */
 public class Cout {
