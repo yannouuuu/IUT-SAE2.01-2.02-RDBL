@@ -1,0 +1,91 @@
+\NeedsTeXFormat{LaTeX2e}[1999/01/01]
+\ProvidesPackage{ulille-macros}[2022/01/27]
+
+\RequirePackage[english,french]{babel}
+\RequirePackage{calc,tikz}
+\RequirePackage{xspace}
+\RequirePackage{microtype}
+
+%% polices
+\RequirePackage{fontspec}
+\defaultfontfeatures[\rmfamily,\sffamily]{Ligatures=TeX}
+\setmainfont{Marianne}[
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-RegularItalic,
+    BoldItalicFont = *-BoldItalic]
+\setsansfont[Scale=MatchLowercase]{Spectral}[
+    Extension = .ttf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic]
+\setmonofont[Scale=MatchUppercase,%
+    ItalicFont=NewCMMono10-Italic.otf,%
+    BoldFont=NewCMMono10-Bold.otf,%
+    BoldItalicFont=NewCMMono10-BoldOblique.otf,%
+    SmallCapsFeatures={Numbers=OldStyle}]{NewCMMono10-Regular.otf}
+%\setmonofont[Scale=MatchLowercase]{Latin Modern Mono Light}
+\renewcommand{\baselinestretch}{1.2}
+
+%% couleurs
+\definecolor{BleuHorizon}{RGB}{0,0,55}
+\definecolor{VertNature}{RGB}{0,45,4}
+\definecolor{MarronDurable}{RGB}{45,5,5}
+\definecolor{Noir}{RGB}{0,0,0}
+\definecolor{IndigoInclusif}{RGB}{88,98,237}
+\definecolor{VertAvenir}{RGB}{50,166,140}
+\definecolor{RougeAction}{RGB}{252,83,92}
+\definecolor{OrangeChaleureux}{RGB}{255,105,65}
+\definecolor{BleuEvasion}{RGB}{122,186,255}
+\definecolor{VertTendre}{RGB}{137,224,177}
+\definecolor{RoseAccueillant}{RGB}{255,180,210}
+\definecolor{JauneDetermine}{RGB}{255,210,75}
+\definecolor{GrisStatutaire}{RGB}{99,101,106}
+\definecolor{GrisClair}{RGB}{237,237,237}
+\definecolor{BeigeSerein}{RGB}{250,240,225}
+\definecolor{Blanc}{RGB}{255,255,255}
+
+\newcommand{\ListeCouleurs}{
+  \begin{testcolors}[RGB,HTML]
+    \testcolor{BleuHorizon}
+    \testcolor{VertNature}
+    \testcolor{MarronDurable}
+    \testcolor{Noir}
+    \testcolor{IndigoInclusif}
+    \testcolor{VertAvenir}
+    \testcolor{RougeAction}
+    \testcolor{OrangeChaleureux}
+    \testcolor{BleuEvasion}
+    \testcolor{VertTendre}
+    \testcolor{RoseAccueillant}
+    \testcolor{JauneDetermine}
+    \testcolor{GrisStatutaire}
+    \testcolor{GrisClair}
+    \testcolor{BeigeSerein}
+    \testcolor{Blanc}
+  \end{testcolors}
+}
+
+\colorlet{ULilleFond}{Blanc}
+\colorlet{ULilleCrayon}{Noir}
+\colorlet{ULilleSurligneur}{JauneDetermine}
+\colorlet{ULilleStructure}{Noir}
+\colorlet{ULilleSecondaire}{RougeAction}
+\colorlet{ULilleLiens}{BleuHorizon}
+
+\newcommand{\colorie}[1]{\textcolor{ULilleSecondaire}{#1}}
+\newcommand{\surligne}[1]{\colorbox{ULilleSurligneur}{#1}}
+\AtBeginDocument{
+  \color{ULilleCrayon}
+  \pagecolor{ULilleFond}
+}
+
+%% logo
+\newcommand{\includeLogo}{\includegraphics[height=2.5cm]{Logo.sans.baseline-Horizontal-RVB-Noir-sans.bordure.pdf}}
+\newcommand{\logoULille}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west, inner sep=0pt, outer sep=0cm] at (current page.north west)
+      {\includeLogo};
+ \end{tikzpicture}}

@@ -1,0 +1,93 @@
+\NeedsTeXFormat{LaTeX2e}[1999/01/01]
+\ProvidesPackage{ulille-rapport}[2025/03/04]
+
+%% paquetages nécessaires
+%% paquetages nécessaires
+\RequirePackage{graphicx}
+\RequirePackage[hyperref]{xcolor}
+\RequirePackage{ulille-macros}
+\RequirePackage[hyphens]{url}
+\RequirePackage[breaklinks=true,
+                pdfborder=0 0 0,
+                colorlinks=true,
+                linkcolor=black,
+                citecolor=black,
+                filecolor=black,
+                menucolor=black,
+                urlcolor=ULilleLiens,
+                bookmarks=false,
+                pdfhighlight=/O,
+                pdfpagemode=UseNone,
+                pdfpagelayout=OneColumn]{hyperref}
+
+%% Style de page
+\RequirePackage{scrlayer-scrpage,typearea}
+\KOMAoptions{paper=A4,footlines=4,headinclude=false,footinclude=false,DIV=12,BCOR=0mm}
+
+\setkomafont{pageheadfoot}{\small}
+\newcommand{\nomDeLaDirection}{Nom de la direction}
+\newcommand{\direction}[1]{\renewcommand{\nomDeLaDirection}{#1}}
+\newlength\stextwidthdir
+\settowidth{\stextwidthdir}{\usekomafont{pagefoot}\nomDeLaDirection}
+\newcommand{\myfoot}{
+  \begin{minipage}{\stextwidthdir}
+    \strut\\ \strut\\ ---\strut\\ \nomDeLaDirection
+  \end{minipage}}
+
+\renewcommand{\logoULille}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=south west, inner sep=0pt, outer xsep=\gridwidth, outer ysep=0.667\gridwidth] at (current page.south west)
+      {\includeLogo};
+ \end{tikzpicture}}
+
+\lofoot[\logoULille]{\logoULille}
+\lefoot[\logoULille]{\logoULille}
+\cfoot[\strut\\ \strut\\ \strut\\ \pagemark]{\strut\\ \strut\\ \strut\\ \pagemark}
+\rofoot[\myfoot]{\myfoot}
+\refoot[\myfoot]{\myfoot}
+\pagestyle{scrheadings}
+
+%% Titre et logos
+\KOMAoptions{titlepage=firstiscover}
+\newlength{\gridwidth}
+\setlength{\gridwidth}{21cm/12}
+\renewcommand{\includeLogo}{\includegraphics[height=0.58\gridwidth]{Logo.sans.baseline-Horizontal-RVB-Noir-sans.bordure.pdf}}
+\titlehead{\pagecolor{BeigeSerein}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north east, inner sep=0pt, outer sep=0pt] at (current page.north east){%
+      \tikz \fill [fill=BleuHorizon] (0,0) rectangle  +(-11\gridwidth,-29.7cm+2\gridwidth);};
+    \node[anchor=south west, inner sep=0pt, outer xsep=\gridwidth, outer ysep=0.667\gridwidth] at (current page.south west){\includegraphics[height=0.667\gridwidth]{Logo.sans.baseline-Horizontal-RVB-Noir-sans.bordure.pdf}};
+ \end{tikzpicture}}
+\addtokomafont{subject}{\color{BeigeSerein}\raggedright\Huge}
+\addtokomafont{title}{\color{BeigeSerein}}
+\addtokomafont{author}{\color{BeigeSerein}}
+\addtokomafont{date}{\color{BeigeSerein}}
+\addtokomafont{dedication}{\color{BeigeSerein}}
+\addtokomafont{subject}{\color{BeigeSerein}}
+\setkomafont{publishers}{\scriptsize}
+\publishers{%
+  \begin{tikzpicture}[remember picture,overlay]
+        \node[anchor=south east, inner sep=0pt, outer xsep=\gridwidth, outer ysep=0.5\gridwidth] at (current page.south east){%
+          \begin{minipage}{4cm}
+            ---\\
+            IUT de Lille\\
+            Avenue Paul Langevin\\
+            59653 Villeneuve D'Ascq\\
+            \\
+            \url{iut.univ-lille.fr}
+          \end{minipage}};
+ \end{tikzpicture}}
+
+%% Sections
+\KOMAoptions{headings=normal}
+\colorlet{ULilleStructure}{IndigoInclusif}
+\addtokomafont{disposition}{\rmfamily\color{ULilleStructure}}
+\addtokomafont{part}{\color{BleuHorizon}}
+\addtokomafont{chapter}{\color{BleuHorizon}}
+\addtokomafont{subsection}{\itshape}
+\addtokomafont{subsubsection}{\itshape}
+\addtokomafont{partentry}{\color{BleuHorizon}}
+\addtokomafont{chapterentry}{\color{BleuHorizon}}
+
+%% Texte courant
+\raggedright
