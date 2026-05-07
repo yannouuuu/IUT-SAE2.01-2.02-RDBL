@@ -10,35 +10,49 @@ import fr.ulille.but.sae_s2_2026.ModaliteTransport;
 import fr.ulille.but.sae_s2_2026.MultiGrapheOrienteValue;
 
 public class GraphesV1 {
+
+    // Création d'un lieu en respectant les contraintes de l'interface Lieu
+    private static Lieu lieu(String nom) {
+        return new Lieu() {
+            @Override public String toString() { return nom; }
+        };
+    }
+
+    // Création d'une connexion en respectant les contraintes de l'interface Connexion
+    private static Connexion connexion(Lieu depart, Lieu arrivee, ModaliteTransport mode) {
+        return new Connexion() {
+            @Override public Lieu getDepart()                { return depart; }
+            @Override public Lieu getArrivee()               { return arrivee; }
+            @Override public ModaliteTransport getModalite() { return mode; }
+        };
+    }
+
     public static void main(String[] args) {
 
-        // --- Scénario : mode TRAIN, critère PRIX, Lille -> Crépy-en-Valois, k=4 ---
+        // Scénario : mode TRAIN, critère PRIX, Lille -> Crépy-en-Valois, k=4
 
-        // Sommets
-        Lieu lille          = new Lieu() { public String toString() { return "Lille"; } };
-        Lieu dunkerque      = new Lieu() { public String toString() { return "Dunkerque"; } };
-        Lieu cambrai        = new Lieu() { public String toString() { return "Cambrai"; } };
-        Lieu paris          = new Lieu() { public String toString() { return "Paris"; } };
-        Lieu crepy          = new Lieu() { public String toString() { return "Crépy-en-Valois"; } };
+        Lieu lille      = lieu("Lille");
+        Lieu dunkerque  = lieu("Dunkerque");
+        Lieu cambrai    = lieu("Cambrai");
+        Lieu paris      = lieu("Paris");
+        Lieu crepy      = lieu("Crépy-en-Valois");
 
-        // Connexions TRAIN (toutes les connexions TRAIN du tableau 1 du rapport)
-        // prix en euros — utilisé comme poids dans le graphe
-        Connexion lilleDunkerque     = new Connexion() { public Lieu getDepart() { return lille; }     public Lieu getArrivee() { return dunkerque; } public ModaliteTransport getModalite() { return ModaliteTransport.TRAIN; } };
-        Connexion dunkerqueLille     = new Connexion() { public Lieu getDepart() { return dunkerque; } public Lieu getArrivee() { return lille; }      public ModaliteTransport getModalite() { return ModaliteTransport.TRAIN; } };
-        Connexion lilleCambrai       = new Connexion() { public Lieu getDepart() { return lille; }     public Lieu getArrivee() { return cambrai; }    public ModaliteTransport getModalite() { return ModaliteTransport.TRAIN; } };
-        Connexion cambraiLille       = new Connexion() { public Lieu getDepart() { return cambrai; }   public Lieu getArrivee() { return lille; }      public ModaliteTransport getModalite() { return ModaliteTransport.TRAIN; } };
-        Connexion cambraiParis       = new Connexion() { public Lieu getDepart() { return cambrai; }   public Lieu getArrivee() { return paris; }      public ModaliteTransport getModalite() { return ModaliteTransport.TRAIN; } };
-        Connexion parisCambrai       = new Connexion() { public Lieu getDepart() { return paris; }     public Lieu getArrivee() { return cambrai; }    public ModaliteTransport getModalite() { return ModaliteTransport.TRAIN; } };
-        Connexion parisCrepy         = new Connexion() { public Lieu getDepart() { return paris; }     public Lieu getArrivee() { return crepy; }      public ModaliteTransport getModalite() { return ModaliteTransport.TRAIN; } };
-        Connexion crepyParis         = new Connexion() { public Lieu getDepart() { return crepy; }     public Lieu getArrivee() { return paris; }      public ModaliteTransport getModalite() { return ModaliteTransport.TRAIN; } };
-        Connexion lilleParis         = new Connexion() { public Lieu getDepart() { return lille; }     public Lieu getArrivee() { return paris; }      public ModaliteTransport getModalite() { return ModaliteTransport.TRAIN; } };
-        Connexion parisLille         = new Connexion() { public Lieu getDepart() { return paris; }     public Lieu getArrivee() { return lille; }      public ModaliteTransport getModalite() { return ModaliteTransport.TRAIN; } };
-        Connexion dunkerqueCambrai   = new Connexion() { public Lieu getDepart() { return dunkerque; } public Lieu getArrivee() { return cambrai; }    public ModaliteTransport getModalite() { return ModaliteTransport.TRAIN; } };
-        Connexion cambraiDunkerque   = new Connexion() { public Lieu getDepart() { return cambrai; }   public Lieu getArrivee() { return dunkerque; }  public ModaliteTransport getModalite() { return ModaliteTransport.TRAIN; } };
-        Connexion dunkerqueCrepy     = new Connexion() { public Lieu getDepart() { return dunkerque; } public Lieu getArrivee() { return crepy; }      public ModaliteTransport getModalite() { return ModaliteTransport.TRAIN; } };
+        // Connexions TRAIN du tableau 1 du rapport — poids = prix (€)
+        Connexion lilleDunkerque   = connexion(lille,      dunkerque, ModaliteTransport.TRAIN);
+        Connexion dunkerqueLille   = connexion(dunkerque,  lille,     ModaliteTransport.TRAIN);
+        Connexion lilleCambrai     = connexion(lille,      cambrai,   ModaliteTransport.TRAIN);
+        Connexion cambraiLille     = connexion(cambrai,    lille,     ModaliteTransport.TRAIN);
+        Connexion cambraiParis     = connexion(cambrai,    paris,     ModaliteTransport.TRAIN);
+        Connexion parisCambrai     = connexion(paris,      cambrai,   ModaliteTransport.TRAIN);
+        Connexion parisCrepy       = connexion(paris,      crepy,     ModaliteTransport.TRAIN);
+        Connexion crepyParis       = connexion(crepy,      paris,     ModaliteTransport.TRAIN);
+        Connexion lilleParis       = connexion(lille,      paris,     ModaliteTransport.TRAIN);
+        Connexion parisLille       = connexion(paris,      lille,     ModaliteTransport.TRAIN);
+        Connexion dunkerqueCambrai = connexion(dunkerque,  cambrai,   ModaliteTransport.TRAIN);
+        Connexion cambraiDunkerque = connexion(cambrai,    dunkerque, ModaliteTransport.TRAIN);
+        Connexion dunkerqueCrepy   = connexion(dunkerque,  crepy,     ModaliteTransport.TRAIN);
 
-
-        // Construction du graphe — filtre TRAIN, poids = prix (€)
+        // Construction du graphe
         MultiGrapheOrienteValue graphe = new MultiGrapheOrienteValue();
 
         graphe.ajouterSommet(lille);
@@ -47,14 +61,14 @@ public class GraphesV1 {
         graphe.ajouterSommet(paris);
         graphe.ajouterSommet(crepy);
 
-        graphe.ajouterArete(lilleDunkerque, 18.0);
-        graphe.ajouterArete(dunkerqueLille, 18.0);
-        graphe.ajouterArete(lilleCambrai,   14.0);
-        graphe.ajouterArete(cambraiLille,   14.0);
-        graphe.ajouterArete(cambraiParis,   35.0);
-        graphe.ajouterArete(parisCambrai,   35.0);
-        graphe.ajouterArete(parisCrepy,     12.0);
-        graphe.ajouterArete(crepyParis,     12.0);
+        graphe.ajouterArete(lilleDunkerque,   18.0);
+        graphe.ajouterArete(dunkerqueLille,   18.0);
+        graphe.ajouterArete(lilleCambrai,     14.0);
+        graphe.ajouterArete(cambraiLille,     14.0);
+        graphe.ajouterArete(cambraiParis,     35.0);
+        graphe.ajouterArete(parisCambrai,     35.0);
+        graphe.ajouterArete(parisCrepy,       12.0);
+        graphe.ajouterArete(crepyParis,       12.0);
         graphe.ajouterArete(lilleParis,       55.0);
         graphe.ajouterArete(parisLille,       55.0);
         graphe.ajouterArete(dunkerqueCambrai, 22.0);
@@ -64,7 +78,6 @@ public class GraphesV1 {
         // Calcul des 4 meilleurs itinéraires de Lille à Crépy-en-Valois
         List<Chemin> chemins = AlgorithmeKPCC.kpcc(graphe, lille, crepy, 4);
 
-        // Affichage
         System.out.println("=== " + chemins.size() + " meilleur(s) itinéraire(s) TRAIN de Lille à Crépy-en-Valois (critère : PRIX) ===\n");
 
         if (chemins.isEmpty()) {
@@ -74,7 +87,7 @@ public class GraphesV1 {
 
         int rang = 1;
         for (Chemin chemin : chemins) {
-            System.out.print("Itinéraire " + rang + " — " + (int) chemin.poids() + " € — ");
+            System.out.print("Itinéraire " + rang + " - " + (int) chemin.poids() + " € - ");
             List<Connexion> aretes = chemin.aretes();
             for (int i = 0; i < aretes.size(); i++) {
                 if (i == 0) System.out.print(aretes.get(i).getDepart());
