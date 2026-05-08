@@ -10,7 +10,7 @@
 
 \subject{SAE 2.01 - 2.02 : Rapport graphes}
 \title{Première Version}
-\author{Yann Renard \\ Tom Cox \\ Alexandre}
+\author{Yann Renard \\ Tom Cox \\ Alexandre Sorel}
 \direction{Équipe E5}
 
 \lstdefinestyle{java}{
@@ -187,7 +187,7 @@ On utilise un \emph{multigraphe orienté valué}. L'orientation est nécessaire 
 une connexion de la ville~$x$ vers la ville~$y$ n'implique pas l'existence d'une
 connexion en sens inverse : les lignes de transport sont directionnelles. La
 valuation permet d'associer à chaque arête le coût correspondant au critère
-choisi. Enfin, la structure de multigraphe est justifiée par le fait que deux
+choisi. La structure de multigraphe est justifiée par le fait que deux
 villes pourraient théoriquement être reliées par plusieurs connexions de même
 modalité, ce qui correspondrait à des arêtes parallèles dans le graphe.
 
@@ -234,9 +234,7 @@ prendre en charge les changements de modalité entre deux étapes d'un même voy
 
 La classe \ic{GraphesV1} est une classe Java autonome et exécutable. Conformément
 aux exigences du sujet, elle ne dépend d'aucune autre classe du projet, à
-l'exception des interfaces \ic{Lieu} et \ic{Connexion} de la bibliothèque fournie,
-qu'elle implémente sous forme de classes anonymes directement dans la méthode
-\ic{main}.
+l'exception des interfaces \ic{Lieu} et \ic{Connexion} de la bibliothèque fournie.
 
 La classe reproduit le scénario décrit en Section~1.1 : elle instancie les cinq
 villes comme sommets, ajoute les connexions TRAIN avec leurs prix comme poids
