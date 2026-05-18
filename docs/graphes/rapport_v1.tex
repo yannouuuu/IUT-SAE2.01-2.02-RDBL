@@ -61,6 +61,16 @@ l'ADEME.
 
 \noindent\textbf{Tableau 1 : Données complètes du réseau de transport}
 
+% ──────────────────────────────────────────────────────────────────────────────
+% Tableau 1 : Données complètes du réseau de transport
+% 
+% Méthodologie de calcul :
+% - TRAIN : vitesse moyenne 180 km/h, prix ~0.18 €/km, CO2 ~4 g/km/voyageur
+% - BUS   : vitesse moyenne 90 km/h,  prix ~0.12 €/km, CO2 ~21 g/km/voyageur  
+% - AVION : vitesse 800 km/h + 120 min temps d'enregistrement/aéroport
+%          Prix fixe selon marché, CO2 ~85 g/km/voyageur (supposé 150 places)
+% ──────────────────────────────────────────────────────────────────────────────
+
 \begin{table}[H]
   \centering
   \begin{tabular}{lllrrr}
@@ -69,24 +79,42 @@ l'ADEME.
       & \textbf{Prix (€)} & \textbf{CO\textsubscript{2} (kg)}
       & \textbf{Durée (min)} \\
     \midrule
-    Lille             & Dunkerque         & TRAIN  & 18  & 0{,}8  & 65  \\
-    Dunkerque         & Lille             & TRAIN  & 18  & 0{,}8  & 65  \\
-    Lille             & Cambrai           & TRAIN  & 14  & 0{,}7  & 55  \\
-    Cambrai           & Lille             & TRAIN  & 14  & 0{,}7  & 55  \\
-    Cambrai           & Paris             & TRAIN  & 35  & 1{,}8  & 95  \\
-    Paris             & Cambrai           & TRAIN  & 35  & 1{,}8  & 95  \\
-    Paris             & Crépy-en-Valois   & TRAIN  & 12  & 0{,}5  & 45  \\
-    Crépy-en-Valois   & Paris             & TRAIN  & 12  & 0{,}5  & 45  \\
-    Lille             & Paris             & TRAIN  & 55  & 2{,}4  & 60  \\
-    Paris             & Lille             & TRAIN  & 55  & 2{,}4  & 60  \\
-    Dunkerque         & Cambrai           & TRAIN  & 22  & 1{,}0  & 80  \\
-    Cambrai           & Dunkerque         & TRAIN  & 22  & 1{,}0  & 80  \\
-    Dunkerque         & Crépy-en-Valois   & TRAIN  & 45  & 2{,}0  & 150 \\
-    Dunkerque         & Cambrai           & BUS    & 12  & 2{,}1  & 110 \\
-    Cambrai           & Crépy-en-Valois   & BUS    & 18  & 2{,}8  & 130 \\
-    Paris             & Crépy-en-Valois   & BUS    & 8   & 1{,}2  & 75  \\
-    Lille             & Paris             & AVION  & 120 & 85{,}0 & 55  \\
-    Dunkerque         & Paris             & AVION  & 110 & 80{,}0 & 50  \\
+    % Lille ↔ Dunkerque : 90 km
+    Lille             & Dunkerque         & TRAIN  & 18  & 0{,}4  & 30  \\ % 90÷180×60 = 30 min
+    Dunkerque         & Lille             & TRAIN  & 18  & 0{,}4  & 30  \\
+    
+    % Lille ↔ Cambrai : 70 km
+    Lille             & Cambrai           & TRAIN  & 14  & 0{,}3  & 23  \\ % 70÷180×60 ≈ 23 min
+    Cambrai           & Lille             & TRAIN  & 14  & 0{,}3  & 23  \\
+    
+    % Cambrai ↔ Paris : 160 km
+    Cambrai           & Paris             & TRAIN  & 35  & 0{,}6  & 53  \\ % 160÷180×60 ≈ 53 min
+    Paris             & Cambrai           & TRAIN  & 35  & 0{,}6  & 53  \\
+    
+    % Paris ↔ Crépy-en-Valois : 80 km
+    Paris             & Crépy-en-Valois   & TRAIN  & 12  & 0{,}3  & 27  \\ % 80÷180×60 ≈ 27 min
+    Crépy-en-Valois   & Paris             & TRAIN  & 12  & 0{,}3  & 27  \\
+    
+    % Lille ↔ Paris : 220 km
+    Lille             & Paris             & TRAIN  & 55  & 0{,}9  & 73  \\ % 220÷180×60 ≈ 73 min
+    Paris             & Lille             & TRAIN  & 55  & 0{,}9  & 73  \\
+    
+    % Dunkerque ↔ Cambrai : 100 km
+    Dunkerque         & Cambrai           & TRAIN  & 22  & 0{,}4  & 33  \\ % 100÷180×60 ≈ 33 min
+    Cambrai           & Dunkerque         & TRAIN  & 22  & 0{,}4  & 33  \\
+    
+    % Dunkerque → Crépy-en-Valois : 230 km (via Paris)
+    Dunkerque         & Crépy-en-Valois   & TRAIN  & 45  & 0{,}9  & 77  \\ % 230÷180×60 ≈ 77 min
+    
+    % Routes en BUS (90 km/h + 5 min temps d'attente)
+    Dunkerque         & Cambrai           & BUS    & 12  & 2{,}1  & 71  \\ % 100÷90×60 + 5 ≈ 71 min
+    Cambrai           & Crépy-en-Valois   & BUS    & 18  & 2{,}5  & 85  \\ % 120÷90×60 + 5 ≈ 85 min
+    Paris             & Crépy-en-Valois   & BUS    & 8   & 1{,}7  & 59  \\ % 80÷90×60 + 5 ≈ 59 min
+    
+    % Routes en AVION (800 km/h + 120 min temps'aéroport)
+    Lille             & Paris             & AVION  & 120 & 85{,}0 & 136 \\ % 220÷800×60 + 120 ≈ 136 min
+    Dunkerque         & Paris             & AVION  & 110 & 80{,}0 & 141 \\ % 280÷800×60 + 120 ≈ 141 min
+
     \bottomrule
   \end{tabular}
   \caption{Données complètes du réseau de transport}
