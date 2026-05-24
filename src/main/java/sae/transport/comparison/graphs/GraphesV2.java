@@ -11,13 +11,13 @@ import fr.ulille.but.sae_s2_2026.ModaliteTransport;
 import fr.ulille.but.sae_s2_2026.MultiGrapheOrienteValue;
 
 /**
- * Prototype Version 2 — multi-modalité avec coûts de correspondance.
+ * Prototype Version 2 — multi-modalité avec coûts de correspondance
  *
  * Technique des sommets dupliqués :
- *   Chaque ville est représentée par autant de sommets que de modes de transport disponibles.
- *   Ex : Lille devient Lille_TRAIN, Lille_AVION, Lille_BUS.
+ *   Chaque ville est représentée par autant de sommets que de modes de transport disponibles
+ *   Ex : Lille devient Lille_TRAIN, Lille_AVION, Lille_BUS
  *
- * Scénario : Lille → Crépy-en-Valois, critère PRIX, k = 4 itinéraires.
+ * Scénario : Lille → Crépy-en-Valois, critère PRIX, k = 4 itinéraires
  */
 public class GraphesV2 {
 

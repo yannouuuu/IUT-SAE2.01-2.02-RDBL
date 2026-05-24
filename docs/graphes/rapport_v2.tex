@@ -9,7 +9,7 @@
 \newcommand{\ic}[1]{{\setlength{\fboxsep}{2pt}\colorbox{BeigeSerein}{\texttt{#1}}}}
 
 \subject{SAE 2.01 - 2.02 : Rapport graphes}
-\title{Première Version}
+\title{Seconde Version}
 \author{Yann Renard \\ Tom Cox \\ Alexandre Sorel}
 \direction{Équipe E5}
 
@@ -273,5 +273,244 @@ des étapes ville par ville.
 
 \noindent\textbf{Lien vers le code source (commit avant la date limite) :}\\*
 \href{https://gitlab.univ-lille.fr/sae2.01-2.02/2026/E5/-/blob/main/src/main/java/sae/transport/comparison/graphs/GraphesV1.java?ref_type=heads}{\ic{GraphesV1.java} sur GitLab (équipe E5)}
+
+% ─────────────────────────────────────────────
+\chapter{Version 2 : Plusieurs moyens de transport}
+% ─────────────────────────────────────────────
+
+% ──────────────────────────────
+\section{Exemple}
+% ──────────────────────────────
+
+Pour illustrer la Version~2, nous réutilisons le même réseau de cinq villes du nord
+de la France : Lille, Dunkerque, Cambrai, Paris et Crépy-en-Valois. Le réseau est
+identique à celui de la Version~1 (Tableau~1). La nouveauté réside dans la possibilité
+de combiner plusieurs modes de transport au sein d'un même itinéraire, moyennant un
+coût de correspondance lorsqu'un changement de mode a lieu dans une ville.
+
+\noindent\textbf{Tableau 1 : Données complètes du réseau de transport (inchangé par
+rapport à la Version~1)}
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{lllrrr}
+    \toprule
+    \textbf{Départ} & \textbf{Arrivée} & \textbf{Mode}
+      & \textbf{Prix (€)} & \textbf{CO\textsubscript{2} (kg)}
+      & \textbf{Durée (min)} \\
+    \midrule
+    Lille             & Dunkerque         & TRAIN  & 18  & 0{,}8  & 65  \\
+    Dunkerque         & Lille             & TRAIN  & 18  & 0{,}8  & 65  \\
+    Lille             & Cambrai           & TRAIN  & 14  & 0{,}7  & 55  \\
+    Cambrai           & Lille             & TRAIN  & 14  & 0{,}7  & 55  \\
+    Cambrai           & Paris             & TRAIN  & 35  & 1{,}8  & 95  \\
+    Paris             & Cambrai           & TRAIN  & 35  & 1{,}8  & 95  \\
+    Paris             & Crépy-en-Valois   & TRAIN  & 12  & 0{,}5  & 45  \\
+    Crépy-en-Valois   & Paris             & TRAIN  & 12  & 0{,}5  & 45  \\
+    Lille             & Paris             & TRAIN  & 55  & 2{,}4  & 60  \\
+    Paris             & Lille             & TRAIN  & 55  & 2{,}4  & 60  \\
+    Dunkerque         & Cambrai           & TRAIN  & 22  & 1{,}0  & 80  \\
+    Cambrai           & Dunkerque         & TRAIN  & 22  & 1{,}0  & 80  \\
+    Dunkerque         & Crépy-en-Valois   & TRAIN  & 45  & 2{,}0  & 150 \\
+    Dunkerque         & Cambrai           & BUS    & 12  & 2{,}1  & 110 \\
+    Cambrai           & Crépy-en-Valois   & BUS    & 18  & 2{,}8  & 130 \\
+    Paris             & Crépy-en-Valois   & BUS    & 8   & 1{,}2  & 75  \\
+    Lille             & Paris             & AVION  & 120 & 85{,}0 & 55  \\
+    Dunkerque         & Paris             & AVION  & 110 & 80{,}0 & 50  \\
+    \bottomrule
+  \end{tabular}
+  \caption{Données complètes du réseau de transport (inchangé par rapport à la Version~1)}
+\end{table}
+
+{\small\itshape Les connexions BUS et AVION, absentes du scénario V1, jouent ici un
+rôle dans les itinéraires multi-modaux.}
+
+Le Tableau~2 présente les coûts de correspondance retenus pour les villes où plusieurs
+modes coexistent. Ces coûts reflètent les délais réels de changement de transport :
+temps de déplacement entre les terminaux, enregistrement, attente en gare ou à
+l'aéroport.
+
+\noindent\textbf{Tableau 2 : Coûts de correspondance par ville et par paire de modes}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{lllrrr}
+    \toprule
+    \textbf{Ville} & \textbf{Mode 1} & \textbf{Mode 2}
+      & \textbf{Durée (min)} & \textbf{CO\textsubscript{2} (kg)} & \textbf{Prix (€)} \\
+    \midrule
+    Lille  & TRAIN & AVION & 130 & 0{,}1 & 20 \\
+    Lille  & TRAIN & BUS   & 20  & 0     & 0  \\
+    Lille  & AVION & BUS   & 120 & 0{,}1 & 20 \\
+    Paris  & TRAIN & AVION & 130 & 0{,}1 & 20 \\
+    Paris  & TRAIN & BUS   & 15  & 0     & 0  \\
+    Paris  & AVION & BUS   & 120 & 0{,}1 & 20 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Coûts de correspondance par ville et par paire de modes}
+\end{table}
+
+{\small\itshape Les correspondances sont symétriques : le coût de TRAIN~→~BUS est
+identique à celui de BUS~→~TRAIN.}
+
+Le scénario retenu pour ce prototype est le suivant :
+
+\begin{itemize}
+  \item Modes de transport : tous les modes disponibles (TRAIN, BUS, AVION)
+  \item Critère d'optimisation : le prix (on cherche à minimiser le coût total en
+        euros, correspondances incluses)
+  \item Ville de départ : Lille
+  \item Ville d'arrivée : Crépy-en-Valois
+  \item Nombre d'itinéraires souhaités : 4
+\end{itemize}
+
+Le Tableau~3 présente les quatre meilleurs itinéraires identifiés, en tenant compte à
+la fois des connexions de transport et des coûts de correspondance. On notera que les
+deux meilleurs itinéraires sont multi-modaux, ce qui illustre bien l'apport de la
+Version~2 par rapport à la Version~1.
+
+\noindent\textbf{Tableau 3 : Les 4 meilleurs itinéraires multi-modaux de Lille à
+Crépy-en-Valois (critère : prix)}
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabularx}{\textwidth}{Xrr}
+    \toprule
+    \textbf{Itinéraire} & \textbf{Prix (€)} & \textbf{Classement} \\
+    \midrule
+    Lille (TRAIN) → Cambrai (TRAIN) → Paris (TRAIN) [corresp.\ TRAIN→BUS]
+      → Crépy-en-Valois (BUS) & 57 & 1\textsuperscript{er} \\
+    Lille (TRAIN) → Cambrai (TRAIN) → Paris (TRAIN) → Crépy-en-Valois (TRAIN)
+      & 61 & 2\textsuperscript{e} \\
+    Lille (TRAIN) → Dunkerque (TRAIN) → Crépy-en-Valois (TRAIN)
+      & 63 & 3\textsuperscript{e} \\
+    Lille (TRAIN) → Paris (TRAIN) [corresp.\ TRAIN→BUS] → Crépy-en-Valois (BUS)
+      & 63 & 4\textsuperscript{e} \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Les 4 meilleurs itinéraires multi-modaux de Lille à Crépy-en-Valois (critère : prix)}
+\end{table}
+
+{\small\itshape Les correspondances sont indiquées entre crochets. Le 1\textsuperscript{er}
+itinéraire est multi-modal : TRAIN jusqu'à Paris, puis BUS jusqu'à Crépy.}
+
+% ──────────────────────────────
+\section{Modèle pour l'exemple}
+% ──────────────────────────────
+
+Pour prendre en charge la multi-modalité et les coûts de correspondance, on enrichit le
+modèle de la Version~1 en dupliquant les sommets : chaque ville est représentée par
+autant de sommets que de modes de transport disponibles dans cette ville. Ainsi, Lille
+devient trois sommets distincts (\ic{Lille\_TRAIN}, \ic{Lille\_AVION} et
+\ic{Lille\_BUS}), tandis que Dunkerque, qui n'est accessible qu'en train et en avion,
+n'en possède que deux.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{imgrapport/graphesv2}
+  \caption{Graphe orienté valué pour le scénario V2 (multi-modal, critère PRIX)}
+  \label{fig:graphesv2}
+\end{figure}
+
+Les arêtes de transport relient les sommets de même modalité entre deux villes
+différentes : \ic{Lille\_TRAIN}~→~\ic{Paris\_TRAIN} avec le poids~55,
+\ic{Paris\_TRAIN}~→~\ic{Crépy-en-Valois\_TRAIN} avec le poids~12,
+\ic{Paris\_BUS}~→~\ic{Crépy-en-Valois\_BUS} avec le poids~8.
+
+Les arêtes de correspondance relient les sommets de modes différents au sein d'une même
+ville : \ic{Paris\_TRAIN}~→~\ic{Paris\_BUS} avec le poids~0 (aucun surcoût pour ce
+changement à Paris). C'est précisément cette arête qui rend possible l'itinéraire~1
+du Tableau~3, le plus économique.
+
+Les quatre meilleurs chemins dans ce graphe, avec leurs poids cumulés, sont :
+
+\begin{itemize}
+  \item \textbf{Chemin~1 :} \ic{Lille\_TRAIN} → \ic{Cambrai\_TRAIN} → \ic{Paris\_TRAIN}
+        → \ic{Paris\_BUS} → \ic{Crépy\_BUS},
+        poids total $= 14 + 35 + 0 + 8 = \mathbf{57}$~€
+  \item \textbf{Chemin~2 :} \ic{Lille\_TRAIN} → \ic{Cambrai\_TRAIN} → \ic{Paris\_TRAIN}
+        → \ic{Crépy\_TRAIN},
+        poids total $= 14 + 35 + 12 = \mathbf{61}$~€
+  \item \textbf{Chemin~3 :} \ic{Lille\_TRAIN} → \ic{Dunkerque\_TRAIN} → \ic{Crépy\_TRAIN},
+        poids total $= 18 + 45 = \mathbf{63}$~€
+  \item \textbf{Chemin~4 :} \ic{Lille\_TRAIN} → \ic{Paris\_TRAIN} → \ic{Paris\_BUS}
+        → \ic{Crépy\_BUS},
+        poids total $= 55 + 0 + 8 = \mathbf{63}$~€
+\end{itemize}
+
+Ces résultats ont été obtenus et vérifiés par l'exécution de la classe \ic{GraphesV2}
+décrite en Section~2.4.
+
+% ──────────────────────────────
+\section{Modélisation pour la Version~2 dans le cas général}
+% ──────────────────────────────
+
+L'idée centrale de la Version~2 est simple : puisqu'un voyageur peut changer de mode
+de transport en cours de route, il faut que le graphe soit capable de représenter non
+seulement les déplacements, mais aussi les changements de mode. Pour cela, on utilise
+une technique appelée \textbf{duplication des sommets}.
+
+\noindent\textbf{Type de graphe}
+
+Comme pour la Version~1, on construit un \emph{multigraphe orienté valué}. La structure
+est la même, seule la façon de créer les sommets et les arêtes change.
+
+\noindent\textbf{Sommets du graphe}
+
+Dans la Version~1, chaque ville était un sommet. Dans la Version~2, chaque ville devient
+plusieurs sommets, un par mode de transport disponible dans cette ville. Par exemple,
+Lille devient trois sommets : \ic{Lille\_TRAIN}, \ic{Lille\_AVION} et \ic{Lille\_BUS}.
+Cambrai, accessible uniquement en train et en bus, ne donne que deux sommets :
+\ic{Cambrai\_TRAIN} et \ic{Cambrai\_BUS}.
+
+Cette distinction est indispensable : elle permet au graphe de savoir dans quel
+«~état~» se trouve le voyageur à chaque étape, ce qui est nécessaire pour calculer le
+coût d'un éventuel changement de mode.
+
+\noindent\textbf{Arêtes de transport}
+
+Une arête de transport relie deux sommets de même mode dans des villes différentes.
+Par exemple, il existe une arête de \ic{Lille\_TRAIN} vers \ic{Paris\_TRAIN} avec le
+poids~55, et une arête de \ic{Paris\_BUS} vers \ic{Crépy-en-Valois\_BUS} avec le
+poids~8. Ces arêtes représentent les trajets classiques, exactement comme dans la
+Version~1.
+
+\noindent\textbf{Arêtes de correspondance}
+
+Une arête de correspondance relie deux sommets de modes différents dans la même ville.
+Par exemple, \ic{Paris\_TRAIN} vers \ic{Paris\_BUS} avec le poids~0. Ces arêtes
+modélisent le changement de mode dans une ville ; sans elles, il serait impossible de
+passer du train au bus en cours de route. Le sous-graphe formé par ces arêtes est un
+sous-graphe induit par la relation de changement de mode.
+
+\noindent\textbf{Algorithme de résolution}
+
+On applique le même algorithme KPCC que pour la Version~1, en le lançant une fois par
+mode disponible à la ville d'arrivée, puis en fusionnant les résultats pour garder les
+$k$ meilleurs.
+
+% ──────────────────────────────
+\section{Prototype pour la Version~2}
+% ──────────────────────────────
+
+La classe \ic{GraphesV2} est une classe Java autonome et exécutable. Comme
+\ic{GraphesV1}, elle ne dépend d'aucune autre classe du projet, à l'exception des
+interfaces \ic{Lieu} et \ic{Connexion} de la bibliothèque fournie.
+
+La classe met en œuvre la technique des sommets dupliqués décrite en Section~2.3 : les
+cinq villes sont instanciées en plusieurs sommets selon leurs modes disponibles
+(12~sommets au total), les arêtes de transport relient les sommets de même mode, et
+les arêtes de correspondance relient les modes différents au sein de Lille et Paris
+avec les coûts du Tableau~2.
+
+L'algorithme KPCC est appelé deux fois, une fois vers \ic{Crépy-en-Valois\_TRAIN} et
+une fois vers \ic{Crépy-en-Valois\_BUS}, et les résultats sont fusionnés puis triés
+par poids croissant. L'affichage filtre les arêtes de correspondance pour ne montrer que
+les points d'intérêt : départ, arrivée, et lieux de changement de modalité.
+
+\noindent\textbf{Lien vers le code source (commit avant la date limite) :}\\*
+\href{https://gitlab.univ-lille.fr/sae2.01-2.02/2026/E5/-/blob/main/src/main/java/sae/transport/comparison/graphs/GraphesV2.java?ref_type=heads}{\ic{GraphesV2.java} sur GitLab (équipe E5)}
 
 \end{document}
