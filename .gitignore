@@ -38,6 +38,9 @@ build/
 ### Mac OS ###
 .DS_Store
 
+### Fichiers trop volumineux pour GitHub (> 100 Mo) ###
+docs/ihm/Proto Basse Fidélité.pdf
+
 ### LaTeX ###
 *.aux
 *.log
