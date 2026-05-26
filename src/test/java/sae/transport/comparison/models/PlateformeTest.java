@@ -3,6 +3,8 @@ package sae.transport.comparison.models;
 import fr.ulille.but.sae_s2_2026.ModaliteTransport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import sae.transport.comparison.exceptions.DonneesInvalidesException;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,7 +14,7 @@ class PlateformeTest {
     private Plateforme plateforme;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws DonneesInvalidesException {
         plateforme = new Plateforme();
         String[] data = {
                 "villeA;villeB;TRAIN;60;1.7;80",
