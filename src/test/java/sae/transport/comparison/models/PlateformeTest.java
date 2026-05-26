@@ -1,13 +1,18 @@
 package sae.transport.comparison.models;
 
-import fr.ulille.but.sae_s2_2026.ModaliteTransport;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import sae.transport.comparison.exceptions.DonneesInvalidesException;
-
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import fr.ulille.but.sae_s2_2026.ModaliteTransport;
+import sae.transport.comparison.exceptions.AucunCheminException;
+import sae.transport.comparison.exceptions.DonneesInvalidesException;
 
 class PlateformeTest {
 
@@ -35,16 +40,26 @@ class PlateformeTest {
 
     @Test
     void chargerDepuisTableauDonneesInvalides() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        DonneesInvalidesException exception = null;
+        try {
             plateforme.chargerDepuisTableau(new String[]{"villeA;villeB;TRAIN;60;1.7"});
-        });
+        } catch (DonneesInvalidesException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertTrue(exception.getMessage().contains("Données invalides"));
     }
 
     @Test
     void chargerDepuisTableauCoutsNegatifs() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        DonneesInvalidesException exception = null;
+        try {
             plateforme.chargerDepuisTableau(new String[]{"villeA;villeB;TRAIN;-60;1.7;80"});
-        });
+        } catch (DonneesInvalidesException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertTrue(exception.getMessage().contains("positifs"));
     }
 
     @Test
@@ -60,7 +75,7 @@ class PlateformeTest {
     }
 
     @Test
-    void cheminExiste() {
+    void cheminExiste() throws AucunCheminException {
         assertTrue(plateforme.cheminExiste("villeA", "villeB", ModaliteTransport.TRAIN));
         assertFalse(plateforme.cheminExiste("villeA", "villeD", ModaliteTransport.TRAIN));
         assertFalse(plateforme.cheminExiste("villeA", "villeZ", ModaliteTransport.TRAIN));
