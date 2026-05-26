@@ -140,6 +140,19 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <mainClass>sae.transport.comparison.AppTerminal</mainClass>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>${project.basedir}/lib/sae-s2-2026.jar</additionalClasspathElement>
+                        <additionalClasspathElement>${project.basedir}/lib/jgrapht-core-1.5.1.jar</additionalClasspathElement>
+                        <additionalClasspathElement>${project.basedir}/lib/jheaps-0.14.jar</additionalClasspathElement>
+                    </additionalClasspathElements>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.6</version>
