@@ -15,10 +15,7 @@ Assistant personnel de voyage permettant de calculer, visualiser et comparer des
 - [Les bibliothèques utilisées](#les-bibliothèques-utilisées)
 - [Architecture du code](#architecture-du-code)
 - [Format des données](#format-des-données)
-- [Versions du projet](#versions-du-projet)
-- [Deadlines et tags Git](#deadlines-et-tags-git)
-- [Livrables attendus](#livrables-attendus)
-
+- [Deadlines](#deadlines-et-tags-git)
 ---
 
 ## Prérequis
@@ -97,7 +94,7 @@ IUT-SAE2.01-2.02/
 Toute la configuration est dans le fichier **`pom.xml`** à la racine du projet. C'est lui qui dit :
 - quelle version de Java utiliser (ici Java 11)
 - quelles bibliothèques sont nécessaires (JavaFX, JUnit, JGraphT…)
-- quelle classe contient le `main` (`AppFX`)
+- quelles classes contiennent les points d'entrée (`AppFX` pour l'IHM, `AppTerminal` pour le terminal)
 - comment adapter la compilation selon l'OS (Mac ARM, Mac x86, Linux, Windows)
 
 Le dossier `target/` est créé automatiquement par Maven quand on compile. Il contient les fichiers `.class` (bytecode Java) et les JAR générés. **Il ne faut pas le versionner** (il est normalement dans le `.gitignore`).
@@ -108,12 +105,22 @@ Le dossier `target/` est créé automatiquement par Maven quand on compile. Il c
 
 Dans un terminal, à la racine du projet (là où se trouve `pom.xml`) :
 
+### Application JavaFX (interface graphique)
+
 ```bash
 mvn clean javafx:run
 ```
 
 - `clean` : supprime l'ancien dossier `target/` pour repartir de zéro
 - `javafx:run` : compile puis lance l'application JavaFX
+
+### Application Terminal (ligne de commande)
+
+```bash
+mvn clean exec:java
+```
+
+- `exec:java` : compile puis lance `AppTerminal` dans le terminal courant
 
 > La première fois, Maven va télécharger les dépendances (JavaFX, JUnit…). C'est normal, ça peut prendre une minute.
 
@@ -187,7 +194,8 @@ AppFX.java                                                      → lance l'appl
 
 **Détail des packages :**
 
-- **`AppFX.java`** : point d'entrée (`main`). Initialise JavaFX et charge la première vue FXML.
+- **`AppFX.java`** : point d'entrée de l'application graphique. Initialise JavaFX et charge la première vue FXML.
+- **`AppTerminal.java`** : point d'entrée de l'application en mode terminal (ligne de commande, sans JavaFX).
 - **`controllers/`** : chaque contrôleur est lié à un fichier `.fxml`. Il reçoit les événements (clics, saisies…) et délègue au modèle.
 - **`models/`** : classes Java pures, sans interface graphique. Contient les interfaces `Lieu` et `Connexion` (imposées par le sujet), les énumérations `ModalitéTransport` et `TypeCout`, ainsi que les classes `Plateforme`, `Voyageur`, `Voyage` et `Cout`.
 - **`views/`** : éventuels composants graphiques personnalisés (hors FXML).
@@ -231,27 +239,7 @@ Ces coûts s'appliquent lors d'un changement de modalité de transport dans une 
 
 ---
 
-## Versions du projet
-
-### Version 1 — Transport mono-modal
-
-L'utilisateur choisit **un seul moyen de transport** et **un seul critère** d'optimisation (durée, prix ou CO₂). L'application :
-- valide les données d'entrée
-- filtre les connexions selon la modalité choisie
-- calcule les meilleurs itinéraires (plus courts chemins dans un graphe)
-- écarte les voyages dépassant une borne définie par l'utilisateur (ex : "minimiser le CO₂ mais durée max 180 min")
-
-### Version 2 — Transport multimodal
-
-Les voyages peuvent combiner plusieurs moyens de transport. Chaque changement de modalité engendre un **coût de correspondance** (temps + CO₂ + prix) dépendant de la ville et des transports concernés. L'application signale aussi les erreurs via des **exceptions** et filtre l'affichage pour ne montrer que les points de changement.
-
-### Version 3 — Multi-critères + historique
-
-L'utilisateur peut exprimer des **préférences relatives** sur plusieurs critères simultanément (ex : "je préfère le prix, mais l'environnement compte aussi"). L'application enregistre les voyages via **sérialisation binaire** et affiche l'évolution de l'historique (budget dépensé, CO₂ cumulé…).
-
----
-
-## Deadlines et tags Git
+## Deadlines
 
 Les commits doivent être **étiquetés** (tags Git) selon le calendrier suivant :
 
@@ -263,27 +251,3 @@ Les commits doivent être **étiquetés** (tags Git) selon le calendrier suivant
 | `POO-v3` | **12 juin** | Version 3 multi-critères, historique, sérialisation                                               |
 | `IHM-v2` | **12 juin** | IHM JavaFX terminée, prototype haute fidélité                                                     |
 
-Créer un tag Git :
-```bash
-git tag POO-v1
-git push origin POO-v1
-```
-
----
-
-## Livrables attendus
-
-### Partie POO (R2.01 / R2.03)
-- Diagramme UML pour chaque version (dans `docs/poo/`)
-- Rapport PDF cumulatif à rendre sur Moodle (mode de lancement, UML, analyse technique, analyse des tests)
-- **JAR sans interface graphique** à la racine du dépôt GitLab
-
-### Partie Graphes (R2.07)
-- Rapport PDF sur Moodle (modélisation graphe v1 + v2, classes de test)
-
-### Partie IHM (R2.02)
-- Archive ZIP contenant :
-  - **JAR exécutable** (JavaFX 21.0.7)
-  - Export HTML ou PDF des mockups dans un dossier `mockups/`
-  - Compte rendu PDF (noms, groupe, lien GitLab, captures d'écran, justification des choix ergonomiques, contributions de chaque membre)
-  - **Vidéo de présentation de 2-3 minutes** à destination de personnes extérieures au projet

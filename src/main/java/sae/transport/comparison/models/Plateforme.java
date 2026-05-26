@@ -1,5 +1,8 @@
 package sae.transport.comparison.models;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +14,7 @@ import sae.transport.comparison.exceptions.DonneesInvalidesException;
  * Représente la plateforme centrale du réseau de transport.
  * Regroupe l'ensemble des villes et des trajets disponibles,
  * et fournit les fonctionnalités de chargement, filtrage et tri des données.
+ * TODO : Ajouter la JavaDoc manquante avant de tag POO-v2
  */
 public class Plateforme {
     private List<Trajet> trajets;
@@ -67,7 +71,7 @@ public class Plateforme {
      * Les villes sont créées automatiquement si elles n'existent pas encore.
      *
      * @param data le tableau de chaînes représentant les connexions
-     * @throws IllegalArgumentException si une ligne ne contient pas exactement 6 colonnes,
+     * @throws DonneesInvalidesException si une ligne ne contient pas exactement 6 colonnes,
      *                                  si un coût est négatif, ou si la modalité est inconnue
      */
     public void chargerDepuisTableau(String[] data) throws DonneesInvalidesException {
@@ -199,6 +203,28 @@ public class Plateforme {
         List<Trajet> resultat = new ArrayList<>();
         for (Trajet trajet : trajets) {
             if (trajet.getCout().getValeur(critere) <= borneMax) {
+                resultat.add(trajet);
+            }
+        }
+        return resultat;
+    }
+
+    public void chargerDepuisCSV(String cheminFichier) throws DonneesInvalidesException {
+        try (BufferedReader br = new BufferedReader(new FileReader(cheminFichier))) {
+            String ligne;
+            while ((ligne = br.readLine()) != null) {
+                chargerDepuisTableau(new String[]{ligne});
+            }
+        } catch (IOException e) {
+            throw new DonneesInvalidesException("Fichier introuvable ou illisible : " + cheminFichier);
+        }
+    }
+
+    public List<Trajet> getPointsInteret(List<Trajet> trajets) {
+        List<Trajet> resultat = new ArrayList<>();
+        for (int i = 0; i < trajets.size(); i++) {
+            Trajet trajet = trajets.get(i);
+            if (i == 0 || i == trajets.size() - 1 || !trajet.getModalite().equals(trajets.get(i - 1).getModalite())) {
                 resultat.add(trajet);
             }
         }
