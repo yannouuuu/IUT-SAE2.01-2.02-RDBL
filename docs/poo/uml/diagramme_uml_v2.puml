@@ -1,0 +1,67 @@
+@startuml diagramme_uml_v2
+
+skinparam classAttributeIconSize 0
+skinparam classFontSize 11
+skinparam classFontStyle Bold
+skinparam classHeaderBackgroundColor #2C3E50
+skinparam classFontColor #2C3E50
+skinparam classBackgroundColor #ECF0F1
+skinparam classBorderColor #2C3E50
+skinparam classBorderThickness 1.5
+skinparam ArrowColor #2C3E50
+skinparam ArrowThickness 1.5
+skinparam PackageBackgroundColor #F8F9FA
+skinparam PackageBorderColor #95A5A6
+skinparam PackageFontStyle Bold
+skinparam PackageFontSize 10
+skinparam linetype ortho
+skinparam nodesep 40
+skinparam ranksep 50
+skinparam padding 5
+
+left to right direction
+
+note as N1
+  Évolutions par rapport à la Version 1 :
+  - package exceptions (2 nouvelles classes)
+  - Plateforme : 2 nouvelles méthodes
+  - chargerDepuisTableau et cheminExiste
+    lèvent désormais des exceptions personnalisées
+end note
+
+package "sae.transport.comparison.exceptions" #FDEDEC {
+
+    class AucunCheminException {
+        --
+        + AucunCheminException(message : String)
+    }
+
+    class DonneesInvalidesException {
+        --
+        + DonneesInvalidesException(message : String)
+    }
+}
+
+package "sae.transport.comparison.models" #EAF7EE {
+
+    class Plateforme {
+        - trajets : List<Trajet>
+        - villes : List<Ville>
+        --
+        ' ... (méthodes inchangées de la V1)
+        + chargerDepuisTableau(data : String[]) : void
+        + chargerDepuisCSV(cheminFichier : String) : void
+        + cheminExiste(nomDepart, nomArrivee, modalite) : boolean
+        + getPointsInteret(trajets : List<Trajet>) : List<Trajet>
+    }
+}
+
+' Héritage exceptions
+AucunCheminException      --|> Exception
+DonneesInvalidesException --|> Exception
+
+' Exceptions levées par Plateforme
+Plateforme   ..>  AucunCheminException      : <<throws>>
+Plateforme   ..>  DonneesInvalidesException : <<throws>>
+
+@enduml
