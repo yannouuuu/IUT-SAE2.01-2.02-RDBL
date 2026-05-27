@@ -1,0 +1,184 @@
+\documentclass[fontsize=10pt,oneside,parskip=half]{scrreprt}
+\usepackage{ulille-rapport}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{listings}
+
+\newcommand{\ic}[1]{{\setlength{\fboxsep}{2pt}\colorbox{BeigeSerein}{\texttt{#1}}}}
+
+\subject{SAÉ 2.01-2.02 : Rapport POO}
+\title{Version 1}
+\author{Yann Renard \\ Tom Cox \\ Alexandre Sorel}
+\direction{Équipe E5}
+
+\lstdefinestyle{bash}{
+  language=bash,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{IndigoInclusif},
+  commentstyle=\itshape\color{GrisStatutaire},
+  stringstyle=\color{VertAvenir},
+  backgroundcolor=\color{BeigeSerein},
+  frame=single,
+  framesep=6pt,
+  rulecolor=\color{BleuHorizon},
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  tabsize=2,
+  numbers=left,
+  numberstyle=\tiny\color{GrisStatutaire},
+  numbersep=8pt,
+  xleftmargin=20pt,
+  xrightmargin=4pt,
+}
+
+\begin{document}
+\selectlanguage{french}
+
+\maketitle
+\pagecolor{Blanc}
+{%
+  \setlength{\parskip}{0pt}%
+  \tableofcontents%
+}
+
+% ─────────────────────────────────────────────
+\chapter{Version 1 : Un seul moyen de transport}
+% ─────────────────────────────────────────────
+
+% ──────────────────────────────
+\section{Lancement et utilisation}
+% ──────────────────────────────
+
+L'application est développée avec Java~21 et Maven. Le code source est disponible
+sur le dépôt GitLab de l'équipe~E5. Pour lancer l'application, il faut d'abord
+compiler le projet avec Maven, puis exécuter la classe principale.
+
+Compilation et exécution depuis la racine du projet :
+
+\begin{lstlisting}[style=bash]
+mvn compile
+mvn exec:java -Dexec.mainClass="sae.transport.comparison.AppTerminal"
+\end{lstlisting}
+
+Les fichiers de données CSV doivent être placés dans \ic{src/main/resources/}.
+La bibliothèque graphes (\ic{sae\_s2\_2026.jar}, \ic{jgrapht-core-1.5.1.jar},
+\ic{jheaps-0.14.jar}) est référencée dans le dossier \ic{lib/} à la racine du
+projet et déclarée dans le \ic{pom.xml}.
+
+% ──────────────────────────────
+\section{Diagramme UML et mécanismes objets}
+% ──────────────────────────────
+
+\noindent\textbf{Tableau 1 : Classes de la Version~1}
+
+\begin{table}[H]
+  \centering
+  \begin{tabularx}{\textwidth}{llX}
+    \toprule
+    \textbf{Classe/Enum} & \textbf{Package} & \textbf{Rôle} \\
+    \midrule
+    \ic{TypeCout}    & models & Enum représentant les 3 critères : TEMPS, PRIX, CO2 \\
+    \ic{Cout}        & models & Stocke les 3 valeurs de coût dans une \ic{Map<TypeCout, Double>} \\
+    \ic{Ville}       & models & Implémente \ic{Lieu} (lib IUT). Représente une ville du réseau \\
+    \ic{Trajet}      & models & Implémente \ic{Connexion} (lib IUT). Connexion entre deux \ic{Ville} avec un \ic{Cout} et une \ic{ModaliteTransport} \\
+    \ic{Voyageur}    & models & Représente l'utilisateur : nom et \ic{TypeCout} (critère à optimiser) \\
+    \ic{Plateforme}  & models & Classe centrale : contient les listes de \ic{Ville} et \ic{Trajet}, expose les fonctionnalités de chargement, filtrage et tri \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Classes de la Version~1}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{imgrapport/diagramme_uml_v1}
+  \caption{Diagramme UML — Version~1}
+\end{figure}
+
+\subsection*{Mécanismes objets mis en \oe uvre}
+
+\noindent\textbf{Interfaces et implémentation} : Les classes \ic{Ville} et
+\ic{Trajet} implémentent les interfaces \ic{Lieu} et \ic{Connexion} fournies par
+la bibliothèque de l'IUT. Ce choix permet à notre code d'être directement compatible
+avec la bibliothèque de graphes, qui attend des objets \ic{Lieu} et \ic{Connexion}.
+C'est le principe de programmation par interface : on dépend d'une abstraction
+plutôt que d'une implémentation concrète.
+
+\noindent\textbf{Énumérations} : \ic{TypeCout} et \ic{ModaliteTransport} (fournie
+par la lib) sont des enums. Ce mécanisme est approprié ici car les valeurs possibles
+sont fixes et connues à l'avance. Utiliser une enum plutôt qu'une \ic{String} évite
+les erreurs de frappe et rend le code plus lisible.
+
+\noindent\textbf{Collections} : La classe \ic{Plateforme} utilise des
+\ic{List<Ville>} et \ic{List<Trajet>} pour stocker le réseau. La classe \ic{Cout}
+utilise une \ic{Map<TypeCout, Double>} pour associer chaque type de coût à sa valeur.
+Ce choix permet d'accéder à n'importe quel critère avec \ic{getValeur(TypeCout)}.
+
+\noindent\textbf{Encapsulation} : Tous les attributs sont privés. L'accès se fait
+uniquement via des getters, ce qui protège l'état interne des objets et permet de
+modifier l'implémentation sans impacter le code appelant.
+
+% ──────────────────────────────
+\section{Analyse technique des fonctionnalités}
+% ──────────────────────────────
+
+\noindent\textbf{Tableau 2 : Correspondance fonctionnalités / méthodes}
+
+\begin{table}[H]
+  \centering
+  \begin{tabularx}{\textwidth}{lX}
+    \toprule
+    \textbf{Méthode} & \textbf{Fonctionnalité couverte (sujet)} \\
+    \midrule
+    \ic{chargerDepuisTableau(String[])} & Vérifier la validité des données et reconstituer le réseau \\
+    \ic{filtrerParModalite(ModaliteTransport)} & Filtrer les données sur un moyen de transport spécifique \\
+    \ic{getVille(String)} & Utilitaire interne pour retrouver une ville par son nom \\
+    \ic{cheminExiste(...)} & Déterminer s'il existe un voyage possible entre deux villes \\
+    \ic{getTrajetsTries(TypeCout)} & Afficher les meilleurs voyages ordonnés selon le critère \\
+    \ic{filtrerParBorne(...)} & Exclure les alternatives qui excèdent les bornes définies \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Correspondance fonctionnalités / méthodes}
+\end{table}
+
+La méthode \ic{chargerDepuisTableau} effectue la validation des données en
+vérifiant que chaque ligne contient exactement 6 colonnes et que tous les coûts
+sont positifs ou nuls. En cas d'erreur, une \ic{IllegalArgumentException} est
+levée (remplacée par \ic{DonneesInvalidesException} en Version~2).
+
+La recherche des meilleurs itinéraires repose sur la bibliothèque de graphes : on
+construit un \ic{MultiGrapheOrienteValue} dont les sommets sont les \ic{Ville} et
+les arêtes les \ic{Trajet} valuées selon le critère choisi, puis on appelle
+\ic{AlgorithmeKPCC.kpcc} pour obtenir les $k$ plus courts chemins.
+
+% ──────────────────────────────
+\section{Analyse des tests}
+% ──────────────────────────────
+
+Deux classes de test ont été développées avec JUnit~5 : \ic{CoutTest} et
+\ic{PlateformeTest}.
+
+\noindent\textbf{\ic{CoutTest}} couvre :
+\begin{itemize}
+  \item La création d'un \ic{Cout} avec des valeurs valides
+  \item La récupération correcte de chaque valeur (PRIX, TEMPS, CO2)
+  \item Le cas limite avec des valeurs à zéro
+\end{itemize}
+
+\noindent\textbf{\ic{PlateformeTest}} couvre :
+\begin{itemize}
+  \item Le chargement correct des données : vérification du nombre de villes (4) et de trajets (6)
+  \item La détection des données invalides : ligne incomplète, coûts négatifs
+  \item Le filtrage par modalité : vérification du nombre de trajets TRAIN et AVION
+  \item La recherche de ville : ville existante et ville inexistante (\ic{null})
+  \item La vérification d'existence de chemin : chemin existant, chemin inexistant, ville inconnue
+  \item Le tri par critère : vérification que le premier élément est bien le moins coûteux
+  \item Le filtrage par borne : vérification que tous les trajets retournés respectent la limite
+\end{itemize}
+
+Ces tests couvrent les cas simples, les cas limites et les cas d'erreur pour chaque
+fonctionnalité principale de cette version.
+
+\end{document}

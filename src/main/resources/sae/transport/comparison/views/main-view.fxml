@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+
+<StackPane styleClass="root-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.MainController">
+    <Region styleClass="glow-background" maxHeight="300" maxWidth="700" />
+    
+    <VBox alignment="CENTER" fillWidth="false">
+        <StackPane.margin>
+            <Insets top="64" />
+        </StackPane.margin>
+        
+        <!-- Search Bar Container -->
+        <HBox styleClass="search-container" alignment="CENTER" prefWidth="1023" maxWidth="1023" minHeight="87" viewOrder="-1">
+            <!-- Plus Button -->
+            <Button styleClass="icon-button" prefWidth="63" prefHeight="63" minWidth="63" minHeight="63" focusTraversable="false">
+                <graphic>
+                    <SVGPath content="M5 12H19M12 5V19" styleClass="svg-icon" />
+                </graphic>
+            </Button>
+            
+            <HBox styleClass="inputs-container" HBox.hgrow="ALWAYS" prefHeight="63" minHeight="63">
+                <TextField fx:id="departField" promptText="Départ" styleClass="search-input" HBox.hgrow="ALWAYS" />
+                
+                <Region styleClass="separator-line" prefWidth="1" maxHeight="38">
+                    <HBox.margin>
+                        <Insets left="24" right="24" top="12.5" />
+                    </HBox.margin>
+                </Region>
+                
+                <TextField fx:id="arriveeField" promptText="Arrivée..." styleClass="search-input" HBox.hgrow="ALWAYS" />
+            </HBox>
+            
+            <!-- Rechercher Button -->
+            <Button text="Rechercher" styleClass="search-button" prefHeight="57" minHeight="57" focusTraversable="false" />
+        </HBox>
+        
+        <!-- CSV Card -->
+        <VBox styleClass="csv-card" prefWidth="818" maxWidth="818">
+            <VBox.margin>
+                <Insets top="-28" />
+            </VBox.margin>
+            
+            <!-- Spacer to push content below the overlapping search bar -->
+            <Region minHeight="52" prefHeight="52" />
+            
+            <!-- Drop zone -->
+            <HBox fx:id="dropZone" styleClass="drop-zone" prefHeight="131" minHeight="131" onDragOver="#handleDragOver" onDragExited="#handleDragExited" onDragDropped="#handleDragDropped" onMouseClicked="#handleDropZoneClick">
+                <SVGPath content="M12 3V15M16 11L12 15L8 11M8 5H4C3.46957 5 2.96086 5.21071 2.58579 5.58579C2.21071 5.96086 2 6.46957 2 7V17C2 17.5304 2.21071 18.0391 2.58579 18.4142C2.96086 18.7893 3.46957 19 4 19H20C20.5304 19 21.0391 18.7893 21.4142 18.4142C21.7893 18.0391 22 17.5304 22 17V7C22 6.46957 21.7893 5.96086 21.4142 5.58579C21.0391 5.21071 20.5304 5 20 5H16" styleClass="svg-icon" />
+                <Label text="Glissez-déposez votre premier CSV pour utiliser le comparateur" styleClass="drop-zone-text" />
+            </HBox>
+            
+            <!-- Create CSV button -->
+            <Button styleClass="create-csv-button" prefHeight="38" minHeight="38" maxWidth="Infinity" onAction="#handleCreateCsv">
+                <graphic>
+                    <HBox alignment="CENTER" spacing="11">
+                        <SVGPath content="M9.93125 19.25H5.25C4.78587 19.25 4.34075 19.0656 4.01256 18.7374C3.68437 18.4093 3.5 17.9641 3.5 17.5V3.50001C3.5 3.03588 3.68437 2.59076 4.01256 2.26257C4.34075 1.93438 4.78587 1.75001 5.25 1.75001H12.25M12.25 1.75001C12.5273 1.74933 12.8019 1.80356 13.0582 1.90959C13.3144 2.01562 13.547 2.17134 13.7428 2.36776L16.8823 5.50726C17.0787 5.70297 17.2344 5.93564 17.3404 6.19185C17.4464 6.44806 17.5007 6.72273 17.5 7.00001M12.25 1.75001V6.12501C12.25 6.35707 12.3422 6.57963 12.5063 6.74372C12.6704 6.90782 12.8929 7.00001 13.125 7.00001H17.5M17.5 7.00001V11.6813M12.25 16.625H17.5M14.875 14V19.25" styleClass="svg-icon svg-icon-create" />
+                        <Label text="Créer un fichier CSV" styleClass="create-csv-text" />
+                    </HBox>
+                </graphic>
+            </Button>
+        </VBox>
+    </VBox>
+    
+    <!-- FABs Container -->
+    <VBox alignment="BOTTOM_RIGHT" spacing="12" pickOnBounds="false">
+        <StackPane.margin>
+            <Insets bottom="32" right="32" />
+        </StackPane.margin>
+        <Button styleClass="icon-button" prefWidth="63" prefHeight="63" minWidth="63" minHeight="63">
+            <graphic>
+                <SVGPath content="M10 5H3M12 19H3M14 3V7M16 17V21M21 12H12M21 19H16M21 5H14M8 10V14M8 12H3" styleClass="svg-icon" />
+            </graphic>
+        </Button>
+        <Button styleClass="icon-button" prefWidth="63" prefHeight="63" minWidth="63" minHeight="63">
+            <graphic>
+                <SVGPath content="M17.925 20.056C17.7006 18.6458 16.9805 17.3619 15.8944 16.435C14.8082 15.5081 13.427 14.999 11.9991 14.9991C10.5711 14.9992 9.19007 15.5086 8.10403 16.4357C7.018 17.3628 6.2982 18.6468 6.074 20.057M16 11C16 13.2091 14.2091 15 12 15C9.79086 15 8 13.2091 8 11C8 8.79086 9.79086 7 12 7C14.2091 7 16 8.79086 16 11ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" styleClass="svg-icon" />
+            </graphic>
+        </Button>
+    </VBox>
+</StackPane>

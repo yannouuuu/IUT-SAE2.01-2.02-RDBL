@@ -1,13 +1,20 @@
 package sae.transport.comparison.models;
 
-import fr.ulille.but.sae_s2_2026.ModaliteTransport;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.*;
+import fr.ulille.but.sae_s2_2026.ModaliteTransport;
+import sae.transport.comparison.exceptions.AucunCheminException;
+import sae.transport.comparison.exceptions.DonneesInvalidesException;
 
 /**
  * Représente la plateforme centrale du réseau de transport.
  * Regroupe l'ensemble des villes et des trajets disponibles,
  * et fournit les fonctionnalités de chargement, filtrage et tri des données.
+ * TODO : Ajouter la JavaDoc manquante avant de tag POO-v2
  */
 public class Plateforme {
     private List<Trajet> trajets;
@@ -64,15 +71,15 @@ public class Plateforme {
      * Les villes sont créées automatiquement si elles n'existent pas encore.
      *
      * @param data le tableau de chaînes représentant les connexions
-     * @throws IllegalArgumentException si une ligne ne contient pas exactement 6 colonnes,
+     * @throws DonneesInvalidesException si une ligne ne contient pas exactement 6 colonnes,
      *                                  si un coût est négatif, ou si la modalité est inconnue
      */
-    public void chargerDepuisTableau(String[] data) {
+    public void chargerDepuisTableau(String[] data) throws DonneesInvalidesException {
         for (String ligne : data) {
             String[] colonnes = ligne.split(";");
 
             if (colonnes.length != 6) {
-                throw new IllegalArgumentException("Données invalides : " + ligne);
+                throw new DonneesInvalidesException("Données invalides : " + ligne);
             }
 
             Ville depart = getVille(colonnes[0]);
@@ -94,7 +101,7 @@ public class Plateforme {
             double temps = Double.parseDouble(colonnes[5]);
 
             if (prix < 0 || co2 < 0 || temps < 0) {
-                throw new IllegalArgumentException("Les coûts doivent être positifs : " + ligne);
+                throw new DonneesInvalidesException("Les coûts doivent être positifs : " + ligne);
             }
 
             Cout cout = new Cout(prix, temps, co2);
@@ -143,12 +150,12 @@ public class Plateforme {
      * @param modalite   la modalité de transport souhaitée
      * @return {@code true} si une connexion directe existe, {@code false} sinon
      */
-    public boolean cheminExiste(String nomDepart, String nomArrivee, ModaliteTransport modalite) {
+    public boolean cheminExiste(String nomDepart, String nomArrivee, ModaliteTransport modalite) throws AucunCheminException {
         Ville depart = getVille(nomDepart);
         Ville arrivee = getVille(nomArrivee);
 
         if (depart == null || arrivee == null) {
-            return false;
+            throw new AucunCheminException("Les villes " + nomDepart + " et " + nomArrivee + " n'existent pas.");
         }
 
         for (Trajet trajet : filtrerParModalite(modalite)) {
@@ -156,7 +163,7 @@ public class Plateforme {
                 return true;
             }
         }
-        return false;
+        throw new AucunCheminException("Aucun chemin " + modalite + " entre " + nomDepart + " et " + nomArrivee);
     }
 
     /**
@@ -196,6 +203,28 @@ public class Plateforme {
         List<Trajet> resultat = new ArrayList<>();
         for (Trajet trajet : trajets) {
             if (trajet.getCout().getValeur(critere) <= borneMax) {
+                resultat.add(trajet);
+            }
+        }
+        return resultat;
+    }
+
+    public void chargerDepuisCSV(String cheminFichier) throws DonneesInvalidesException {
+        try (BufferedReader br = new BufferedReader(new FileReader(cheminFichier))) {
+            String ligne;
+            while ((ligne = br.readLine()) != null) {
+                chargerDepuisTableau(new String[]{ligne});
+            }
+        } catch (IOException e) {
+            throw new DonneesInvalidesException("Fichier introuvable ou illisible : " + cheminFichier);
+        }
+    }
+
+    public List<Trajet> getPointsInteret(List<Trajet> trajets) {
+        List<Trajet> resultat = new ArrayList<>();
+        for (int i = 0; i < trajets.size(); i++) {
+            Trajet trajet = trajets.get(i);
+            if (i == 0 || i == trajets.size() - 1 || !trajet.getModalite().equals(trajets.get(i - 1).getModalite())) {
                 resultat.add(trajet);
             }
         }

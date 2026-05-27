@@ -8,31 +8,34 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- * JavaFX App
- */
 public class AppFX extends Application {
+
+    private static final double DEFAULT_WIDTH  = 1024;
+    private static final double DEFAULT_HEIGHT = 680;
+    private static final String WINDOW_TITLE = "Comparaison de Transport";
 
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        FXMLLoader loader = new FXMLLoader(
+            getClass().getResource("/sae/transport/comparison/views/main-view.fxml")
+        );
+        Parent root = loader.load();
+
+        scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        stage.setTitle(WINDOW_TITLE);
         stage.setScene(scene);
+        stage.setMinWidth(1400);
+        stage.setMinHeight(900);
         stage.show();
     }
 
-    public static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(AppFX.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+    public static Scene getScene() {
+        return scene;
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
-
 }
