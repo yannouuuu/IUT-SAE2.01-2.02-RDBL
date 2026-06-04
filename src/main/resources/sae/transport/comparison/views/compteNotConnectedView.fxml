@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER_LEFT" maxHeight="180.0" maxWidth="200.0" minHeight="180.0" minWidth="200.0" prefHeight="180.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="compteNotConnectedView">
+<VBox alignment="CENTER_LEFT" maxHeight="180.0" maxWidth="200.0" minHeight="180.0" minWidth="200.0" prefHeight="180.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.CompteNotConnectedView">
    <children>
       <Label text="Mon compte">
          <graphic>
