@@ -7,9 +7,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="116.0" prefWidth="216.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="compteConnectéView">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="105.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="compteConnectéView">
    <children>
       <Label prefHeight="22.0" prefWidth="103.0" text="Mon compte">
          <graphic>
@@ -25,14 +26,24 @@
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
+         <font>
+            <Font size="11.0" />
+         </font>
       </Label>
       <HBox prefHeight="0.0" prefWidth="574.0">
          <children>
-            <Label text="Compte : " />
+            <Label text="Compte : ">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
             <Label text="email@gmail.com">
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>
+               <font>
+                  <Font size="10.0" />
+               </font>
             </Label>
          </children>
          <VBox.margin>
@@ -45,11 +56,17 @@
                <HBox.margin>
                   <Insets right="5.0" />
                </HBox.margin>
+               <font>
+                  <Font size="11.0" />
+               </font>
             </Button>
             <Button fx:id="seDeconnecterButton" mnemonicParsing="false" onAction="#seDeconnecterAction" text="Se déconnecter">
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>
+               <font>
+                  <Font size="11.0" />
+               </font>
             </Button>
          </children>
          <VBox.margin>

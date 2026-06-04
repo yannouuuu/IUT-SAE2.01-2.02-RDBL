@@ -1,49 +1,114 @@
 package sae.transport.comparison.models;
 
+import java.io.Serializable;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * Représente un utilisateur de la plateforme de voyage.
- * Un voyageur est caractérisé par son nom et le critère de coût
- * qu'il souhaite optimiser lors de la comparaison d'itinéraires.
+ * En V3, le voyageur peut exprimer des préférences multi-critères
+ * et dispose d'un historique de ses voyages sérialisable.
  */
-public class Voyageur {
+public class Voyageur implements Serializable {
+
     private String nom;
     private TypeCout typeCout;
+    private Map<TypeCout, Double> preferences;
+    private List<Voyage> historique;
 
     /**
-     * Construit un voyageur avec un nom et un critère d'optimisation.
-     *
-     * @param nom      le nom du voyageur
-     * @param typeCout le critère de coût à optimiser (TEMPS, PRIX ou CO2)
+     * Constructeur V1/V2 — un seul critère.
      */
     public Voyageur(String nom, TypeCout typeCout) {
         this.nom = nom;
         this.typeCout = typeCout;
+        this.preferences = new EnumMap<>(TypeCout.class);
+        this.historique = new ArrayList<>();
+        initPreferencesEgales();
     }
 
     /**
-     * Retourne le nom du voyageur.
-     *
-     * @return le nom du voyageur
+     * Constructeur V3 — préférences multi-critères avec poids relatifs.
      */
-    public String getNom() {
-        return nom;
+    public Voyageur(String nom, Map<TypeCout, Double> preferences) {
+        this.nom = nom;
+        this.typeCout = null;
+        this.preferences = new EnumMap<>(preferences);
+        this.historique = new ArrayList<>();
+        normaliserPreferences();
     }
 
     /**
-     * Retourne le critère de coût que le voyageur souhaite optimiser.
-     *
-     * @return le critère de coût
+     * Initialise les préférences à égalité (1/3 chacun).
      */
-    public TypeCout getTypeCout() {
-        return typeCout;
+    private void initPreferencesEgales() {
+        preferences.put(TypeCout.PRIX, 1.0 / 3.0);
+        preferences.put(TypeCout.TEMPS, 1.0 / 3.0);
+        preferences.put(TypeCout.CO2, 1.0 / 3.0);
     }
 
     /**
-     * Modifie le critère de coût que le voyageur souhaite optimiser.
-     *
-     * @param typeCout le nouveau critère de coût
+     * Normalise les préférences pour que leur somme soit égale à 1.
      */
-    public void setTypeCout(TypeCout typeCout) {
-        this.typeCout = typeCout;
+    private void normaliserPreferences() {
+        double somme = 0.0;
+        for (double poids : preferences.values()) {
+            somme += poids;
+        }
+        if (somme > 0) {
+            for (TypeCout type : preferences.keySet()) {
+                preferences.put(type, preferences.get(type) / somme);
+            }
+        }
+    }
+
+    /**
+     * Calcule le coût composite d'un trajet selon les préférences du voyageur.
+     * Chaque critère est pondéré par son poids relatif.
+     */
+    public double calculerCoutComposite(Cout cout) {
+        double total = 0.0;
+        for (TypeCout type : TypeCout.values()) {
+            double poids = preferences.getOrDefault(type, 0.0);
+            total += poids * cout.getValeur(type);
+        }
+        return total;
+    }
+
+    /**
+     * Ajoute un voyage à l'historique du voyageur.
+     */
+    public void ajouterVoyage(Voyage voyage) {
+        historique.add(voyage);
+    }
+
+    /**
+     * Retourne l'historique complet des voyages.
+     */
+    public List<Voyage> getHistorique() {
+        return new ArrayList<>(historique);
+    }
+
+    /**
+     * Retourne la somme totale d'un critère sur tous les voyages de l'historique.
+     */
+    public double getTotalHistorique(TypeCout type) {
+        double total = 0.0;
+        for (Voyage voyage : historique) {
+            total += voyage.getCoutTotal(type);
+        }
+        return total;
+    }
+
+    public String getNom() { return nom; }
+    public TypeCout getTypeCout() { return typeCout; }
+    public void setTypeCout(TypeCout typeCout) { this.typeCout = typeCout; }
+    public Map<TypeCout, Double> getPreferences() { return new EnumMap<>(preferences); }
+
+    public void setPreferences(Map<TypeCout, Double> preferences) {
+        this.preferences = new EnumMap<>(preferences);
+        normaliserPreferences();
     }
 }
