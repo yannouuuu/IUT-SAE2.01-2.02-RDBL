@@ -20,6 +20,9 @@ public class Voyageur implements Serializable {
 
     /**
      * Constructeur V1/V2 — un seul critère.
+     *
+     * @param nom      le nom du voyageur
+     * @param typeCout le critère de coût préféré (TEMPS, PRIX ou CO2)
      */
     public Voyageur(String nom, TypeCout typeCout) {
         this.nom = nom;
@@ -31,6 +34,9 @@ public class Voyageur implements Serializable {
 
     /**
      * Constructeur V3 — préférences multi-critères avec poids relatifs.
+     *
+     * @param nom         le nom du voyageur
+     * @param preferences la carte des poids pour chaque critère de coût
      */
     public Voyageur(String nom, Map<TypeCout, Double> preferences) {
         this.nom = nom;
@@ -67,6 +73,9 @@ public class Voyageur implements Serializable {
     /**
      * Calcule le coût composite d'un trajet selon les préférences du voyageur.
      * Chaque critère est pondéré par son poids relatif.
+     *
+     * @param cout le coût à évaluer
+     * @return le coût composite calculé
      */
     public double calculerCoutComposite(Cout cout) {
         double total = 0.0;
@@ -79,6 +88,8 @@ public class Voyageur implements Serializable {
 
     /**
      * Ajoute un voyage à l'historique du voyageur.
+     *
+     * @param voyage le voyage à ajouter
      */
     public void ajouterVoyage(Voyage voyage) {
         historique.add(voyage);
@@ -86,6 +97,8 @@ public class Voyageur implements Serializable {
 
     /**
      * Retourne l'historique complet des voyages.
+     *
+     * @return la liste des voyages de l'historique
      */
     public List<Voyage> getHistorique() {
         return new ArrayList<>(historique);
@@ -93,6 +106,9 @@ public class Voyageur implements Serializable {
 
     /**
      * Retourne la somme totale d'un critère sur tous les voyages de l'historique.
+     *
+     * @param type le critère de coût à sommer
+     * @return le total du coût sur l'historique
      */
     public double getTotalHistorique(TypeCout type) {
         double total = 0.0;
@@ -102,11 +118,39 @@ public class Voyageur implements Serializable {
         return total;
     }
 
+    /**
+     * Retourne le nom du voyageur.
+     *
+     * @return le nom du voyageur
+     */
     public String getNom() { return nom; }
+
+    /**
+     * Retourne le critère de coût principal (V1/V2).
+     *
+     * @return le critère de coût principal
+     */
     public TypeCout getTypeCout() { return typeCout; }
+
+    /**
+     * Modifie le critère de coût principal (V1/V2).
+     *
+     * @param typeCout le nouveau critère de coût principal
+     */
     public void setTypeCout(TypeCout typeCout) { this.typeCout = typeCout; }
+
+    /**
+     * Retourne une copie des préférences multi-critères du voyageur.
+     *
+     * @return la carte des préférences
+     */
     public Map<TypeCout, Double> getPreferences() { return new EnumMap<>(preferences); }
 
+    /**
+     * Modifie les préférences multi-critères du voyageur et les normalise.
+     *
+     * @param preferences les nouvelles préférences
+     */
     public void setPreferences(Map<TypeCout, Double> preferences) {
         this.preferences = new EnumMap<>(preferences);
         normaliserPreferences();

@@ -18,6 +18,8 @@ public class Voyage implements Serializable {
 
     /**
      * Construit un voyage à partir d'une liste de trajets.
+     *
+     * @param trajets la liste des trajets composant le voyage
      */
     public Voyage(List<Trajet> trajets) {
         this.trajets = new ArrayList<>(trajets);
@@ -27,6 +29,9 @@ public class Voyage implements Serializable {
 
     /**
      * Retourne le coût total du voyage pour un critère donné.
+     *
+     * @param type le critère de coût à évaluer (TEMPS, PRIX ou CO2)
+     * @return le coût total pour ce critère
      */
     public double getCoutTotal(TypeCout type) {
         double total = 0.0;
@@ -38,6 +43,8 @@ public class Voyage implements Serializable {
 
     /**
      * Retourne la liste des trajets du voyage.
+     *
+     * @return la liste des trajets
      */
     public List<Trajet> getTrajets() {
         return new ArrayList<>(trajets);
@@ -45,6 +52,8 @@ public class Voyage implements Serializable {
 
     /**
      * Retourne la ville de départ du voyage.
+     *
+     * @return le nom de la ville de départ
      */
     public String getVilleDepart() {
         return villeDepart;
@@ -52,11 +61,19 @@ public class Voyage implements Serializable {
 
     /**
      * Retourne la ville d'arrivée du voyage.
+     *
+     * @return le nom de la ville d'arrivée
      */
     public String getVilleArrivee() {
         return villeArrivee;
     }
 
+    /**
+     * Retourne une représentation textuelle du voyage, incluant le départ,
+     * l'arrivée, et les coûts totaux.
+     *
+     * @return la représentation du voyage sous forme de chaîne de caractères
+     */
     @Override
     public String toString() {
         return villeDepart + " → " + villeArrivee

@@ -14,7 +14,6 @@ import sae.transport.comparison.exceptions.DonneesInvalidesException;
  * Représente la plateforme centrale du réseau de transport.
  * Regroupe l'ensemble des villes et des trajets disponibles,
  * et fournit les fonctionnalités de chargement, filtrage et tri des données.
- * TODO : Ajouter la JavaDoc manquante avant de tag POO-v2
  */
 public class Plateforme {
     private List<Trajet> trajets;
@@ -209,6 +208,13 @@ public class Plateforme {
         return resultat;
     }
 
+    /**
+     * Charge les données du réseau depuis un fichier CSV.
+     * Chaque ligne doit respecter le format des données de la plateforme.
+     *
+     * @param cheminFichier le chemin vers le fichier CSV à charger
+     * @throws DonneesInvalidesException si le fichier est introuvable, illisible ou contient des données invalides
+     */
     public void chargerDepuisCSV(String cheminFichier) throws DonneesInvalidesException {
         try (BufferedReader br = new BufferedReader(new FileReader(cheminFichier))) {
             String ligne;
@@ -220,6 +226,13 @@ public class Plateforme {
         }
     }
 
+    /**
+     * Identifie les points d'intérêt d'un itinéraire (premier trajet, dernier trajet,
+     * ou trajets correspondant à un changement de modalité de transport).
+     *
+     * @param trajets la liste de trajets constituant l'itinéraire
+     * @return la liste des trajets considérés comme points d'intérêt
+     */
     public List<Trajet> getPointsInteret(List<Trajet> trajets) {
         List<Trajet> resultat = new ArrayList<>();
         for (int i = 0; i < trajets.size(); i++) {

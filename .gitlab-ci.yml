@@ -36,7 +36,6 @@ javadoc:
   artifacts:
     paths:
       - target/site/apidocs/
-    expire_in: 1 week
 
 pages:
   stage: pages
