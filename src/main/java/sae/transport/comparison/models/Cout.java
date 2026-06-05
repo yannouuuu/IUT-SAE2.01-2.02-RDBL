@@ -1,5 +1,6 @@
 package sae.transport.comparison.models;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ import java.util.Map;
  * Les valeurs sont stockées dans un tableau associatif reliant
  * chaque {@link TypeCout} à sa valeur numérique.
  */
-public class Cout {
+public class Cout implements Serializable {
     private final Map<TypeCout, Double> valeurs;
 
     /**

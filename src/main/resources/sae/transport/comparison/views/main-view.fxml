@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<StackPane styleClass="root-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.MainController">
+<StackPane styleClass="root-pane" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.MainController">
     <Region styleClass="glow-background" maxHeight="300" maxWidth="700" />
     
     <VBox alignment="CENTER" fillWidth="false">

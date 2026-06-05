@@ -1,0 +1,169 @@
+@startuml diagramme_uml_v3
+
+skinparam classAttributeIconSize 0
+skinparam classFontSize 11
+skinparam classFontStyle Bold
+skinparam classHeaderBackgroundColor #2C3E50
+skinparam classFontColor #000000
+skinparam classBackgroundColor #ECF0F1
+skinparam classBorderColor #2C3E50
+skinparam classBorderThickness 1.5
+skinparam ArrowColor #2C3E50
+skinparam ArrowThickness 1.5
+skinparam PackageBackgroundColor #F8F9FA
+skinparam PackageBorderColor #95A5A6
+skinparam PackageFontStyle Bold
+skinparam PackageFontSize 10
+skinparam linetype ortho
+skinparam nodesep 40
+skinparam ranksep 50
+skinparam padding 5
+
+left to right direction
+
+package "fr.ulille.but.sae_s2_2026" #EBF5FB {
+    interface Lieu {
+    }
+    interface Connexion {
+        +getDepart() : Lieu
+        +getArrivee() : Lieu
+        +getModalite() : ModaliteTransport
+    }
+    enum ModaliteTransport {
+        TRAIN
+        AVION
+        BUS
+    }
+}
+
+package "sae.transport.comparison.exceptions" #FDECEA {
+    class AucunCheminException {
+        +AucunCheminException(message : String)
+    }
+    class DonneesInvalidesException {
+        +DonneesInvalidesException(message : String)
+    }
+}
+
+package "sae.transport.comparison.models" #EAF7EE {
+
+    enum TypeCout {
+        CO2
+        TEMPS
+        PRIX
+    }
+
+    class Cout {
+        - valeurs : Map<TypeCout, Double>
+        --
+        + Cout(prix : double, temps : double, co2 : double)
+        + getValeur(type : TypeCout) : double
+    }
+
+    class Ville {
+        - nom : String
+        --
+        + Ville(nom : String)
+        + getNom() : String
+        + equals(o : Object) : boolean
+        + hashCode() : int
+        + toString() : String
+    }
+
+    class Trajet {
+        - depart : Lieu
+        - arrivee : Lieu
+        - cout : Cout
+        - modalite : ModaliteTransport
+        --
+        + Trajet(depart, arrivee, cout, modalite)
+        + getDepart() : Lieu
+        + getArrivee() : Lieu
+        + getCout() : Cout
+        + getModalite() : ModaliteTransport
+    }
+
+    class Voyageur {
+        - nom : String
+        - typeCout : TypeCout
+        - preferences : Map<TypeCout, Double>
+        - historique : List<Voyage>
+        --
+        + Voyageur(nom : String, typeCout : TypeCout)
+        + Voyageur(nom : String, preferences : Map<TypeCout, Double>)
+        + calculerCoutComposite(cout : Cout) : double
+        + ajouterVoyage(voyage : Voyage) : void
+        + getHistorique() : List<Voyage>
+        + getTotalHistorique(type : TypeCout) : double
+        + getPreferences() : Map<TypeCout, Double>
+        + setPreferences(preferences : Map<TypeCout, Double>) : void
+        + getNom() : String
+        + getTypeCout() : TypeCout
+        + setTypeCout(typeCout : TypeCout) : void
+    }
+
+    class Voyage {
+        - trajets : List<Trajet>
+        - villeDepart : String
+        - villeArrivee : String
+        --
+        + Voyage(trajets : List<Trajet>)
+        + getCoutTotal(type : TypeCout) : double
+        + getTrajets() : List<Trajet>
+        + getVilleDepart() : String
+        + getVilleArrivee() : String
+        + toString() : String
+    }
+
+    class HistoriqueManager {
+        - cheminFichier : String
+        --
+        + HistoriqueManager(cheminFichier : String)
+        + sauvegarder(voyages : List<Voyage>) : void
+        + charger() : List<Voyage>
+        + ajouterEtSauvegarder(voyage : Voyage) : void
+    }
+
+    class Plateforme {
+        - trajets : List<Trajet>
+        - villes : List<Ville>
+        --
+        + Plateforme()
+        + chargerDepuisTableau(data : String[]) : void
+        + chargerDepuisCSV(cheminFichier : String) : void
+        + filtrerParModalite(modalite : ModaliteTransport) : List<Trajet>
+        + getVille(nom : String) : Ville
+        + cheminExiste(nomDepart, nomArrivee, modalite) : boolean
+        + getTrajetsTries(critere : TypeCout) : List<Trajet>
+        + getTrajetsTriesParPreferences(voyageur : Voyageur) : List<Trajet>
+        + filtrerParBorne(trajets, critere, borneMax) : List<Trajet>
+        + getPointsInteret(trajets : List<Trajet>) : List<Trajet>
+    }
+}
+
+' Implémentations lib IUT
+Ville        ..|> Lieu
+Trajet       ..|> Connexion
+
+' Dépendances lib IUT
+Trajet       ..>  ModaliteTransport
+Plateforme   ..>  ModaliteTransport
+
+' Exceptions
+AucunCheminException      --|> Exception
+DonneesInvalidesException --|> Exception
+Plateforme ..> AucunCheminException
+Plateforme ..> DonneesInvalidesException
+
+' Relations internes
+Trajet         -->  Cout
+Voyageur       -->  TypeCout        : optimise
+Cout           -->  TypeCout        : contient
+Voyageur       "1" o-- "0..*" Voyage    : historique
+Voyage         "1" o-- "1..*" Trajet    : contient
+HistoriqueManager ..> Voyage        : persiste
+Plateforme     "1" o-- "0..*" Trajet   : contient
+Plateforme     "1" o-- "0..*" Ville    : contient
+Plateforme     ..>  Voyageur        : utilise
+
+@enduml

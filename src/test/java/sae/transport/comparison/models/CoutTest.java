@@ -1,22 +1,13 @@
 package sae.transport.comparison.models;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class CoutTest {
-    private Cout cout;
-
-    @BeforeEach
-    void setUp() {
-        cout = new Cout(60.0, 80.0, 1.7);
-    }
 
     @Test
     void testGetValeurPrix() {
-        Cout cout = new Cout(60.0, 80.0, 1.7);
+        final Cout cout = new Cout(60.0, 80.0, 1.7);
         assertEquals(60.0, cout.getValeur(TypeCout.PRIX));
     }
 

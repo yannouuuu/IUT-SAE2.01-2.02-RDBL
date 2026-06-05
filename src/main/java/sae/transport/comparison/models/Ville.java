@@ -1,5 +1,7 @@
 package sae.transport.comparison.models;
 
+import java.io.Serializable;
+
 import fr.ulille.but.sae_s2_2026.Lieu;
 
 /**
@@ -7,8 +9,8 @@ import fr.ulille.but.sae_s2_2026.Lieu;
  * Implémente l'interface {@link Lieu} fournie par la bibliothèque IUT.
  * Deux villes sont considérées égales si elles ont le même nom.
  */
-public class Ville implements Lieu {
-    private String nom;
+public class Ville implements Lieu, Serializable {
+    private final String nom;
 
     /**
      * Construit une ville avec le nom donné.

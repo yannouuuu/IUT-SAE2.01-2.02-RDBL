@@ -22,10 +22,10 @@ export TEXINPUTS="./tex//:./img//:${TEXINPUTS:-}"
 export OPENTYPEFONTS="./fonts//:${OPENTYPEFONTS:-}"
 export TTFONTS="./fonts//:${TTFONTS:-}"
 
-TEXFILE="rapport_v1.tex"
+TEXFILE="rapport_v3.tex"
 
 "$LUALATEX" -interaction=nonstopmode -file-line-error "$TEXFILE"
 "$LUALATEX" -interaction=nonstopmode -file-line-error "$TEXFILE"
 
 echo
-echo "PDF generated: rapport_v1.pdf"
+echo "PDF generated: rapport_v3.pdf"

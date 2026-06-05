@@ -230,4 +230,31 @@ public class Plateforme {
         }
         return resultat;
     }
+
+    /**
+     * Retourne la liste de tous les trajets triés par ordre croissant
+     * selon les préférences multi-critères du voyageur.
+     *
+     * @param voyageur le voyageur dont on utilise les préférences
+     * @return la liste des trajets triés
+     */
+    public List<Trajet> getTrajetsTriesParPreferences(Voyageur voyageur) {
+        List<Trajet> resultat = new ArrayList<>(trajets);
+
+        for (int i = 0; i < resultat.size() - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < resultat.size(); j++) {
+                double coutJ   = voyageur.calculerCoutComposite(resultat.get(j).getCout());
+                double coutMin = voyageur.calculerCoutComposite(resultat.get(minIndex).getCout());
+                if (coutJ < coutMin) {
+                    minIndex = j;
+                }
+            }
+            Trajet temp = resultat.get(i);
+            resultat.set(i, resultat.get(minIndex));
+            resultat.set(minIndex, temp);
+        }
+        return resultat;
+    }
+
 }

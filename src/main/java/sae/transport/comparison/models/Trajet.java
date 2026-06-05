@@ -4,13 +4,15 @@ import fr.ulille.but.sae_s2_2026.Lieu;
 import fr.ulille.but.sae_s2_2026.Connexion;
 import fr.ulille.but.sae_s2_2026.ModaliteTransport;
 
+import java.io.Serializable;
+
 /**
  * Représente une connexion de transport entre deux villes.
  * Implémente l'interface {@link Connexion} fournie par la bibliothèque IUT.
  * Un trajet est caractérisé par un lieu de départ, un lieu d'arrivée,
  * une modalité de transport et un coût selon trois critères.
  */
-public class Trajet implements Connexion {
+public class Trajet implements Connexion, Serializable {
     private final Lieu depart;
     private final Lieu arrivee;
     private final Cout cout;
