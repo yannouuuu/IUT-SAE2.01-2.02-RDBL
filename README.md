@@ -6,30 +6,6 @@
 
 <br/><br/><br/>
 
-<p align="left">
-  <img src=".github/assets/documentationtag.svg" width="200" alt="Documentation">
-</p>
-
-<br/>
-
-<p>
-  <a href="docs/demarrage.md">
-    <img src=".github/assets/demarragerapidepill.svg" width="60%" alt="Démarrage Rapide" />
-  </a>
-  <br/><br/>
-  <a href="docs/architecture.md">
-    <img src=".github/assets/architectureetcodepill.svg" width="60%" alt="Architecture & Code" />
-  </a>
-  <br/><br/>
-  <a href="docs/data_format.md">
-    <img src=".github/assets/formatdedeonneespill.svg" width="60%" alt="Format des Données" />
-  </a>
-  <br/><br/>
-  <a href="docs/repartition_taches.md">
-    <img src=".github/assets/repartitionpiill.svg" width="60%" alt="Répartition des Tâches" />
-  </a>
-</p>
-
 <br/><br/>
 
 <p align="center">
@@ -49,6 +25,30 @@
     <a href="docs/"><strong>Voir la Javadoc (depuis GitLab)</strong></a> &nbsp;&nbsp;
     <a href="docs/"><strong>Voir la Javadoc (depuis GitHub)</strong></a>
     <br/>
+</p>
+
+<p align="left">
+  <img src=".github/assets/documentationtag.svg" width="200" alt="Documentation">
+</p>
+
+<br/>
+
+<p align="left">
+  <a href="docs/demarrage.md">
+    <img src=".github/assets/demarragerapidepill.svg" width="60%" alt="Démarrage Rapide" />
+  </a>
+  <br/><br/>
+  <a href="docs/architecture.md">
+    <img src=".github/assets/architectureetcodepill.svg" width="60%" alt="Architecture & Code" />
+  </a>
+  <br/><br/>
+  <a href="docs/data_format.md">
+    <img src=".github/assets/formatdedeonneespill.svg" width="60%" alt="Format des Données" />
+  </a>
+  <br/><br/>
+  <a href="docs/repartition_taches.md">
+    <img src=".github/assets/repartitionpiill.svg" width="60%" alt="Répartition des Tâches" />
+  </a>
 </p>
 
 <br/><br/><br/>
