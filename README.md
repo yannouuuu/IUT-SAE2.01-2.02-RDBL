@@ -1,12 +1,9 @@
-<br/>
 
 <div align="center">
 
 <p align="center">
   <img src=".github/assets/Header.svg" width="100%" alt="Comparaison d'itinéraires de transport">
 </p>
-
-<br/>
 
 <p align="center">
     <a href="https://github.com/yannouuuu/IUT-SAE2.01-2.02/" title="Voir le projet sur GitHub"><img src="https://img.shields.io/badge/Voir%20le%20projet%20sur-GitHub-blue?logo=github" alt="GitHub"/></a>
@@ -22,8 +19,8 @@
 
 <p align="center">
     <a href="renduIHM/video_demo.mp4"><strong>Voir la vidéo de demonstration</strong></a> &nbsp;&nbsp;
-    <a href="docs/"><strong>Voir la Javadoc (depuis GitLab)</strong></a> &nbsp;&nbsp;
-    <a href="docs/"><strong>Voir la Javadoc (depuis GitHub)</strong></a>
+    <a href="http://gitlabpages.univ-lille.fr/e5-3d7e40/"><strong>Voir la Javadoc (depuis GitLab)</strong></a> &nbsp;&nbsp;
+    <a href="http://yannouuuu.github.io/IUT-SAE2.01-2.02-RDBL/"><strong>Voir la Javadoc (depuis GitHub)</strong></a>
     <br/>
 </p>
 
@@ -37,21 +34,21 @@
   <a href="docs/demarrage.md">
     <img src=".github/assets/demarragerapidepill.svg" width="60%" alt="Démarrage Rapide" />
   </a>
-  <br/><br/>
+  <br/>
   <a href="docs/architecture.md">
     <img src=".github/assets/architectureetcodepill.svg" width="60%" alt="Architecture & Code" />
   </a>
-  <br/><br/>
+  <br/>
   <a href="docs/data_format.md">
     <img src=".github/assets/formatdedeonneespill.svg" width="60%" alt="Format des Données" />
   </a>
-  <br/><br/>
+  <br/>
   <a href="docs/repartition_taches.md">
     <img src=".github/assets/repartitionpiill.svg" width="60%" alt="Répartition des Tâches" />
   </a>
 </p>
 
-<br/><br/>
+<br/>
 
 <p align="center">
   <img src=".github/assets/Footer.png" width="100%" alt="Footer">
