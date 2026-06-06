@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.AppView">
+   <children>
+      <HBox alignment="CENTER_RIGHT" prefHeight="88.0" prefWidth="600.0">
+         <children>
+            <Button fx:id="themeButton" alignment="CENTER" mnemonicParsing="false" onAction="#themeAction">
+               <graphic>
+                  <ImageView fitHeight="22.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../../Downloads/enemyFlyingAlt_2.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="compteButton" alignment="CENTER" mnemonicParsing="false" onAction="#compteAction" prefHeight="30.0" prefWidth="30.0">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+               <graphic>
+                  <ImageView fitHeight="22.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../../Downloads/enemyFlyingAlt_2.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="600.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="11.0" prefWidth="600.0">
+               <children>
+                  <Button fx:id="GestionnaireDeCSVButton" mnemonicParsing="false" onAction="#GestionnaireDeCSVAction">
+                     <graphic>
+                        <ImageView fitHeight="17.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../../../../Downloads/enemyFlyingAlt_2.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <ComboBox prefWidth="150.0" promptText="Départ" />
+                  <ComboBox layoutX="129.0" layoutY="28.0" prefWidth="150.0" promptText="Arrivée" />
+                  <Button fx:id="rechercherButton" mnemonicParsing="false" onAction="#rechercherAction" text="Rechercher" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="92.0" prefHeight="19.0" prefWidth="600.0">
+               <children>
+                  <Label text="Trier par :">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="8.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="leMoinsCouteuxButton" alignment="CENTER" mnemonicParsing="false" onAction="#leMoinsCouteuxAction" prefHeight="20.0" prefWidth="74.0" text="Le moins couteux" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
+                     <font>
+                        <Font size="8.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="lePlusEcoloButton" alignment="CENTER" mnemonicParsing="false" onAction="#lePlusEcoloAction" prefHeight="20.0" prefWidth="77.0" text="Le plus écologique" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
+                     <font>
+                        <Font size="8.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="lePlusRapideButton" alignment="CENTER" mnemonicParsing="false" onAction="#lePlusRapideAction" prefHeight="20.0" prefWidth="62.0" text="Le plus rapide" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
+                     <font>
+                        <Font size="8.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="152.0" layoutY="11.0" text="Filtrer par :">
+                     <font>
+                        <Font size="8.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="15.0" right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <ComboBox prefHeight="26.0" prefWidth="81.0" promptText="Transport" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER" prefHeight="42.0" prefWidth="600.0" />
+      <HBox alignment="CENTER" prefHeight="261.0" prefWidth="600.0">
+         <children>
+            <VBox prefHeight="106.0" prefWidth="240.0">
+               <children>
+                  <Label text="Itinéraires">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <ListView prefHeight="210.0" prefWidth="240.0">
+                     <VBox.margin>
+                        <Insets right="10.0" />
+                     </VBox.margin>
+                  </ListView>
+               </children>
+            </VBox>
+            <VBox layoutX="471.0" layoutY="10.0" prefHeight="106.0" prefWidth="223.0">
+               <children>
+                  <Label text="Détails">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <VBox prefHeight="263.0" prefWidth="213.0">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                     <children>
+                        <Label text="via Correspondance">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label text="x correspondances">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label text="CO2 émis">
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="1.7Kg">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="38.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label text="Durée totale">
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="1h23">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Label text="Récapitulatif :">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <TableView prefHeight="126.0" prefWidth="213.0">
+                          <columns>
+                            <TableColumn prefWidth="76.79998338222504" text="Ville" />
+                              <TableColumn prefWidth="136.00000762939453" text="Transport a prendre" />
+                          </columns>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </TableView>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="60€">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="20.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button fx:id="paimentButton" mnemonicParsing="false" onAction="#paimentAction" text="Procéder au paiment">
+                                 <HBox.margin>
+                                    <Insets left="40.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox fx:id="ponderationButton" alignment="CENTER_RIGHT" onDragDetected="#ponderationAction" prefHeight="88.0" prefWidth="600.0">
+         <children>
+            <Button fx:id="ponderationsButton" alignment="CENTER" mnemonicParsing="false" onAction="#ponderationsAction" prefHeight="30.0" prefWidth="29.0">
+               <graphic>
+                  <ImageView fitHeight="22.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../../Downloads/enemyFlyingAlt_2.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>
