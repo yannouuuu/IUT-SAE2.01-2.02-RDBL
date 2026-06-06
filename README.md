@@ -54,7 +54,7 @@
 <br/><br/><br/>
 
 <p align="center">
-  <img src=".github/assets/Footer.svg" width="100%" alt="Footer">
+  <img src=".github/assets/Footer.png" width="100%" alt="Footer">
 </p>
 
 </div>
