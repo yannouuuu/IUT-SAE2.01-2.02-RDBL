@@ -1,15 +1,25 @@
-image: maven:3.9-eclipse-temurin-24
+image: maven:3.9-eclipse-temurin-17
 
 stages:
-  - deploy
-  - push_tags
+  - test
+  - deploy_mirror
   - build
   - javadoc
   - pages
 
-deploy_to_yannouuuu_github:
-  stage: deploy
+test:
+  stage: test
+  script:
+    - apt-get update && apt-get install -y xvfb
+    - xvfb-run mvn clean test
+  artifacts:
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
+    expire_in: 1 week
 
+deploy_to_yannouuuu_github:
+  stage: deploy_mirror
   variables:
     GIT_DEPTH: 0
   script:
@@ -23,11 +33,14 @@ deploy_to_yannouuuu_github:
   only:
     - main
 
-
 build:
   stage: build
   script:
-    - mvn clean package
+    - mvn clean package -DskipTests
+  artifacts:
+    paths:
+      - target/*.jar
+    expire_in: 1 week
 
 javadoc:
   stage: javadoc
