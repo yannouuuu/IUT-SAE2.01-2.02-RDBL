@@ -1,0 +1,286 @@
+/* ============================================================
+   CSS de la vue principale.
+   Inspiré directement de la maquette Figma.
+   ============================================================ */
+
+/* ============================================================
+   SOMMAIRE :
+   - Root
+   - Search bar
+   - Partie en dessous de la search bar
+   - Les boutons ronds
+   ============================================================ */
+
+
+
+
+
+
+
+
+/* ============================================================
+   Root (VBox)
+   ============================================================ */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #f0ecff, #ede8ff, #f5f0ff);
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+ }
+
+
+
+
+
+
+
+
+
+
+
+    /* ============================================================
+    Search bar
+    ============================================================ */
+
+    /* Conteneur de la barre de recherche (VBox > HBox) */
+    .search-bar {
+        -fx-background-color: white;
+        -fx-background-radius: 50px;
+        -fx-border-radius: 50px;
+        -fx-border-color: #afaeb1;
+        -fx-border-width: 0.5;
+        -fx-min-height: 60px;
+        -fx-padding: 15 8 15 8;
+        -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
+        -fx-alignment: CENTER;
+        -fx-spacing: 0;
+    }
+
+        /* Conteneur des comboBox (VBox > HBox > Hbox) */
+        #comboBoxHBox {
+            -fx-background-color: white;
+            -fx-background-radius: 50px;
+            -fx-border-radius: 50px;
+            -fx-border-color: #e0d8f5;
+            -fx-min-height: 43px;
+            -fx-border-width: 1.5;
+            -fx-padding: 0 0 0 0;
+            -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
+            -fx-alignment: CENTER;
+            -fx-spacing: 0;
+        }
+
+            /* les 2 ComboBox de la search bar (VBox > Hbox > HBox > ComboBox)*/
+            .combo-box {
+                -fx-background-color: transparent;
+                -fx-border-color: transparent;
+                -fx-opacity: 0.5;
+                -fx-background-radius: 0;
+                -fx-padding: 10, 5, 10 5;
+                -fx-font-size: 13px;
+                -fx-text-fill: #b7b1b1;
+                -fx-alignment:CENTER;
+                -fx-prompt-text-fill: #aaa;
+                -fx-cursor: hand;
+            }
+
+            #comboBoxHBox:hover {
+                -fx-effect: dropshadow(gaussian, rgba(186, 186, 186, 0.6), 10, 0, 0, 1);
+            }
+            
+
+                /*les assets des comboBox (VBox > Hbox > HBox > ComboBox > ListCell/ListView/Arrow/ArrowButton) */
+                .combo-box .list-cell {
+                    -fx-text-fill: #555;
+                    -fx-font-size: 13px;
+                    -fx-background-color: transparent;
+                }
+
+                .combo-box-popup .list-view {
+                    -fx-background-color: white;
+                    -fx-background-radius: 12;
+                    -fx-border-radius: 12;
+                    -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.15), 12, 0, 0, 4);
+                }
+
+                .combo-box .arrow-button {
+                    -fx-background-color: transparent;
+                    
+                }
+
+                .combo-box .arrow {
+                    -fx-background-color: #bbb;
+                }
+
+                /*permet de bien placer le texte de la fleche indépendamment*/
+                #arriverComboBox .arrow-button{
+                    -fx-padding: 0 20 0 0
+                }
+
+                #departComboBox .list-cell{
+                    -fx-padding: 0 0 0 20
+                }
+
+            /* Bouton Rechercher (VBox > Hbox > HBox > Button)*/
+            /*--partie style--*/
+            #rechercherButton {
+                -fx-background-color: linear-gradient(to right, #c84af5, #a855f7);
+                -fx-text-fill: white;
+                -fx-font-size: 11px;
+                -fx-font-weight: bold;
+                -fx-background-radius: 40px;
+                -fx-border-radius: 40px;
+                -fx-padding: 8 22 8 22;
+                -fx-cursor: hand;
+                -fx-min-height: 41px;
+                -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.35), 12, 0, 0, 3);
+            }
+
+            /*--partie intéraction--*/
+
+            #rechercherButton:hover {
+                -fx-background-color: linear-gradient(to right, #b83af0, #9333ea);
+                -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.50), 16, 0, 0, 4);
+            }
+
+            #rechercherButton:pressed {
+                -fx-background-color: #7c3aed;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*  ============================================================
+        Partie en dessous de la search bar
+        ============================================================ */
+
+    /*--partie style--*/
+    #lowVBox{
+        -fx-background-color: white;
+        -fx-background-radius: 0 0 25 25;
+        -fx-border-radius: 0 0 25 25;
+        -fx-border-color: transparent;
+        -fx-border-width: 0 0.5 0.5 0.5;
+        -fx-border-top-width: 0px;
+        -fx-border-color: #bdbdbd;
+        -fx-text-fill: #374151;
+        -fx-font-size: 13px;
+        -fx-padding: 0 24 12 24;
+        -fx-cursor: hand;
+        -fx-alignment: top-center;
+        -fx-justify-content:start;
+        -fx-min-height: 180px;
+        -fx-min-width: 610px; 
+        -fx-graphic-text-gap: 8;
+    }
+
+        #glisserDeposerWidget {
+            /* -fx-background-color: transparent;
+            -fx-background-radius: 50;
+            -fx-border-color: transparent transparent #e0d8f5 transparent;
+            -fx-border-left: 10px;
+            -fx-border-right: #374151;
+            -fx-border-width: 0 0 1.5 0;
+            -fx-border-style: segments(6, 4) segments(6, 4) dashed segments(6, 4);
+            -fx-padding: 18 30 18 30;
+            -fx-text-fill: #585858;*/
+            -fx-background-color: rgb(241, 241, 241);
+            -fx-background-radius: 0 0 25 25;
+            -fx-border-radius: 0 0 25 25;
+            -fx-border-color: transparent;
+            -fx-border-width: 0 1 1 1;
+            -fx-border-color:#bdbdbd;
+            -fx-border-style: segments(8, 4);
+            -fx-text-fill: #585858;
+            -fx-font-size: 13px;
+            -fx-padding: 12 24 12 24;
+            -fx-cursor: hand;
+            -fx-graphic-text-gap: 8;
+            -fx-min-height: 121px;
+            -fx-min-width: 550px;
+            -fx-cursor: hand;
+        }
+
+        #creerCSVButton {
+            -fx-background-color: white;
+            -fx-background-radius: 50;
+            -fx-border-radius: 50;
+            -fx-border-color: transparent;
+            -fx-border-width: 0.5;
+            -fx-border-color: #bdbdbd;
+            -fx-text-fill: #585858;
+            -fx-font-size: 13px;
+            -fx-cursor: hand;
+            -fx-graphic-text-gap: 8;
+            -fx-min-height: 30px;
+            -fx-min-width: 550;
+        }
+
+        /*--partie intéraction--*/
+
+        #creerCSVButton:hover {
+            -fx-background-color: #f9f5ff;
+            -fx-text-fill: #7c3aed;
+        }
+
+        #creerCSVButton:pressed {
+            -fx-background-color: #f3eeff;
+        }
+
+        #glisserDeposerWidget:hover {
+            -fx-background-color: #efd4f6;
+            -fx-border-color:#b380c0;
+            -fx-text-fill: #571c65;
+        }
+
+
+
+
+
+
+
+
+
+
+    /* ============================================================
+    Les 4 boutons ronds
+    ============================================================ */
+
+    /*--partie style--*/
+    #ponderationsButton,
+    #themeButton,
+    #compteButton {
+        -fx-background-color: white;
+        -fx-background-radius: 50%;
+        -fx-border-radius: 50%;
+        -fx-border-color: #e0d9f5;
+        -fx-border-width: 1.5;
+        -fx-min-width: 38px;
+        -fx-min-height: 38px;
+        -fx-max-width: 38px;
+        -fx-max-height: 38px;
+        -fx-cursor: hand;
+        -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);
+    }
+
+    #themeButton{
+        -fx-min-width: 41px;
+        -fx-min-height: 41px;
+    }
+
+    /*--partie intéraction--*/
+
+    #ponderationsButton:hover,
+    #themeButton:hover,
+    #compteButton:hover{
+        -fx-background-color: #f3eeff;
+        -fx-border-color: #c4b5fd;
+    }
+

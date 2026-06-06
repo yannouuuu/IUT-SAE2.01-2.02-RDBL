@@ -4,77 +4,88 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.Historique">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="666.0" prefWidth="1000.0" stylesheets="@historiqueView.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.HistoriqueView">
    <children>
-      <Label text="Votre historique">
+      <Label styleClass="label-historique" text="Votre historique">
          <font>
-            <Font name="System Bold" size="15.0" />
+            <Font name="System Bold" size="20.0" />
          </font>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
       </Label>
-      <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="50.0" prefHeight="22.0" prefWidth="600.0">
+      <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="50.0" prefHeight="22.0" prefWidth="600.0" styleClass="stats">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
          <children>
-            <VBox prefHeight="53.0" prefWidth="139.0">
+            <VBox prefHeight="60.0" prefWidth="203.0" styleClass="depenses">
                <children>
                   <Label prefHeight="22.0" prefWidth="130.0" text="Dépenses totals :" />
-                  <Label text="Impacte écologique total" />
-                  <Label text="Soit : " />
+                  <Label text="0€">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
                </children>
             </VBox>
-            <VBox prefHeight="53.0" prefWidth="245.0">
+            <VBox prefHeight="50.0" prefWidth="260.0" styleClass="ecolo-total">
                <children>
-                  <Label text="X€">
+                  <Label text="Impacte écologique total :" />
+                  <Label text="0kg de CO2">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label text="Xkg">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label text="Co2/T*60 kg de CO2 par heure de trajet !">
+               </children>
+            </VBox>
+            <VBox prefHeight="50.0" prefWidth="260.0" styleClass="ecolo-total">
+               <children>
+                  <Label text="Temps de trajet total" />
+                  <Label text="0h et 0mn">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
                </children>
                <HBox.margin>
-                  <Insets left="20.0" />
+                  <Insets />
                </HBox.margin>
+            </VBox>
+            <VBox layoutX="264.0" layoutY="25.0" prefHeight="50.0" prefWidth="281.0" styleClass="ecolo-moyen">
+               <children>
+                  <Label text="Impacte écologique moyen :" />
+                  <Label text="0kg de CO2 par heure de trajet !">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
             </VBox>
          </children>
       </HBox>
-      <Separator prefWidth="200.0">
-         <VBox.margin>
-            <Insets bottom="10.0" top="10.0" />
-         </VBox.margin>
-      </Separator>
-      <TableView prefHeight="304.0" prefWidth="560.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="Départ" />
-          <TableColumn prefWidth="75.0" text="Arrivé" />
-            <TableColumn prefWidth="75.0" text="Cout" />
-            <TableColumn prefWidth="116.7999267578125" text="Emission de CO2" />
-            <TableColumn prefWidth="114.4000244140625" text="Temps de trajet" />
-        </columns>
-      </TableView>
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+      <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+      <HBox alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="960.0">
          <children>
-            <Button fx:id="effacerHistoriqueButton" mnemonicParsing="false" onAction="#effacerHistoriqueAction" text="Effacer l'historique">
+            <Button fx:id="effacerHistoriqueButton" alignment="CENTER" mnemonicParsing="false" onAction="#effacerHistoriqueAction" styleClass="effacer" text="Effacer l'historique">
                <HBox.margin>
                   <Insets right="5.0" top="20.0" />
                </HBox.margin>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/trash.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="annulerButton" mnemonicParsing="false" onAction="#annulerAction" text="Annuler">
                <HBox.margin>

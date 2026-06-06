@@ -1,0 +1,329 @@
+/* ============================================================
+   CSS de la vue principale.
+   Inspiré directement de la maquette Figma.
+   ============================================================ */
+
+/* ============================================================
+   SOMMAIRE :
+   - Root
+   - Search bar
+   - Partie en dessous de la search bar
+   - Les boutons ronds
+   ============================================================ */
+
+
+
+
+
+
+
+
+/* ============================================================
+   Root (VBox)
+   ============================================================ */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #f0ecff, #ede8ff, #f5f0ff);
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-max-height: 666px;
+ }
+
+
+
+
+
+
+
+
+
+
+
+    /* ============================================================
+    Search bar
+    ============================================================ */
+
+    /* Conteneur de la barre de recherche (VBox > HBox) */
+    .search-bar {
+        -fx-background-color: white;
+        -fx-background-radius: 30 30 0 0;
+        -fx-border-radius: 30 30 0 0;
+        -fx-border-color: #afaeb1;
+        -fx-border-width: 0.5;
+        -fx-min-height: 60px;
+        -fx-min-width: 780px;
+        -fx-padding: 15 8 15 8;
+        -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
+        -fx-alignment: CENTER;
+        -fx-spacing: 0;
+    }
+
+    .filter-bar {
+        -fx-background-color: white;
+        -fx-background-radius: 0 0 30 30;
+        -fx-border-radius: 0 0 30 30;
+        -fx-border-color: transparent #afaeb1 afaeb1 afaeb1;
+        -fx-border-width: 0.5;
+        -fx-min-height: 60px;
+        -fx-min-width: 780px;
+        -fx-padding: 15 8 15 8;
+        -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
+        -fx-alignment: CENTER;
+        -fx-spacing: 0;
+    }
+
+        /* Conteneur des comboBox (VBox > HBox > Hbox) */
+        #comboBoxHBox {
+            -fx-background-color: white;
+            -fx-background-radius: 50px;
+            -fx-border-radius: 50px;
+            -fx-border-color: #e0d8f5;
+            -fx-min-height: 43px;
+            -fx-min-width: 570px;
+            -fx-border-width: 1.5;
+            -fx-padding: 0 0 0 0;
+            -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
+            -fx-alignment: CENTER;
+            -fx-spacing: 0;
+        }
+
+            /* les 2 ComboBox de la search bar (VBox > Hbox > HBox > ComboBox)*/
+            .combo-box {
+                -fx-background-color: transparent;
+                -fx-border-color: transparent;
+                -fx-opacity: 0.5;
+                -fx-background-radius: 0;
+                -fx-padding: 10, 5, 10 5;
+                -fx-font-size: 13px;
+                -fx-text-fill: #b7b1b1;
+                -fx-alignment:CENTER;
+                -fx-prompt-text-fill: #aaa;
+                -fx-min-width: 300px;
+                -fx-cursor: hand;
+            }
+
+            #comboBoxHBox:hover {
+                -fx-effect: dropshadow(gaussian, rgba(186, 186, 186, 0.6), 10, 0, 0, 1);
+            }
+
+            
+            
+
+                /*les assets des comboBox (VBox > Hbox > HBox > ComboBox > ListCell/ListView/Arrow/ArrowButton) */
+                .combo-box .list-cell {
+                    -fx-text-fill: #555;
+                    -fx-font-size: 13px;
+                    -fx-background-color: transparent;
+                }
+
+                .combo-box-popup .list-view {
+                    -fx-background-color: white;
+                    -fx-background-radius: 12;
+                    -fx-border-radius: 12;
+                    -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.15), 12, 0, 0, 4);
+                }
+
+                .combo-box .arrow-button {
+                    -fx-background-color: transparent;
+                    
+                }
+
+                .combo-box .arrow {
+                    -fx-background-color: #bbb;
+                }
+
+                /*permet de bien placer le texte de la fleche indépendamment*/
+                #arriverComboBox .arrow-button{
+                    -fx-padding: 0 20 0 0
+                }
+
+                #departComboBox .list-cell{
+                    -fx-padding: 0 0 0 20
+                }
+
+            /* Bouton Rechercher (VBox > Hbox > HBox > Button)*/
+
+
+            /*--partie intéraction--*/
+
+            #rechercherButton:hover {
+                -fx-background-color: linear-gradient(to right, #b83af0, #9333ea);
+                -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.50), 16, 0, 0, 4);
+            }
+
+            #rechercherButton:pressed {
+                -fx-background-color: #7c3aed;
+            }
+
+            /* #leMoinsCouteuxButton{
+                -fx-background-color: white;
+                -fx-background-radius: 50px;
+                -fx-border-radius: 50px;
+                -fx-border-color: #e0d9f5;
+                -fx-border-width: 1.5;
+                -fx-min-width: 150px;
+                -fx-min-height: 38px;
+                -fx-cursor: hand;
+                -fx-text-fill: black;
+                -fx-font-size: 11px;
+                -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);
+            } */
+
+            .filter-button.selected{
+                -fx-background-color: linear-gradient(to right, #c84af5, #a855f7);
+                -fx-text-fill: white;
+                -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.35), 12, 0, 0, 3);
+
+            }
+
+            .filter-button, .combo-box-transports {
+                -fx-background-color: white;
+                -fx-background-radius: 50px;
+                -fx-border-radius: 50px;
+                -fx-border-color: #e0d9f5;
+                -fx-border-width: 1.5;
+                -fx-min-width: 130px;
+                -fx-min-height: 35px;
+                -fx-cursor: hand;
+                -fx-text-fill: black;
+                -fx-font-size: 11px;
+                -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);
+            }
+            .combo-box-transports{
+                -fx-min-width: 200px;
+                -fx-padding: 0;
+                -fx-opacity: 1;
+                -fx-border-: #e0d9f5;
+
+            }
+
+            .combo-box-transports .list-cell{
+                -fx-text-fill: #b2acc4;
+                -fx-font-size: 11px;
+                -fx-padding: 0 0 0 20
+            }
+            .combo-box-transports .arrow-button{
+                -fx-text-fill: #b2acc4;
+                -fx-font-size: 11px;
+                -fx-padding: 0 20 0 0
+            }
+
+            .filter-button:hover {
+                -fx-background-color: linear-gradient(to right, #9cf16e, #7aff7a);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*  ============================================================
+        Partie en dessous de la search bar
+        ============================================================ */
+    .stats {
+        -fx-background-color: white;
+        -fx-background-radius: 25 25 0 0;
+        -fx-border-radius: 25 25 0 0;
+        -fx-border-color: #afaeb1;
+        -fx-border-width: 0.5;
+        -fx-min-height: 80px;
+        -fx-min-width: 550px;
+        -fx-padding: 15 50 15 50;
+        -fx-max-width: 1000;
+        -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
+        -fx-alignment: CENTER;
+        -fx-spacing: 0;
+    }
+
+    /* ============================================================
+    Les 4 boutons ronds
+    ============================================================ */
+
+    /*--partie style--*/
+    #ponderationsButton,
+    #themeButton,
+    #compteButton,
+    #accueilButton {
+        -fx-background-color: white;
+        -fx-background-radius: 50%;
+        -fx-border-radius: 50%;
+        -fx-border-color: #e0d9f5;
+        -fx-border-width: 1.5;
+        -fx-min-width: 38px;
+        -fx-min-height: 38px;
+        -fx-max-width: 38px;
+        -fx-max-height: 38px;
+        -fx-cursor: hand;
+        -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);
+    }
+
+    #themeButton{
+        -fx-min-width: 41px;
+        -fx-min-height: 41px;
+    }
+
+    .button {
+        -fx-background-color: white;
+        -fx-text-fill: rgb(0, 0, 0);
+        -fx-font-size: 11px;
+        -fx-background-radius: 40px;
+        -fx-border-radius: 40px;
+        -fx-padding: 2 22 2 22;
+        -fx-cursor: hand;
+        -fx-max-height: 30px;
+        -fx-border-color: #afaeb1;
+        -fx-border-width: 0.5;
+    }
+    .effacer{
+        -fx-background-color: #ff7a7a;
+    }
+
+    .depenses{
+        -fx-background-color: white;
+        -fx-text-fill: rgb(0, 0, 0);
+        -fx-font-size: 14px;
+        -fx-background-radius: 40 0 0 40;
+        -fx-border-radius: 40 0 0 40;
+        -fx-padding: 2 22 2 22;
+        -fx-border-color: #afaeb1;
+        -fx-border-width: 0.5;
+        -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
+        -fx-font-weight: normal;
+        -fx-alignment: CENTER_LEFT;
+    }
+
+    .ecolo-total{
+        -fx-background-color: white;
+        -fx-text-fill: rgb(0, 0, 0);
+        -fx-font-size: 14px;
+        -fx-padding: 2 22 2 22;
+        -fx-border-color: #afaeb1;
+        -fx-border-width: 0.5;
+        -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
+        -fx-font-weight: normal;
+        -fx-alignment: CENTER_LEFT;
+    }
+
+    .ecolo-moyen{
+        -fx-background-color: rgb(221, 255, 201);
+        -fx-text-fill: rgb(0, 0, 0);
+        -fx-font-size: 14px;
+        -fx-font-weight: light;
+        -fx-background-radius: 0 40 40 0;
+        -fx-border-radius: 0 40 40 0;
+        -fx-padding: 2 22 2 22;
+        -fx-border-color: #afaeb1;
+        -fx-border-width: 0.5;
+        -fx-effect: dropshadow(gaussian, rgba(80, 115, 220, 0.12), 18, 0, 0, 4);
+        -fx-alignment: CENTER_LEFT;
+    }
+
+    .label-historique{
+        -fx-margin-top: 10px;
+    }
+    
