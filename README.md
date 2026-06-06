@@ -6,8 +6,6 @@
 
 <br/><br/><br/>
 
-<br/><br/>
-
 <p align="center">
     <a href="https://github.com/yannouuuu/IUT-SAE2.01-2.02/" title="Voir le projet sur GitHub"><img src="https://img.shields.io/badge/Voir%20le%20projet%20sur-GitHub-blue?logo=github" alt="GitHub"/></a>
     <a href="https://gitlab.univ-lille.fr/sae2.01-2.02/2026/E5" title="Voir le projet sur GitLab"><img src="https://img.shields.io/badge/Voir%20le%20projet%20sur-GitLab-orange?logo=gitlab" alt="GitLab"/></a>
@@ -27,11 +25,11 @@
     <br/>
 </p>
 
+<br/><br/>
+
 <p align="left">
   <img src=".github/assets/documentationtag.svg" width="200" alt="Documentation">
 </p>
-
-<br/>
 
 <p align="left">
   <a href="docs/demarrage.md">
@@ -51,7 +49,7 @@
   </a>
 </p>
 
-<br/><br/><br/>
+<br/><br/>
 
 <p align="center">
   <img src=".github/assets/Footer.png" width="100%" alt="Footer">
