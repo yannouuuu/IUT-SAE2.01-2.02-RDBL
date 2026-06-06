@@ -1,10 +1,12 @@
+<br/>
+
 <div align="center">
 
 <p align="center">
   <img src=".github/assets/Header.svg" width="100%" alt="Comparaison d'itinéraires de transport">
 </p>
 
-<br/><br/><br/>
+<br/><br/>
 
 <p align="center">
     <a href="https://github.com/yannouuuu/IUT-SAE2.01-2.02/" title="Voir le projet sur GitHub"><img src="https://img.shields.io/badge/Voir%20le%20projet%20sur-GitHub-blue?logo=github" alt="GitHub"/></a>
