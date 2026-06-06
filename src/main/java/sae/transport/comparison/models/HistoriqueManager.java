@@ -41,13 +41,13 @@ public class HistoriqueManager {
      * @return la liste des voyages chargée
      * @throws IOException si la lecture échoue
      */
+    @SuppressWarnings("unchecked")
     public List<Voyage> charger() throws IOException {
         File fichier = new File(cheminFichier);
         if (!fichier.exists()) {
             return new ArrayList<>();
         }
-        try (ObjectInputStream ois = new ObjectInputStream(
-                new FileInputStream(cheminFichier))) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(cheminFichier))) {
             return (List<Voyage>) ois.readObject();
         } catch (ClassNotFoundException e) {
             throw new IOException("Format de fichier invalide : " + cheminFichier, e);

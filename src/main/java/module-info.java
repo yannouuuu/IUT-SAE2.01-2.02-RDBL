@@ -1,7 +1,7 @@
 module sae.transport.comparison {
-    requires javafx.controls;
-    requires javafx.fxml;
-    requires sae.s2;
+    requires transitive javafx.controls;
+    requires transitive javafx.fxml;
+    requires transitive sae.s2;
 
     opens sae.transport.comparison to javafx.fxml;
     opens sae.transport.comparison.controllers to javafx.fxml;
