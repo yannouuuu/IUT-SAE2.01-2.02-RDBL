@@ -6,11 +6,6 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/yannouuuu/IUT-SAE2.01-2.02/" title="Voir le projet sur GitHub"><img src="https://img.shields.io/badge/Voir%20le%20projet%20sur-GitHub-blue?logo=github" alt="GitHub"/></a>
-    <a href="https://gitlab.univ-lille.fr/sae2.01-2.02/2026/E5" title="Voir le projet sur GitLab"><img src="https://img.shields.io/badge/Voir%20le%20projet%20sur-GitLab-orange?logo=gitlab" alt="GitLab"/></a>
-</p>
-
-<p align="center">
     <a href="docs/poo/rapport_v3.pdf"><strong>Rendu POO »</strong></a> &nbsp;&nbsp;
     <a href="renduIHM/rapport.pdf"><strong>Rendu IHM »</strong></a> &nbsp;&nbsp;
     <a href="docs/graphes/pdf/rapport_v2.pdf"><strong>Rendu Graphes »</strong></a>
@@ -34,18 +29,25 @@
   <a href="docs/demarrage.md">
     <img src=".github/assets/demarragerapidepill.svg" width="60%" alt="Démarrage Rapide" />
   </a>
-  <br/>
+  <br/><br/>
   <a href="docs/architecture.md">
     <img src=".github/assets/architectureetcodepill.svg" width="60%" alt="Architecture & Code" />
   </a>
-  <br/>
+  <br/><br/>
   <a href="docs/data_format.md">
     <img src=".github/assets/formatdedeonneespill.svg" width="60%" alt="Format des Données" />
   </a>
-  <br/>
+  <br/><br/>
   <a href="docs/repartition_taches.md">
     <img src=".github/assets/repartitionpiill.svg" width="60%" alt="Répartition des Tâches" />
   </a>
+</p>
+
+<br/>
+
+<p align="center">
+    <a href="https://github.com/yannouuuu/IUT-SAE2.01-2.02/" title="Voir le projet sur GitHub"><img src="https://img.shields.io/badge/Voir%20le%20projet%20sur-GitHub-blue?logo=github" alt="GitHub"/></a>
+    <a href="https://gitlab.univ-lille.fr/sae2.01-2.02/2026/E5" title="Voir le projet sur GitLab"><img src="https://img.shields.io/badge/Voir%20le%20projet%20sur-GitLab-orange?logo=gitlab" alt="GitLab"/></a>
 </p>
 
 <br/>
