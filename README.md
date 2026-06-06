@@ -12,9 +12,9 @@
 
 <br/>
 
-<p align="center">
+<p>
   <a href="docs/demarrage.md">
-    <img src=".github/assets/demarragerapidepill.png" width="60%" alt="Démarrage Rapide" />
+    <img src=".github/assets/demarragerapidepill.svg" width="60%" alt="Démarrage Rapide" />
   </a>
   <br/><br/>
   <a href="docs/architecture.md">
