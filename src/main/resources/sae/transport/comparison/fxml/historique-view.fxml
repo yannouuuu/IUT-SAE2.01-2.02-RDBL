@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="666.0" prefWidth="1000.0" stylesheets="@historiqueView.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.HistoriqueView">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="666.0" prefWidth="1000.0" stylesheets="@../css/historique.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.HistoriqueView">
    <children>
       <Label styleClass="label-historique" text="Votre historique">
          <font>
