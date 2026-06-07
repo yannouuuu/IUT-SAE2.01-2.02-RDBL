@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER_LEFT" maxHeight="199.0" maxWidth="200.0" minHeight="180.0" minWidth="200.0" prefHeight="199.0" prefWidth="200.0" stylesheets="@compteNotConnectedView.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.CompteNotConnectedView">
+<VBox alignment="CENTER_LEFT" maxHeight="199.0" maxWidth="200.0" minHeight="180.0" minWidth="200.0" prefHeight="199.0" prefWidth="200.0" stylesheets="@../css/compteNotConnected.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.CompteNotConnectedView">
    <children>
       <Label text="Mon compte">
          <graphic>
@@ -61,7 +61,7 @@
                   <Font size="10.0" />
                </font>
                <HBox.margin>
-                  <Insets right="5.0" top="5.0" />
+                  <Insets right="5.0" top="10.0" />
                </HBox.margin>
             </Button>
             <Button fx:id="annulerButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#annulerAction" text="Annuler" textAlignment="CENTER">
@@ -69,7 +69,7 @@
                   <Font size="10.0" />
                </font>
                <HBox.margin>
-                  <Insets top="5.0" />
+                  <Insets top="10.0" />
                </HBox.margin>
             </Button>
          </children>

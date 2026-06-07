@@ -279,8 +279,26 @@
         -fx-border-color: #afaeb1;
         -fx-border-width: 0.5;
     }
+
+    .button:hover{
+        -fx-background-color: #f0f0f0;
+    }
+
+    .button:pressed{
+        -fx-background-color: rgb(219, 219, 219)
+    }
+
+
     .effacer{
         -fx-background-color: #ff7a7a;
+    }
+
+    .effacer:hover{
+        -fx-background-color: #ff8e8e;
+    }
+
+    .effacer:pressed{
+        -fx-background-color: rgb(197, 93, 93)
     }
 
     .depenses{
