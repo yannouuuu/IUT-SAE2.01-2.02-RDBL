@@ -25,7 +25,7 @@ Avant de commencer, il faut avoir installé :
 3. **Lancer / tester** : il connaît le point d'entrée de l'application et les tests à exécuter.
 
 Toute la configuration est dans le fichier **`pom.xml`** à la racine du projet. C'est lui qui dit :
-- quelle version de Java utiliser (ici Java 11)
+- quelle version de Java utiliser (ici Java 17)
 - quelles bibliothèques sont nécessaires (JavaFX, JUnit, JGraphT…)
 - quelles classes contiennent les points d'entrée (`AppFX` pour l'IHM, `AppTerminal` pour le terminal)
 - comment adapter la compilation selon l'OS (Mac ARM, Mac x86, Linux, Windows)
