@@ -72,8 +72,7 @@ public class GrapheHelper {
      * @param critere  le critère de coût utilisé comme poids des arcs de transport
      * @return le graphe orienté valué prêt pour KPCC
      */
-    public static MultiGrapheOrienteValue grapheMultiModal(
-            List<Trajet> trajets, Map<String, Lieu> sommets, TypeCout critere) {
+    public static MultiGrapheOrienteValue grapheMultiModal(List<Trajet> trajets, Map<String, Lieu> sommets, TypeCout critere) {
 
         MultiGrapheOrienteValue graphe = new MultiGrapheOrienteValue();
 

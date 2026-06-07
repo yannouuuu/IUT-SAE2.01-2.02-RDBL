@@ -19,7 +19,7 @@ public class AppFX extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(
-            getClass().getResource("/sae/transport/comparison/fxml/main-view.fxml")
+            getClass().getResource("/sae/transport/comparison/fxml/home-view.fxml")
         );
         Parent root = loader.load();
 

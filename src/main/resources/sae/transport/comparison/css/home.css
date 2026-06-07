@@ -85,7 +85,7 @@
             #comboBoxHBox:hover {
                 -fx-effect: dropshadow(gaussian, rgba(186, 186, 186, 0.6), 10, 0, 0, 1);
             }
-            
+
 
                 /*les assets des comboBox (VBox > Hbox > HBox > ComboBox > ListCell/ListView/Arrow/ArrowButton) */
                 .combo-box .list-cell {
@@ -103,7 +103,7 @@
 
                 .combo-box .arrow-button {
                     -fx-background-color: transparent;
-                    
+
                 }
 
                 .combo-box .arrow {
@@ -177,7 +177,7 @@
         -fx-alignment: top-center;
         -fx-justify-content:start;
         -fx-min-height: 180px;
-        -fx-min-width: 610px; 
+        -fx-min-width: 610px;
         -fx-graphic-text-gap: 8;
     }
 

@@ -128,9 +128,9 @@ public class AppTerminal {
     private static void afficherMenuPrincipal() {
         nl();
         int nbVoyages = voyageur.getHistorique().size();
-        String ligneHistorique = (nbVoyages == 0)
-            ? "  [5]  Historique"
-            : "  [5]  Historique  (" + nbVoyages + " voyage(s))";
+        String texteHistorique = (nbVoyages == 0)
+                ? "Historique"
+                : "Historique  (" + nbVoyages + " voyage(s))";
 
         String critereActuel;
         if (voyageur.getTypeCout() != null) {
@@ -140,9 +140,9 @@ public class AppTerminal {
         }
 
         int nbTrajets = plateforme.getTrajets().size();
-        String ligneReseau = (nbTrajets == 19)
-            ? "  [6]  Importer un CSV"
-            : "  [6]  Importer un CSV  " + DIM + "(" + nbTrajets + " trajets chargés)" + RST;
+        String texteReseau = (nbTrajets == 19)
+            ? "Importer un CSV"
+            : "Importer un CSV  " + DIM + "(" + nbTrajets + " trajets chargés)" + RST;
 
         boite(new String[]{
             BG_BLU + WHT + BLD + "  MENU PRINCIPAL  " + RST,
@@ -151,8 +151,8 @@ public class AppTerminal {
             CYN   + "  [2]" + RST + "  Recherche multi-modale",
             MAG   + "  [3]" + RST + "  Mon profil  " + DIM + "(critère : " + critereActuel + ")" + RST,
             MAG   + "  [4]" + RST + "  Recherche avec mon profil",
-            YLW   + "  [5]" + RST + "  " + ligneHistorique.trim().replaceFirst("\\[5\\]  ", ""),
-            GRN_V + "  [6]" + RST + "  " + ligneReseau.trim().replaceFirst("\\[6\\]  ", ""),
+            YLW   + "  [5]" + RST + "  " + texteHistorique,
+            GRN_V + "  [6]" + RST + "  " + texteReseau,
             RED   + "  [0]" + RST + "  Quitter",
         });
         System.out.print(CYN_V + "  > " + RST);
@@ -518,7 +518,7 @@ public class AppTerminal {
             "",
             GRN + "  [1]" + RST + "  🚆 TRAIN",
             YLW + "  [2]" + RST + "  🚌 BUS",
-            BLU + "  [3]" + RST + "  ✈  AVION",
+            BLU + "  [3]" + RST + "  ✈️ AVION",
             RED + "  [0]" + RST + "  Annuler",
         });
         System.out.print(CYN_V + "  > " + RST);
@@ -561,7 +561,7 @@ public class AppTerminal {
             BLD + "  Critère d'optimisation :" + RST,
             "",
             GRN + "  [1]" + RST + "  💶 PRIX   (euros)",
-            CYN + "  [2]" + RST + "  ⏱  TEMPS  (minutes)",
+            CYN + "  [2]" + RST + "  ⏱️ TEMPS  (minutes)",
             YLW + "  [3]" + RST + "  🌿 CO2    (kg CO2e)",
             RED + "  [0]" + RST + "  Annuler",
         });
