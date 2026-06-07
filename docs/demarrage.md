@@ -50,10 +50,11 @@ mvn clean javafx:run
 ### Application Terminal (ligne de commande)
 
 ```bash
-mvn clean exec:java
+mvn clean compile exec:java
 ```
 
-- `exec:java` : compile puis lance `AppTerminal` dans le terminal courant
+- `compile` : compile le projet avant l'exécution (sans ça, `exec:java` cherche des classes qui n'existent pas après `clean`)
+- `exec:java` : lance `AppTerminal` dans le terminal courant
 
 > *La première fois, Maven va télécharger les dépendances (JavaFX, JUnit…). C'est normal, ça peut prendre une minute.*
 
