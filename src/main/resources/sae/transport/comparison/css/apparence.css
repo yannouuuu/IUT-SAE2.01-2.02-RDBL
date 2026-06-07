@@ -1,0 +1,66 @@
+.toggle-button, .button{
+    -fx-background-color: rgb(255, 255, 255);
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+    -fx-border-color: #afaeb1;
+    -fx-border-width: 0.5;
+}
+
+.toggle-button:hover, .button:hover{
+    -fx-cursor: hand;
+}
+
+.button:hover {
+                -fx-background-color: linear-gradient(to right, #b83af0, #9333ea);
+                -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.50), 16, 0, 0, 4);
+}
+
+.button:pressed {
+    -fx-background-color: #7c3aed;
+}
+
+.toggle-button {
+    -fx-background-color: afaeb1;
+}
+
+.toggle-button:hover {
+    -fx-background-color: rgb(188, 184, 184);
+}
+
+.toggle-button:selected {
+    -fx-background-color: rgb(19, 241, 19);
+    -fx-display: none;
+}
+
+.toggle-button:selected:hover {
+    -fx-background-color: rgb(118, 251, 118);
+    -fx-display: none;
+}
+
+.toggle-button:selected::after {
+    -fx-content: "ON";
+}
+
+.button{
+    -fx-background-color: linear-gradient(to right, #c84af5, #a855f7);
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 40px;
+    -fx-border-radius: 40px;
+    -fx-padding: 8 22 8 22;
+    -fx-cursor: hand;
+    -fx-min-height: 41px;
+    -fx-min-width: 41px;
+    -fx-max-height: 41px;
+    -fx-max-width: 41px;
+    -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.35), 12, 0, 0, 3);
+            
+}
+
+.root{
+    -fx-background-radius: 14px;
+    -fx-border-radius: 14px;
+    -fx-border-color: #afaeb1;
+    -fx-border-width: 0.5;
+}

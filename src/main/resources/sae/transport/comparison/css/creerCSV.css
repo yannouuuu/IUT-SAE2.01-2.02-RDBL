@@ -1,0 +1,67 @@
+
+
+
+.button, .text-field{
+    -fx-background-color: white;
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+    -fx-border-width: 0.5;
+    -fx-border-color: #bdbdbd;
+    -fx-text-fill: #585858;
+    -fx-cursor: hand;
+}
+
+.button{
+    -fx-font-size: 12px;
+}
+
+.button:hover{
+    -fx-cursor: hand;
+    -fx-background-color: #f9f5ff;
+}
+.button:pressed{
+    -fx-cursor: hand;
+    -fx-background-color: #d4d4d4;
+}
+
+.root{
+    -fx-background-radius: 14px;
+    -fx-border-radius: 14px;
+    -fx-border-color: #afaeb1;
+    -fx-border-width: 0.5;
+}
+
+.generer{
+    -fx-background-color: linear-gradient(to right, #c84af5, #a855f7);
+    -fx-text-fill: white;
+    -fx-background-radius: 40px;
+    -fx-border-radius: 40px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.35), 12, 0, 0, 3);
+}
+
+.generer:hover {
+    -fx-background-color: linear-gradient(to right, #b83af0, #9333ea);
+    -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.50), 16, 0, 0, 4);
+}
+
+.generer:pressed {
+    -fx-background-color: #7c3aed;
+}
+
+.text-field .text{
+    -fx-padding: 0 20 0 0
+}
+
+.text-field:focused {
+    -fx-prompt-text-fill: transparent;
+}
+
+.text-field .prompt-text {
+    -fx-content: "prénom";
+    -fx-fill: gray;
+}
+
+.text-field {
+    -fx-padding: 5 10;
+}

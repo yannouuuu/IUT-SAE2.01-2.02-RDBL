@@ -1,0 +1,50 @@
+.button{
+    -fx-background-color: linear-gradient(to right, #c84af5, #a855f7);
+    -fx-text-fill: white;
+    -fx-background-radius: 40px;
+    -fx-border-radius: 40px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.35), 12, 0, 0, 3);
+}
+
+.button{
+    -fx-font-size: 12px;
+}
+
+.button:hover{
+    -fx-background-color: linear-gradient(to right, #b83af0, #9333ea);
+    -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.50), 16, 0, 0, 4);
+    -fx-cursor: hand;
+}  
+
+.button:pressed{
+    -fx-background-color: #7c3aed;
+}
+
+.root{
+    -fx-background-radius: 14px;
+    -fx-border-radius: 14px;
+    -fx-border-color: #afaeb1;
+    -fx-border-width: 0.5;
+}
+
+.slider .track {
+    -fx-background-color:  #e5e7eb;
+    -fx-background-radius: 5px;
+    -fx-pref-height: 4px;
+}
+
+.slider .thumb {
+    -fx-background-color: white;
+    -fx-border-color: #ca92f8;
+    -fx-border-width: 2px;
+    -fx-background-radius: 50%;
+    -fx-border-radius: 50%;
+    -fx-pref-width: 16px;
+    -fx-pref-height: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 1);
+}
+
+.slider .thumb:hover {
+    -fx-background-color: #eff6ff;
+}
