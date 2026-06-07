@@ -139,6 +139,7 @@ public class HomeViewController implements Initializable {
     /**
      * Ouvre un FileChooser pour sélectionner un fichier CSV,
      * puis charge le fichier si l'utilisateur valide son choix.
+     * Ne navigue pas : l'utilisateur clique ensuite sur « Rechercher ».
      */
     private void ouvrirFileChooser() {
         FileChooser fileChooser = new FileChooser();
@@ -152,21 +153,28 @@ public class HomeViewController implements Initializable {
         );
 
         if (fichier != null) {
-            chargerEtNaviguer(fichier);
+            chargerCSV(fichier);
         }
     }
 
     /**
-     * Charge un fichier CSV dans la plateforme, peuple les ComboBox,
-     * puis déclenche la transition animée vers app-view.fxml.
+     * Charge un fichier CSV dans la plateforme et peuple les ComboBox.
+     * Ne navigue PAS : l'utilisateur choisit ensuite départ/arrivée
+     * et clique sur « Rechercher » pour passer à app-view.
      *
      * @param fichier le fichier CSV à charger
      */
-    private void chargerEtNaviguer(File fichier) {
+    private void chargerCSV(File fichier) {
         try {
             plateforme.chargerDepuisCSV(fichier.getAbsolutePath());
             rafraichirComboBox();
-            naviguerVersAppView();
+            glisserDeposerWidget.setText("Fichier chargé : " + fichier.getName()
+                + " — choisissez départ et arrivée, puis cliquez Rechercher");
+            glisserDeposerWidget.setStyle(
+                "-fx-background-color: #e8f5e9;" +
+                "-fx-border-color: #4caf50;" +
+                "-fx-text-fill: #1b5e20;"
+            );
         } catch (DonneesInvalidesException e) {
             glisserDeposerWidget.setText("Erreur : " + e.getMessage());
             glisserDeposerWidget.setStyle("");
@@ -290,8 +298,9 @@ public class HomeViewController implements Initializable {
         if (db.hasFiles()) {
             for (File fichier : db.getFiles()) {
                 if (fichier.getName().toLowerCase().endsWith(".csv")) {
-                    chargerEtNaviguer(fichier);
+                    chargerCSV(fichier);
                     success = true;
+                    break;
                 }
             }
         }
@@ -306,19 +315,39 @@ public class HomeViewController implements Initializable {
 
     /**
      * Déclenché par le bouton « Rechercher ».
-     * Lance la recherche d'itinéraires entre les villes sélectionnées.
+     * Vérifie qu'un CSV est chargé et que départ/arrivée sont renseignés,
+     * puis déclenche la transition fade vers app-view.fxml.
      */
     @FXML
     private void rechercherAction() {
+        if (plateforme.getVilles().isEmpty()) {
+            glisserDeposerWidget.setText(
+                "⚠️Importez d'abord un fichier CSV avant de rechercher."
+            );
+            glisserDeposerWidget.setStyle(
+                "-fx-background-color: #fff3e0;" +
+                "-fx-border-color: #ff9800;" +
+                "-fx-text-fill: #e65100;"
+            );
+            return;
+        }
+
         String depart  = departComboBox.getValue();
         String arrivee = arriverComboBox.getValue();
 
         if (depart == null || arrivee == null || depart.isEmpty() || arrivee.isEmpty()) {
-            // TODO : afficher un message d'erreur à l'utilisateur
+            glisserDeposerWidget.setText(
+                "⚠️Sélectionnez une ville de départ et d'arrivée."
+            );
+            glisserDeposerWidget.setStyle(
+                "-fx-background-color: #fff3e0;" +
+                "-fx-border-color: #ff9800;" +
+                "-fx-text-fill: #e65100;"
+            );
             return;
         }
 
-        // TODO : naviguer vers la vue de résultats avec depart et arrivee
+        naviguerVersAppView();
     }
 
     /**
