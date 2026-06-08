@@ -30,7 +30,7 @@
             <VBox prefHeight="60.0" prefWidth="203.0" styleClass="depenses">
                <children>
                   <Label prefHeight="22.0" prefWidth="130.0" text="Dépenses totals :" />
-                  <Label text="0€">
+                  <Label fx:id="totalDepensesLabel" text="0€">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -40,7 +40,7 @@
             <VBox prefHeight="50.0" prefWidth="260.0" styleClass="ecolo-total">
                <children>
                   <Label text="Impacte écologique total :" />
-                  <Label text="0kg de CO2">
+                  <Label fx:id="totalCO2Label" text="0kg de CO2">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -50,7 +50,7 @@
             <VBox prefHeight="50.0" prefWidth="260.0" styleClass="ecolo-total">
                <children>
                   <Label text="Temps de trajet total" />
-                  <Label text="0h et 0mn">
+                  <Label fx:id="totalTempsLabel" text="0h et 0mn">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -63,7 +63,7 @@
             <VBox layoutX="264.0" layoutY="25.0" prefHeight="50.0" prefWidth="281.0" styleClass="ecolo-moyen">
                <children>
                   <Label text="Impacte écologique moyen :" />
-                  <Label text="0kg de CO2 par heure de trajet !">
+                  <Label fx:id="moyenneCO2Label" text="0kg de CO2 par heure de trajet !">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

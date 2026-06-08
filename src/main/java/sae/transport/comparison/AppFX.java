@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sae.transport.comparison.AppState;
 
 import java.io.IOException;
 
@@ -29,6 +30,9 @@ public class AppFX extends Application {
         stage.setMinWidth(1400);
         stage.setMinHeight(900);
         stage.show();
+
+        // Enregistrer la fenêtre principale dans l'état partagé
+        AppState.getInstance().setPrimaryStage(stage);
     }
 
     public static Scene getScene() {

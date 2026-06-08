@@ -36,7 +36,7 @@
             <Insets bottom="5.0" left="5.0" top="5.0" />
          </VBox.margin>
       </Label>
-      <TextField promptText="prenom.nom.etu">
+      <TextField fx:id="nomTextField" promptText="prenom.nom.etu">
          <VBox.margin>
             <Insets left="5.0" />
          </VBox.margin>

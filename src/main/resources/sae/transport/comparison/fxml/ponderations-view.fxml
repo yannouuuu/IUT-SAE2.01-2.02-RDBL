@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/ponderations.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.PonderationsView">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/ponderations.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.PonderationsViewController">
    <children>
       <Label text="Pondérations">
          <font>
@@ -39,7 +39,7 @@
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
             <Slider fx:id="CO2Slider" />
-            <Label text="0%" />
+            <Label fx:id="co2Label" text="0%" />
          </children>
       </HBox>
       <Label text="Économie">
@@ -53,7 +53,7 @@
       <HBox layoutX="20.0" layoutY="184.0" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Slider fx:id="PrixSlider" />
-            <Label text="0%" />
+            <Label fx:id="prixLabel" text="0%" />
          </children>
       </HBox>
       <Label text="Rapidité">
@@ -67,12 +67,12 @@
       <HBox layoutX="20.0" layoutY="192.0" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Slider fx:id="DureeSlider" />
-            <Label text="0%" />
+            <Label fx:id="dureeLabel" text="0%" />
          </children>
       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label prefHeight="15.0" prefWidth="66.0" text="Total : 100%">
+            <Label fx:id="totalLabel" prefHeight="15.0" prefWidth="66.0" text="Total : 100%">
                <font>
                   <Font name="System Bold" size="10.0" />
                </font>

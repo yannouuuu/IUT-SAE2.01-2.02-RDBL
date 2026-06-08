@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="130.0" maxWidth="200.0" minHeight="110.0" minWidth="200.0" prefHeight="130.0" prefWidth="200.0" stylesheets="@../css/apparence.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.ApparenceView">
+<VBox maxHeight="130.0" maxWidth="200.0" minHeight="110.0" minWidth="200.0" prefHeight="130.0" prefWidth="200.0" stylesheets="@../css/apparence.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.ApparenceViewController">
    <children>
       <Label text="Apparence">
          <font>

@@ -3,9 +3,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -26,7 +26,7 @@
                   <Insets left="5.0" />
                </VBox.margin>
             </Label>
-            <TextField promptText="exemple : mon-fichier">
+            <TextField fx:id="nomFichierTextField" promptText="exemple : mon-fichier">
                <VBox.margin>
                   <Insets right="5.0" />
                </VBox.margin>
@@ -36,7 +36,15 @@
             <Insets left="10.0" />
          </VBox.margin>
       </VBox>
-      <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+      <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+         <content>
+            <VBox fx:id="trajetsContainer" prefWidth="560.0" spacing="3.0">
+               <padding>
+                  <Insets left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </content>
+      </ScrollPane>
       <Button fx:id="ajouterUnTrajetButton" mnemonicParsing="false" onAction="#ajouterUnTrajetAction" prefHeight="26.0" prefWidth="570.0" text="+ Ajouter un trajet">
          <VBox.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

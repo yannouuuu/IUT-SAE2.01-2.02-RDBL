@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="122.0" prefWidth="200.0" stylesheets="@../css/compteConnecté.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.CompteConnectéView">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="122.0" prefWidth="200.0" stylesheets="@../css/compteConnecté.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.CompteConnectedView">
    <children>
       <Label prefHeight="22.0" prefWidth="103.0" text="Mon compte">
          <graphic>
@@ -36,7 +36,7 @@
                   <Font name="System Bold" size="10.0" />
                </font>
             </Label>
-            <Label text="email@gmail.com">
+            <Label fx:id="nomCompteLabel" text="email@gmail.com">
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>
@@ -74,7 +74,7 @@
       </HBox>
       <HBox alignment="TOP_CENTER" layoutX="25.0" layoutY="71.0" prefHeight="29.0" prefWidth="196.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="13.0" prefWidth="179.0" text="Gestionnaire de CSV">
+            <Button fx:id="gestionnaireCSVButton" mnemonicParsing="false" onAction="#gestionnaireCSVAction" prefHeight="13.0" prefWidth="179.0" text="Gestionnaire de CSV">
                <font>
                   <Font size="11.0" />
                </font>
