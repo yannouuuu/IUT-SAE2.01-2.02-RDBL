@@ -82,7 +82,9 @@ public class HistoriqueView implements Initializable {
         try {
             List<Voyage> voyages = manager.charger();
             // Synchronise l'historique en mémoire du voyageur
-            voyages.forEach(state.getVoyageur()::ajouterVoyage);
+            for (Voyage voyage : voyages) {
+                state.getVoyageur().ajouterVoyage(voyage);
+            }
             mettreAJourStats(voyages);
         } catch (IOException e) {
             mettreAJourStats(List.of());
