@@ -157,8 +157,8 @@ public class HomeViewController implements Initializable {
         try {
             plateforme.chargerDepuisCSV(fichier.getAbsolutePath());
             rafraichirComboBox();
-            glisserDeposerWidget.setText("Fichier chargé : " + fichier.getName()
-                + " — choisissez départ et arrivée, puis cliquez Rechercher");
+            glisserDeposerWidget.setText("Fichier \"" + fichier.getName()
+                + "\" chargé !");
             glisserDeposerWidget.setStyle(
                 "-fx-background-color: #e8f5e9;" +
                 "-fx-border-color: #4caf50;" +
@@ -272,7 +272,7 @@ public class HomeViewController implements Initializable {
     private void rechercherAction() {
         if (AppState.getInstance().getPlateforme().getVilles().isEmpty()) {
             glisserDeposerWidget.setText(
-                "⚠️ Importez d'abord un fichier CSV avant de rechercher."
+                "Importez d'abord un fichier CSV avant de rechercher."
             );
             glisserDeposerWidget.setStyle(
                 "-fx-background-color: #fff3e0;" +
@@ -287,7 +287,7 @@ public class HomeViewController implements Initializable {
 
         if (depart == null || arrivee == null || depart.isEmpty() || arrivee.isEmpty()) {
             glisserDeposerWidget.setText(
-                "⚠️ Sélectionnez une ville de départ et d'arrivée."
+                "Sélectionnez une ville de départ et d'arrivée."
             );
             glisserDeposerWidget.setStyle(
                 "-fx-background-color: #fff3e0;" +

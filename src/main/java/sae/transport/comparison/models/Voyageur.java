@@ -46,6 +46,13 @@ public class Voyageur implements Serializable {
         normaliserPreferences();
     }
 
+    public Voyageur(Map<TypeCout, Double> preferences) {
+        this.typeCout = null;
+        this.preferences = new EnumMap<>(preferences);
+        this.historique = new ArrayList<>();
+        normaliserPreferences();
+    }
+
     /**
      * Initialise les préférences à égalité (1/3 chacun).
      */

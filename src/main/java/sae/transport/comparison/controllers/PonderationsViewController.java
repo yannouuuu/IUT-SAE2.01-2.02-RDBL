@@ -69,16 +69,17 @@ public class PonderationsViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Voyageur voyageur = AppState.getInstance().getVoyageur();
+        double co2, prix, temps;
 
-        double co2  = 1.0 / 3.0;
-        double prix = 1.0 / 3.0;
-        double temps = 1.0 / 3.0;
-
-        if (voyageur != null) {
-            Map<TypeCout, Double> prefs = voyageur.getPreferences();
-            co2  = prefs.getOrDefault(TypeCout.CO2,   co2);
-            prix = prefs.getOrDefault(TypeCout.PRIX,  prix);
-            temps = prefs.getOrDefault(TypeCout.TEMPS, temps);
+        if(AppState.getInstance().getVoyageur() == null){
+            co2 = 33.0;
+            prix = 33.0;
+            temps = 34.0;
+        }else{
+            co2  = AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.CO2);
+            co2 = co2 * 100;
+            prix = AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.PRIX)*100;
+            temps = AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.TEMPS)*100;
         }
 
         // Configurer les sliders (0 → 100)
@@ -86,9 +87,9 @@ public class PonderationsViewController implements Initializable {
         PrixSlider.setMin(0);  PrixSlider.setMax(100);
         DureeSlider.setMin(0); DureeSlider.setMax(100);
 
-        CO2Slider.setValue(Math.round(co2  * 100));
-        PrixSlider.setValue(Math.round(prix * 100));
-        DureeSlider.setValue(Math.round(temps * 100));
+        CO2Slider.setValue(Math.round(co2));
+        PrixSlider.setValue(Math.round(prix));
+        DureeSlider.setValue(Math.round(temps));
 
         mettreAJourLabels();
 
@@ -107,21 +108,15 @@ public class PonderationsViewController implements Initializable {
      * Le total s'affiche en rouge si la somme n'est pas 100%.
      */
     private void mettreAJourLabels() {
+        this.AppliquerButton.setText("Appliquer");
+        this.AppliquerButton.setDisable(false);
         int co2   = (int) Math.round(CO2Slider.getValue());
         int prix  = (int) Math.round(PrixSlider.getValue());
         int duree = (int) Math.round(DureeSlider.getValue());
-        int total = co2 + prix + duree;
 
         co2Label.setText(co2 + "%");
         prixLabel.setText(prix + "%");
         dureeLabel.setText(duree + "%");
-        totalLabel.setText("Total : " + total + "%");
-
-        if (total != 100) {
-            totalLabel.setStyle("-fx-text-fill: #e53935; -fx-font-weight: bold;");
-        } else {
-            totalLabel.setStyle("-fx-text-fill: #2e7d32; -fx-font-weight: bold;");
-        }
     }
 
     // ---------------------------------------------------------------
@@ -139,22 +134,64 @@ public class PonderationsViewController implements Initializable {
         int prix  = (int) Math.round(PrixSlider.getValue());
         int duree = (int) Math.round(DureeSlider.getValue());
 
-        if (co2 + prix + duree != 100) {
-            totalLabel.setText("⚠ La somme doit être égale à 100 !");
-            totalLabel.setStyle("-fx-text-fill: #e53935; -fx-font-weight: bold;");
-            return;
+        if (co2 + prix + duree > 100){
+            double surplus = (co2 + prix + duree) - 100;
+            if(co2 < surplus / 3) {
+                surplus -= CO2Slider.getValue();
+                CO2Slider.setValue(0);
+                co2Label.setText(Math.round(CO2Slider.getValue()) + "%");
+                PrixSlider.setValue(PrixSlider.getValue() - surplus/2);
+                prixLabel.setText(Math.round(PrixSlider.getValue()) + "%");
+                DureeSlider.setValue(DureeSlider.getValue() - surplus/2);
+                dureeLabel.setText(Math.round(DureeSlider.getValue()) + "%");
+            }else if(prix < surplus / 3) {
+                surplus -= PrixSlider.getValue();
+                CO2Slider.setValue(CO2Slider.getValue() - surplus/2);
+                co2Label.setText(Math.round(CO2Slider.getValue()) + "%");
+                PrixSlider.setValue(0);
+                prixLabel.setText(Math.round(PrixSlider.getValue()) + "%");
+                DureeSlider.setValue(DureeSlider.getValue() - surplus/2);
+                dureeLabel.setText(Math.round(DureeSlider.getValue()) + "%");
+            }else if(duree < surplus / 3) {
+                surplus -= DureeSlider.getValue();
+                CO2Slider.setValue(CO2Slider.getValue() - surplus/2);
+                co2Label.setText(Math.round(CO2Slider.getValue()) + "%");
+                PrixSlider.setValue(PrixSlider.getValue() - surplus/2);
+                prixLabel.setText(Math.round(PrixSlider.getValue()) + "%");
+                DureeSlider.setValue(0);
+                dureeLabel.setText(Math.round(DureeSlider.getValue()) + "%");
+            }else {
+                CO2Slider.setValue(CO2Slider.getValue() - surplus/3);
+                co2Label.setText(Math.round(CO2Slider.getValue()) + "%");
+                PrixSlider.setValue(PrixSlider.getValue() - surplus/3);
+                prixLabel.setText(Math.round(PrixSlider.getValue()) + "%");
+                DureeSlider.setValue(DureeSlider.getValue() - surplus/3);
+                dureeLabel.setText(Math.round(DureeSlider.getValue()) + "%");
+            }
+        }else if (co2 + prix + duree < 100){
+            double sousplus = 100 - (co2 + prix + duree);
+            CO2Slider.setValue(CO2Slider.getValue() + sousplus/3);
+            co2Label.setText(Math.round(CO2Slider.getValue()) + "%");
+            PrixSlider.setValue(PrixSlider.getValue() + sousplus/3);
+            prixLabel.setText(Math.round(PrixSlider.getValue()) + "%");
+            DureeSlider.setValue(DureeSlider.getValue() + sousplus/3);
+            dureeLabel.setText(Math.round(DureeSlider.getValue()) + "%");
         }
+
 
         Voyageur voyageur = AppState.getInstance().getVoyageur();
-        if (voyageur != null) {
-            Map<TypeCout, Double> prefs = new EnumMap<>(TypeCout.class);
-            prefs.put(TypeCout.CO2,   co2   / 100.0);
-            prefs.put(TypeCout.PRIX,  prix  / 100.0);
-            prefs.put(TypeCout.TEMPS, duree / 100.0);
-            voyageur.setPreferences(prefs);
+        Map<TypeCout, Double> prefs = new EnumMap<>(TypeCout.class);
+        prefs.put(TypeCout.CO2, CO2Slider.getValue());
+        prefs.put(TypeCout.PRIX, PrixSlider.getValue());
+        prefs.put(TypeCout.TEMPS, DureeSlider.getValue());
+        if (voyageur == null) {
+            voyageur = new Voyageur(prefs);
         }
+        voyageur.setPreferences(prefs);
+        AppState.getInstance().setVoyageur(voyageur);
 
-        fermerPopup();
+        this.AppliquerButton.setText("Enregistré");
+        this.AppliquerButton.setDisable(true);
     }
 
     /**
