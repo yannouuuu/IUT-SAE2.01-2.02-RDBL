@@ -1,5 +1,9 @@
 package sae.transport.comparison.controllers;
 
+import fr.ulille.but.sae_s2_2026.AlgorithmeKPCC;
+import fr.ulille.but.sae_s2_2026.Connexion;
+import fr.ulille.but.sae_s2_2026.Lieu;
+import fr.ulille.but.sae_s2_2026.MultiGrapheOrienteValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -13,10 +17,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import sae.transport.comparison.AppState;
 import sae.transport.comparison.exceptions.DonneesInvalidesException;
+import sae.transport.comparison.models.Cout;
 import sae.transport.comparison.models.Plateforme;
+import sae.transport.comparison.models.Trajet;
+import sae.transport.comparison.models.TypeCout;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -164,6 +172,7 @@ public class HomeViewController implements Initializable {
                 "-fx-border-color: #4caf50;" +
                 "-fx-text-fill: #1b5e20;"
             );
+            AppState.getInstance().setPlateforme(plateforme);
         } catch (DonneesInvalidesException e) {
             glisserDeposerWidget.setText("Erreur : " + e.getMessage());
             glisserDeposerWidget.setStyle("");
@@ -298,8 +307,25 @@ public class HomeViewController implements Initializable {
         }
 
         // Transmettre la sélection à AppState avant navigation
-        AppState.getInstance().setVilleDepart(depart);
-        AppState.getInstance().setVilleArrivee(arrivee);
+        AppState.getInstance().setVilleDepart(AppState.getInstance().getPlateforme().getVille(depart));
+        AppState.getInstance().setVilleArrivee(AppState.getInstance().getPlateforme().getVille(arrivee));
+
+        MultiGrapheOrienteValue m = new MultiGrapheOrienteValue();
+        for(Lieu l:AppState.getInstance().getPlateforme().getVilles()){
+            m.ajouterSommet(l);
+        }
+
+        for(Trajet t:AppState.getInstance().getPlateforme().getTrajets()){
+            m.ajouterArete(t,
+                    t.getCout().getValeur(TypeCout.CO2)*
+                    AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.CO2) +
+                    t.getCout().getValeur(TypeCout.TEMPS)*
+                    AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.TEMPS) +
+                    t.getCout().getValeur(TypeCout.PRIX)*
+                    AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.PRIX));
+        }
+        AppState.getInstance().setMultiGraphe(AlgorithmeKPCC.kpcc(m, AppState.getInstance().getVilleDepart(), AppState.getInstance().getVilleArrivee(), 10));
+
 
         AppState.getInstance().naviguerVers(
             "/sae/transport/comparison/fxml/app-view.fxml"

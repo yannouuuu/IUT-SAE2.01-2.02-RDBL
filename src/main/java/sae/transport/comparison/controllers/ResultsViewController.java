@@ -1,5 +1,7 @@
 package sae.transport.comparison.controllers;
 
+import fr.ulille.but.sae_s2_2026.Chemin;
+import fr.ulille.but.sae_s2_2026.Connexion;
 import fr.ulille.but.sae_s2_2026.ModaliteTransport;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -70,7 +72,7 @@ public class ResultsViewController implements Initializable {
 
     /** ListView affichant les trajets trouvés. */
     @FXML
-    private ListView<Trajet> itinerairesListView;
+    private ListView<Chemin> itinerairesListView;
 
     /** VBox du panneau de détails (côté droit). */
     @FXML
@@ -89,7 +91,7 @@ public class ResultsViewController implements Initializable {
     // ---------------------------------------------------------------
 
     /** Liste complète des résultats pour le trajet courant (avant filtre modalité). */
-    private List<Trajet> resultatsActuels = new ArrayList<>();
+    private List<Chemin> resultatsActuels = new ArrayList<>();
 
     // ---------------------------------------------------------------
     // Initialisation
@@ -112,47 +114,47 @@ public class ResultsViewController implements Initializable {
 
         // --- Pré-sélectionner depuis AppState ---
         if (state.getVilleDepart() != null) {
-            departComboBox.setValue(state.getVilleDepart());
+            departComboBox.setValue(state.getVilleDepart().toString());
         }
         if (state.getVilleArrivee() != null) {
-            arriverComboBox.setValue(state.getVilleArrivee());
+            arriverComboBox.setValue(state.getVilleArrivee().toString());
         }
 
         // --- Peupler le filtre transport ---
         filtreTransportComboBox.getItems().add(null); // option "Tous"
         filtreTransportComboBox.getItems().addAll(ModaliteTransport.values());
         filtreTransportComboBox.setPromptText("Tous");
-        filtreTransportComboBox.setOnAction(e -> filtrerModaliteAction());
+        //filtreTransportComboBox.setOnAction(e -> filtrerModaliteAction());
 
         // --- Configurer la ListView ---
-        itinerairesListView.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(Trajet trajet, boolean empty) {
-                super.updateItem(trajet, empty);
-                if (empty || trajet == null) {
-                    setText(null);
-                } else {
-                    setText(String.format(
-                        "%s → %s  [%s]  %.2f€  %.0fmin  %.2fkg CO₂",
-                        trajet.getDepart().toString(),
-                        trajet.getArrivee().toString(),
-                        trajet.getModalite().name(),
-                        trajet.getCout().getValeur(TypeCout.PRIX),
-                        trajet.getCout().getValeur(TypeCout.TEMPS),
-                        trajet.getCout().getValeur(TypeCout.CO2)
-                    ));
-                }
-            }
-        });
+//        itinerairesListView.setCellFactory(lv -> new ListCell<>() {
+//            @Override
+//            protected void updateItem(Trajet trajet, boolean empty) {
+//                super.updateItem(trajet, empty);
+//                if (empty || trajet == null) {
+//                    setText(null);
+//                } else {
+//                    setText(String.format(
+//                        "%s → %s  [%s]  %.2f€  %.0fmin  %.2fkg CO₂",
+//                        trajet.getDepart().toString(),
+//                        trajet.getArrivee().toString(),
+//                        trajet.getModalite().name(),
+//                        trajet.getCout().getValeur(TypeCout.PRIX),
+//                        trajet.getCout().getValeur(TypeCout.TEMPS),
+//                        trajet.getCout().getValeur(TypeCout.CO2)
+//                    ));
+//                }
+//            }
+//        });
 
         // --- Sélection → afficher détails ---
-        itinerairesListView.getSelectionModel().selectedItemProperty().addListener(
-            (obs, oldVal, newVal) -> {
-                if (newVal != null) {
-                    afficherDetails(newVal);
-                }
-            }
-        );
+//        itinerairesListView.getSelectionModel().selectedItemProperty().addListener(
+//            (obs, oldVal, newVal) -> {
+//                if (newVal != null) {
+//                    afficherDetails(newVal);
+//                }
+//            }
+//        );
 
         // --- Lancer la première recherche ---
         lancerRecherche();
@@ -174,12 +176,7 @@ public class ResultsViewController implements Initializable {
             return;
         }
 
-        resultatsActuels = AppState.getInstance().getPlateforme().getTrajets().stream()
-            .filter(t -> t.getDepart().toString().equals(depart)
-                      && t.getArrivee().toString().equals(arrivee))
-            .collect(Collectors.toList());
-
-        afficherResultats(resultatsActuels);
+        afficherResultats(AppState.getInstance().getMultiGraphe());
     }
 
     /**
@@ -187,7 +184,7 @@ public class ResultsViewController implements Initializable {
      *
      * @param trajets la liste à afficher
      */
-    private void afficherResultats(List<Trajet> trajets) {
+    private void afficherResultats(List<Chemin> trajets) {
         itinerairesListView.getItems().setAll(trajets);
         detailsVBox.getChildren().clear();
         if (trajets.isEmpty()) {
@@ -293,8 +290,8 @@ public class ResultsViewController implements Initializable {
             return;
         }
 
-        AppState.getInstance().setVilleDepart(depart);
-        AppState.getInstance().setVilleArrivee(arrivee);
+        AppState.getInstance().setVilleDepart(AppState.getInstance().getPlateforme().getVille(depart));
+        AppState.getInstance().setVilleArrivee(AppState.getInstance().getPlateforme().getVille(arrivee));
         filtreTransportComboBox.setValue(null);
         lancerRecherche();
     }
@@ -305,12 +302,15 @@ public class ResultsViewController implements Initializable {
      */
     @FXML
     private void leMoinsCouteuxAction() {
-        List<Trajet> tries = new ArrayList<>(resultatsActuels);
-        tries.sort((a, b) -> Double.compare(
-            a.getCout().getValeur(TypeCout.PRIX),
-            b.getCout().getValeur(TypeCout.PRIX)
-        ));
-        afficherResultats(tries);
+        leMoinsCouteuxButton.setStyle("-fx-background-color: green;");
+        lePlusEcoloButton.setStyle("-fx-background-color: white;");
+        lePlusRapideButton.setStyle("-fx-background-color: white;");
+        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.PRIX);
+        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.CO2);
+        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.TEMPS);
+        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.PRIX, 100.0);
+        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.CO2, 0.0);
+        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.TEMPS, 0.0);
     }
 
     /**
@@ -319,12 +319,15 @@ public class ResultsViewController implements Initializable {
      */
     @FXML
     private void lePlusEcoloAction() {
-        List<Trajet> tries = new ArrayList<>(resultatsActuels);
-        tries.sort((a, b) -> Double.compare(
-            a.getCout().getValeur(TypeCout.CO2),
-            b.getCout().getValeur(TypeCout.CO2)
-        ));
-        afficherResultats(tries);
+        leMoinsCouteuxButton.setStyle("-fx-background-color: white;");
+        lePlusEcoloButton.setStyle("-fx-background-color: green;");
+        lePlusRapideButton.setStyle("-fx-background-color: white;");
+        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.PRIX);
+        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.CO2);
+        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.TEMPS);
+        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.PRIX, 0.0);
+        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.CO2, 100.0);
+        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.TEMPS, 0.0);
     }
 
     /**
@@ -333,30 +336,33 @@ public class ResultsViewController implements Initializable {
      */
     @FXML
     private void lePlusRapideAction() {
-        List<Trajet> tries = new ArrayList<>(resultatsActuels);
-        tries.sort((a, b) -> Double.compare(
-            a.getCout().getValeur(TypeCout.TEMPS),
-            b.getCout().getValeur(TypeCout.TEMPS)
-        ));
-        afficherResultats(tries);
+        leMoinsCouteuxButton.setStyle("-fx-background-color: white;");
+        lePlusEcoloButton.setStyle("-fx-background-color: white;");
+        lePlusRapideButton.setStyle("-fx-background-color: green;");
+        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.PRIX);
+        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.CO2);
+        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.TEMPS);
+        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.PRIX, 0.0);
+        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.CO2, 0.0);
+        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.TEMPS, 100.0);
     }
 
     /**
      * Déclenché par le changement de valeur dans {@link #filtreTransportComboBox}.
      * Filtre la liste affichée selon la modalité sélectionnée ({@code null} = tous).
      */
-    @FXML
-    private void filtrerModaliteAction() {
-        ModaliteTransport modalite = filtreTransportComboBox.getValue();
-        if (modalite == null) {
-            afficherResultats(resultatsActuels);
-        } else {
-            List<Trajet> filtres = resultatsActuels.stream()
-                .filter(t -> t.getModalite() == modalite)
-                .collect(Collectors.toList());
-            afficherResultats(filtres);
-        }
-    }
+//    @FXML
+//    private void filtrerModaliteAction() {
+//        ModaliteTransport modalite = filtreTransportComboBox.getValue();
+//        if (modalite == null) {
+//            afficherResultats(resultatsActuels);
+//        } else {
+//            List<Trajet> filtres = resultatsActuels.stream()
+//                .filter(t -> t.getModalite() == modalite)
+//                .collect(Collectors.toList());
+//            afficherResultats(filtres);
+//        }
+//    }
 
     /**
      * Déclenché par le bouton retour accueil.

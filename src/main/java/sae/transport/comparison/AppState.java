@@ -1,5 +1,8 @@
 package sae.transport.comparison;
 
+import fr.ulille.but.sae_s2_2026.Chemin;
+import fr.ulille.but.sae_s2_2026.Lieu;
+import fr.ulille.but.sae_s2_2026.MultiGrapheOrienteValue;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,9 +11,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sae.transport.comparison.models.Plateforme;
+import sae.transport.comparison.models.Trajet;
 import sae.transport.comparison.models.Voyageur;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Partagé entre tous les controllers de l'application.
@@ -31,10 +37,13 @@ public class AppState {
     private Stage primaryStage;
 
     /** Ville de départ sélectionnée pour la recherche. */
-    private String villeDepart;
+    private Lieu villeDepart;
 
     /** Ville d'arrivée sélectionnée pour la recherche. */
-    private String villeArrivee;
+    private Lieu villeArrivee;
+
+    /** Les 10 plus court chemins en partant de villeDepart à villeArrivee. Poids : Co2. */
+    private List<Chemin> multiGraphe;
 
     // ---------------------------------------------------------------
     // Singleton
@@ -185,7 +194,7 @@ public class AppState {
      *
      * @return le nom de la ville de départ, ou {@code null}
      */
-    public String getVilleDepart() {
+    public Lieu getVilleDepart() {
         return villeDepart;
     }
 
@@ -194,7 +203,7 @@ public class AppState {
      *
      * @param villeDepart le nom de la ville de départ
      */
-    public void setVilleDepart(String villeDepart) {
+    public void setVilleDepart(Lieu villeDepart) {
         this.villeDepart = villeDepart;
     }
 
@@ -203,7 +212,7 @@ public class AppState {
      *
      * @return le nom de la ville d'arrivée, ou {@code null}
      */
-    public String getVilleArrivee() {
+    public Lieu getVilleArrivee() {
         return villeArrivee;
     }
 
@@ -212,7 +221,15 @@ public class AppState {
      *
      * @param villeArrivee le nom de la ville d'arrivée
      */
-    public void setVilleArrivee(String villeArrivee) {
+    public void setVilleArrivee(Lieu villeArrivee) {
         this.villeArrivee = villeArrivee;
+    }
+
+    public List<Chemin> getMultiGraphe() {
+        return multiGraphe;
+    }
+
+    public void setMultiGraphe(List<Chemin> multiGraphe) {
+        this.multiGraphe = multiGraphe;
     }
 }
