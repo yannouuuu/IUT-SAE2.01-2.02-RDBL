@@ -102,8 +102,16 @@ public class HomeViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         configurerDragOver();
+
         // Si la plateforme contient déjà des données (retour en arrière), repeupler
         rafraichirComboBox();
+
+        if (AppState.getInstance().getVilleDepart() != null) {
+            departComboBox.setValue(AppState.getInstance().getVilleDepart().toString());
+        }
+        if (AppState.getInstance().getVilleArrivee() != null) {
+            arriverComboBox.setValue(AppState.getInstance().getVilleArrivee().toString());
+        }
     }
 
     // ---------------------------------------------------------------
@@ -324,7 +332,7 @@ public class HomeViewController implements Initializable {
                     t.getCout().getValeur(TypeCout.PRIX)*
                     AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.PRIX));
         }
-        AppState.getInstance().setMultiGraphe(AlgorithmeKPCC.kpcc(m, AppState.getInstance().getVilleDepart(), AppState.getInstance().getVilleArrivee(), 10));
+        AppState.getInstance().setMultiGraphe(AlgorithmeKPCC.kpcc(m, AppState.getInstance().getVilleDepart(), AppState.getInstance().getVilleArrivee(), 20));
 
 
         AppState.getInstance().naviguerVers(

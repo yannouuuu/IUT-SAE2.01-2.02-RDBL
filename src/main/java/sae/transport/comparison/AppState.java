@@ -12,11 +12,14 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import sae.transport.comparison.models.Plateforme;
 import sae.transport.comparison.models.Trajet;
+import sae.transport.comparison.models.TypeCout;
 import sae.transport.comparison.models.Voyageur;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Partagé entre tous les controllers de l'application.
@@ -61,6 +64,11 @@ public class AppState {
     public static AppState getInstance() {
         if (instance == null) {
             instance = new AppState();
+            HashMap<TypeCout, Double> map = new HashMap<>();
+            map.put(TypeCout.CO2, 33.0);
+            map.put(TypeCout.TEMPS, 33.0);
+            map.put(TypeCout.PRIX, 34.0);
+            instance.voyageur = new Voyageur(map);
         }
         return instance;
     }

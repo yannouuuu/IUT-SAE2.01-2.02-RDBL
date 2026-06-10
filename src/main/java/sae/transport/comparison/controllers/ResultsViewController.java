@@ -1,8 +1,6 @@
 package sae.transport.comparison.controllers;
 
-import fr.ulille.but.sae_s2_2026.Chemin;
-import fr.ulille.but.sae_s2_2026.Connexion;
-import fr.ulille.but.sae_s2_2026.ModaliteTransport;
+import fr.ulille.but.sae_s2_2026.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -14,9 +12,7 @@ import sae.transport.comparison.models.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -185,7 +181,31 @@ public class ResultsViewController implements Initializable {
      * @param trajets la liste à afficher
      */
     private void afficherResultats(List<Chemin> trajets) {
-        itinerairesListView.getItems().setAll(trajets);
+
+        itinerairesListView.getItems().clear();
+        itinerairesListView.setCellFactory(list -> new ListCell<Chemin>() {
+            protected void updateItem(Chemin item, boolean empty) {
+                super.updateItem(item, empty);
+                if(empty || item == null) {
+                    setText(null);
+                } else if(item.aretes().size() == 1){
+                    setText("Trajet directe (" + item.aretes().get(0).getModalite() + ")");
+                } else if(item.aretes().size() < 4){
+                    String texte = item.aretes().get(0).getDepart() + " -> ";
+                    for(int i = 0; i < item.aretes().size()-1; i++){
+                        texte += item.aretes().get(i).getArrivee() + " (" + item.aretes().get(i).getModalite() + ") -> ";
+                    }
+                    setText(texte + item.aretes().get(item.aretes().size()-1).getArrivee() + " (" + item.aretes().get(item.aretes().size()-1).getModalite() + ").");
+                } else{
+                    String texte = item.aretes().get(0).getDepart() + " -> ";
+                    for(int i = 0; i < item.aretes().size()-1; i++){
+                        texte += item.aretes().get(i).getArrivee() + "-> ";
+                    }
+                    setText(texte + item.aretes().get(item.aretes().size()-1).getArrivee() + ".");
+                }
+            }
+        });
+        itinerairesListView.getItems().addAll(trajets);
         detailsVBox.getChildren().clear();
         if (trajets.isEmpty()) {
             Label aucun = new Label("Aucun trajet trouvé pour cet itinéraire.");
@@ -283,16 +303,38 @@ public class ResultsViewController implements Initializable {
      */
     @FXML
     private void rechercherAction() {
+//        String depart  = departComboBox.getValue();
+//        String arrivee = arriverComboBox.getValue();
+//
+//        if (depart == null || arrivee == null) {
+//            return;
+//        }
+//
+//        AppState.getInstance().setVilleDepart(AppState.getInstance().getPlateforme().getVille(depart));
+//        AppState.getInstance().setVilleArrivee(AppState.getInstance().getPlateforme().getVille(arrivee));
+//        filtreTransportComboBox.setValue(null);
+        // Transmettre la sélection à AppState avant navigation
         String depart  = departComboBox.getValue();
         String arrivee = arriverComboBox.getValue();
 
-        if (depart == null || arrivee == null) {
-            return;
-        }
-
         AppState.getInstance().setVilleDepart(AppState.getInstance().getPlateforme().getVille(depart));
         AppState.getInstance().setVilleArrivee(AppState.getInstance().getPlateforme().getVille(arrivee));
-        filtreTransportComboBox.setValue(null);
+
+        MultiGrapheOrienteValue m = new MultiGrapheOrienteValue();
+        for(Lieu l:AppState.getInstance().getPlateforme().getVilles()){
+            m.ajouterSommet(l);
+        }
+
+        for(Trajet t:AppState.getInstance().getPlateforme().getTrajets()){
+            m.ajouterArete(t,
+                    t.getCout().getValeur(TypeCout.CO2)*
+                            AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.CO2) +
+                            t.getCout().getValeur(TypeCout.TEMPS)*
+                                    AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.TEMPS) +
+                            t.getCout().getValeur(TypeCout.PRIX)*
+                                    AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.PRIX));
+        }
+        AppState.getInstance().setMultiGraphe(AlgorithmeKPCC.kpcc(m, AppState.getInstance().getVilleDepart(), AppState.getInstance().getVilleArrivee(), 20));
         lancerRecherche();
     }
 
@@ -305,12 +347,12 @@ public class ResultsViewController implements Initializable {
         leMoinsCouteuxButton.setStyle("-fx-background-color: green;");
         lePlusEcoloButton.setStyle("-fx-background-color: white;");
         lePlusRapideButton.setStyle("-fx-background-color: white;");
-        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.PRIX);
-        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.CO2);
-        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.TEMPS);
-        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.PRIX, 100.0);
-        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.CO2, 0.0);
-        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.TEMPS, 0.0);
+        Map<TypeCout, Double> prefs = new EnumMap<>(TypeCout.class);
+        prefs.put(TypeCout.CO2, 0.0);
+        prefs.put(TypeCout.PRIX, 100.0);
+        prefs.put(TypeCout.TEMPS, 0.0);
+        AppState.getInstance().getVoyageur().setPreferences(prefs);
+        rechercherAction();
     }
 
     /**
@@ -322,12 +364,12 @@ public class ResultsViewController implements Initializable {
         leMoinsCouteuxButton.setStyle("-fx-background-color: white;");
         lePlusEcoloButton.setStyle("-fx-background-color: green;");
         lePlusRapideButton.setStyle("-fx-background-color: white;");
-        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.PRIX);
-        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.CO2);
-        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.TEMPS);
-        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.PRIX, 0.0);
-        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.CO2, 100.0);
-        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.TEMPS, 0.0);
+        Map<TypeCout, Double> prefs = new EnumMap<>(TypeCout.class);
+        prefs.put(TypeCout.CO2, 100.0);
+        prefs.put(TypeCout.PRIX, 0.0);
+        prefs.put(TypeCout.TEMPS, 0.0);
+        AppState.getInstance().getVoyageur().setPreferences(prefs);
+        rechercherAction();
     }
 
     /**
@@ -339,12 +381,12 @@ public class ResultsViewController implements Initializable {
         leMoinsCouteuxButton.setStyle("-fx-background-color: white;");
         lePlusEcoloButton.setStyle("-fx-background-color: white;");
         lePlusRapideButton.setStyle("-fx-background-color: green;");
-        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.PRIX);
-        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.CO2);
-        AppState.getInstance().getVoyageur().getPreferences().remove(TypeCout.TEMPS);
-        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.PRIX, 0.0);
-        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.CO2, 0.0);
-        AppState.getInstance().getVoyageur().getPreferences().put(TypeCout.TEMPS, 100.0);
+        Map<TypeCout, Double> prefs = new EnumMap<>(TypeCout.class);
+        prefs.put(TypeCout.CO2, 0.0);
+        prefs.put(TypeCout.PRIX, 0.0);
+        prefs.put(TypeCout.TEMPS, 100.0);
+        AppState.getInstance().getVoyageur().setPreferences(prefs);
+        rechercherAction();
     }
 
     /**
