@@ -69,7 +69,7 @@
         -fx-spacing: 0;
     }
 
-        /* Conteneur des comboBox (VBox > HBox > Hbox) */
+        /* Conteneur des comboBox (VBox > HBox > HBox) */
         #comboBoxHBox {
             -fx-background-color: white;
             -fx-background-radius: 50px;
@@ -78,13 +78,17 @@
             -fx-min-height: 43px;
             -fx-min-width: 570px;
             -fx-border-width: 1.5;
-            -fx-padding: 0 0 0 0;
+            -fx-padding: 0;
             -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
             -fx-alignment: CENTER;
             -fx-spacing: 0;
         }
 
-            /* les 2 ComboBox de la search bar (VBox > Hbox > HBox > ComboBox)*/
+        #comboBoxHBox:hover {
+            -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.20), 14, 0, 0, 3);
+        }
+
+            /* les 2 ComboBox de la search bar */
             .combo-box {
                 -fx-background-color: transparent;
                 -fx-border-color: transparent;
@@ -93,50 +97,60 @@
                 -fx-padding: 10, 5, 10 5;
                 -fx-font-size: 13px;
                 -fx-text-fill: #b7b1b1;
-                -fx-alignment:CENTER;
+                -fx-alignment: CENTER;
                 -fx-prompt-text-fill: #aaa;
                 -fx-min-width: 300px;
                 -fx-cursor: hand;
             }
 
-            #comboBoxHBox:hover {
-                -fx-effect: dropshadow(gaussian, rgba(186, 186, 186, 0.6), 10, 0, 0, 1);
+            /* Cellule affichée dans le bouton */
+            .combo-box .list-cell {
+                -fx-text-fill: #555;
+                -fx-font-size: 13px;
+                -fx-background-color: transparent;
+                -fx-padding: 0 0 0 20;
             }
 
-            
-            
+            /* Flèche */
+            .combo-box .arrow-button {
+                -fx-background-color: transparent;
+                -fx-padding: 0 20 0 0;
+            }
+            .combo-box .arrow {
+                -fx-background-color: #bbb;
+            }
 
-                /*les assets des comboBox (VBox > Hbox > HBox > ComboBox > ListCell/ListView/Arrow/ArrowButton) */
-                .combo-box .list-cell {
-                    -fx-text-fill: #555;
-                    -fx-font-size: 13px;
-                    -fx-background-color: transparent;
-                }
+            /* ── Popup / liste déroulante (départ/arrivée) ── */
+            .combo-box-popup .list-view {
+                -fx-background-color: white;
+                -fx-background-radius: 16;
+                -fx-border-radius: 16;
+                -fx-border-color: #e9d8fd;
+                -fx-border-width: 1;
+                -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.18), 20, 0, 0, 6);
+                -fx-padding: 4 0 4 0;
+            }
 
-                .combo-box-popup .list-view {
-                    -fx-background-color: white;
-                    -fx-background-radius: 12;
-                    -fx-border-radius: 12;
-                    -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.15), 12, 0, 0, 4);
-                }
+            .combo-box-popup .list-cell {
+                -fx-background-color: transparent;
+                -fx-text-fill: #3d3553;
+                -fx-font-size: 13px;
+                -fx-padding: 8 16 8 16;
+                -fx-background-radius: 10;
+            }
 
-                .combo-box .arrow-button {
-                    -fx-background-color: transparent;
-                    
-                }
+            .combo-box-popup .list-cell:hover {
+                -fx-background-color: #f5f0ff;
+                -fx-text-fill: #7c3aed;
+                -fx-background-radius: 10;
+            }
 
-                .combo-box .arrow {
-                    -fx-background-color: #bbb;
-                }
-
-                /*permet de bien placer le texte de la fleche indépendamment*/
-                #arriverComboBox .arrow-button{
-                    -fx-padding: 0 20 0 0
-                }
-
-                #departComboBox .list-cell{
-                    -fx-padding: 0 0 0 20
-                }
+            .combo-box-popup .list-cell:selected {
+                -fx-background-color: linear-gradient(to right, #ede9fe, #ddd6fe);
+                -fx-text-fill: #6d28d9;
+                -fx-font-weight: bold;
+                -fx-background-radius: 10;
+            }
 
             /* Bouton Rechercher (VBox > Hbox > HBox > Button)*/
             /*--partie style--*/
@@ -185,6 +199,7 @@
 
             }
 
+            /* Apparence originale du filtre transport (inchangée) */
             .filter-button, .combo-box-transports {
                 -fx-background-color: white;
                 -fx-background-radius: 50px;
@@ -198,23 +213,53 @@
                 -fx-font-size: 11px;
                 -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);
             }
-            .combo-box-transports{
+            .combo-box-transports {
                 -fx-min-width: 200px;
                 -fx-padding: 0;
                 -fx-opacity: 1;
-                -fx-border-: #e0d9f5;
-
             }
 
-            .combo-box-transports .list-cell{
+            .combo-box-transports .list-cell {
                 -fx-text-fill: #b2acc4;
                 -fx-font-size: 11px;
-                -fx-padding: 0 0 0 20
+                -fx-padding: 0 0 0 20;
             }
-            .combo-box-transports .arrow-button{
+            .combo-box-transports .arrow-button {
                 -fx-text-fill: #b2acc4;
                 -fx-font-size: 11px;
-                -fx-padding: 0 20 0 0
+                -fx-padding: 0 20 0 0;
+            }
+
+            /* Popup filtre transport (style unifié) */
+            .combo-box-transports .combo-box-popup .list-view {
+                -fx-background-color: white;
+                -fx-background-radius: 16;
+                -fx-border-radius: 16;
+                -fx-border-color: #e9d8fd;
+                -fx-border-width: 1;
+                -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.18), 20, 0, 0, 6);
+                -fx-padding: 4 0 4 0;
+            }
+
+            .combo-box-transports .combo-box-popup .list-cell {
+                -fx-background-color: transparent;
+                -fx-text-fill: #3d3553;
+                -fx-font-size: 11px;
+                -fx-padding: 8 16 8 16;
+                -fx-background-radius: 10;
+            }
+
+            .combo-box-transports .combo-box-popup .list-cell:hover {
+                -fx-background-color: #f5f0ff;
+                -fx-text-fill: #7c3aed;
+                -fx-background-radius: 10;
+            }
+
+            .combo-box-transports .combo-box-popup .list-cell:selected {
+                -fx-background-color: linear-gradient(to right, #ede9fe, #ddd6fe);
+                -fx-text-fill: #6d28d9;
+                -fx-font-weight: bold;
+                -fx-background-radius: 10;
             }
 
             .filter-button:hover {
@@ -301,23 +346,23 @@
         -fx-spacing: 0;
     }
 
-.list-view .list-cell:filled {
+.list-view-itineraires .list-cell:filled {
     -fx-padding: 10px 10px;
-    -fx-margin: 2.5px, 0px
+    -fx-margin: 2.5px, 0px;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
     -fx-border-color: #afaeb1;
     -fx-border-width: 0.5;
 }
 
-.list-view .list-cell:filled:hover {
+.list-view-itineraires .list-cell:filled:hover {
     -fx-background-color: #f3eeff;
     -fx-border-color: #c4b5fd;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
 }
 
-.list-view .list-cell:filled:selected {
+.list-view-itineraires .list-cell:filled:selected {
     -fx-background-color: #c4b5fd;
     -fx-text-fill: black;
     -fx-border-color: #a855f7;
@@ -325,7 +370,7 @@
     -fx-border-radius: 10;
 }
 
-.list-view .list-cell:filled:selected:hover {
+.list-view-itineraires .list-cell:filled:selected:hover {
     -fx-background-color: #c4b5fd;
     -fx-text-fill: black;
     -fx-background-radius: 10;

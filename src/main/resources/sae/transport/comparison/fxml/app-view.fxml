@@ -44,14 +44,6 @@
                   <Insets bottom="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </HBox>
-            <ImageView fitHeight="42.0" fitWidth="404.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/logoUnivLille.png" />
-               </image>
-               <VBox.margin>
-                  <Insets bottom="20.0" />
-               </VBox.margin>
-            </ImageView>
             <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="162.0" prefWidth="800.0">
                <children>
                   <HBox fx:id="searchBar" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="804.0" styleClass="search-bar">
@@ -70,7 +62,7 @@
                         </Button>
                         <HBox fx:id="comboBoxHBox" prefHeight="43.0" prefWidth="613.0" styleClass="search-bar">
                            <children>
-                              <ComboBox fx:id="departComboBox" prefHeight="41.0" prefWidth="333.0" promptText="Départ" styleClass="c" />
+                              <ComboBox fx:id="departComboBox" prefHeight="41.0" prefWidth="333.0" promptText="Départ" styleClass="combo-box" />
                               <Separator maxHeight="70.0" maxWidth="-Infinity" orientation="VERTICAL" prefHeight="20.0" prefWidth="6.0" />
                               <ComboBox fx:id="arriverComboBox" prefHeight="35.0" prefWidth="203.0" promptText="Arrivée" styleClass="combo-box" />
                            </children>

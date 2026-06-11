@@ -62,11 +62,15 @@
             -fx-border-color: #e0d8f5;
             -fx-min-height: 43px;
             -fx-border-width: 1.5;
-            -fx-padding: 0 0 0 0;
+            -fx-padding: 0;
             -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
             -fx-alignment: CENTER;
             -fx-hgap: 0;
             -fx-vgap: 0;
+        }
+
+        #comboBoxHBox:hover {
+            -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.20), 14, 0, 0, 3);
         }
 
             /* les 2 ComboBox de la search bar */
@@ -84,42 +88,55 @@
                 -fx-pref-width: 0;
             }
 
-            #comboBoxHBox:hover {
-                -fx-effect: dropshadow(gaussian, rgba(186, 186, 186, 0.6), 10, 0, 0, 1);
+            /* Cellule affichée dans le bouton */
+            .combo-box .list-cell {
+                -fx-text-fill: #555;
+                -fx-font-size: 13px;
+                -fx-background-color: transparent;
+                -fx-padding: 0 0 0 20;
             }
 
+            /* Flèche */
+            .combo-box .arrow-button {
+                -fx-background-color: transparent;
+                -fx-padding: 0 20 0 0;
+            }
+            .combo-box .arrow {
+                -fx-background-color: #bbb;
+            }
 
-                /*les assets des comboBox (VBox > Hbox > HBox > ComboBox > ListCell/ListView/Arrow/ArrowButton) */
-                .combo-box .list-cell {
-                    -fx-text-fill: #555;
-                    -fx-font-size: 13px;
-                    -fx-background-color: transparent;
-                }
+            /* ── Popup / liste déroulante ── */
+            .combo-box-popup .list-view {
+                -fx-background-color: white;
+                -fx-background-radius: 16;
+                -fx-border-radius: 16;
+                -fx-border-color: #e9d8fd;
+                -fx-border-width: 1;
+                -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.18), 20, 0, 0, 6);
+                -fx-padding: 4 0 4 0;
+            }
 
-                .combo-box-popup .list-view {
-                    -fx-background-color: white;
-                    -fx-background-radius: 12;
-                    -fx-border-radius: 12;
-                    -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.15), 12, 0, 0, 4);
-                }
+            .combo-box-popup .list-cell {
+                -fx-background-color: transparent;
+                -fx-text-fill: #3d3553;
+                -fx-font-size: 13px;
+                -fx-padding: 8 16 8 16;
+                -fx-background-radius: 10;
+            }
 
-                .combo-box .arrow-button {
-                    -fx-background-color: transparent;
+            .combo-box-popup .list-cell:hover {
+                -fx-background-color: #f5f0ff;
+                -fx-text-fill: #7c3aed;
+                -fx-background-radius: 10;
+            }
 
-                }
+            .combo-box-popup .list-cell:selected {
+                -fx-background-color: linear-gradient(to right, #ede9fe, #ddd6fe);
+                -fx-text-fill: #6d28d9;
+                -fx-font-weight: bold;
+                -fx-background-radius: 10;
+            }
 
-                .combo-box .arrow {
-                    -fx-background-color: #bbb;
-                }
-
-                /*permet de bien placer le texte de la fleche indépendamment*/
-                #arriverComboBox .arrow-button{
-                    -fx-padding: 0 20 0 0
-                }
-
-                #departComboBox .list-cell{
-                    -fx-padding: 0 0 0 20
-                }
 
             /* Bouton Rechercher (VBox > Hbox > HBox > Button)*/
             /*--partie style--*/
