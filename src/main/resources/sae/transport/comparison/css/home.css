@@ -4,302 +4,239 @@
    ============================================================ */
 
 /* ============================================================
-   SOMMAIRE :
-   - Root
-   - Search bar
-   - Partie en dessous de la search bar
-   - Les boutons ronds
-   ============================================================ */
-
-
-
-
-
-
-
-
-/* ============================================================
    Root (VBox)
    ============================================================ */
 .root {
-    -fx-background-color: linear-gradient(to bottom right, #f0ecff, #ede8ff, #f5f0ff);
     -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
- }
+    -fx-primary-base: #a855f7;
+    -fx-primary-light: #c84af5;
+    -fx-primary-hover: #9333ea;
+    -fx-primary-light-hover: #b83af0;
+    -fx-primary-bg: #f5f0ff;
+    -fx-primary-shadow: rgba(168,85,247,0.35);
+    -fx-background-color: linear-gradient(to bottom right, #f0ecff, #ede8ff, -fx-primary-bg);
+}
 
+.theme-color-picker {
+    -fx-background-color: transparent;
+    -fx-color-label-visible: false;
+}
 
+.theme-color-picker .color-picker-label {
+    -fx-padding: 0;
+}
 
+/* ============================================================
+   Search bar
+   ============================================================ */
 
+.search-bar {
+    -fx-background-color: white;
+    -fx-background-radius: 50px;
+    -fx-border-radius: 50px;
+    -fx-border-color: #afaeb1;
+    -fx-border-width: 0.5;
+    -fx-min-height: 60px;
+    -fx-padding: 15 8 15 8;
+    -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
+    -fx-alignment: CENTER;
+    -fx-spacing: 0;
+}
 
+#comboBoxHBox {
+    -fx-background-color: white;
+    -fx-background-radius: 50px;
+    -fx-border-radius: 50px;
+    -fx-border-color: #e0d8f5;
+    -fx-min-height: 43px;
+    -fx-border-width: 1.5;
+    -fx-padding: 0;
+    -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
+    -fx-alignment: CENTER;
+    -fx-hgap: 0;
+    -fx-vgap: 0;
+}
 
+#comboBoxHBox:hover {
+    -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.20), 14, 0, 0, 3);
+}
 
+.combo-box {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-opacity: 0.5;
+    -fx-background-radius: 0;
+    -fx-padding: 10 5 10 5;
+    -fx-font-size: 13px;
+    -fx-text-fill: #b7b1b1;
+    -fx-alignment: CENTER;
+    -fx-prompt-text-fill: #aaa;
+    -fx-cursor: hand;
+    -fx-pref-width: 0;
+}
 
+.combo-box .list-cell {
+    -fx-text-fill: #555;
+    -fx-font-size: 13px;
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 0 20;
+}
 
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 20 0 0;
+}
 
+.combo-box .arrow {
+    -fx-background-color: #bbb;
+}
 
-    /* ============================================================
-    Search bar
-    ============================================================ */
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: #e9d8fd;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.18), 20, 0, 0, 6);
+    -fx-padding: 4 0 4 0;
+}
 
-    /* Conteneur de la barre de recherche (VBox > HBox) */
-    .search-bar {
-        -fx-background-color: white;
-        -fx-background-radius: 50px;
-        -fx-border-radius: 50px;
-        -fx-border-color: #afaeb1;
-        -fx-border-width: 0.5;
-        -fx-min-height: 60px;
-        -fx-padding: 15 8 15 8;
-        -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
-        -fx-alignment: CENTER;
-        -fx-spacing: 0;
-    }
+.combo-box-popup .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #3d3553;
+    -fx-font-size: 13px;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 10;
+}
 
-        /* Conteneur des comboBox (VBox > HBox > GridPane) */
-        #comboBoxHBox {
-            -fx-background-color: white;
-            -fx-background-radius: 50px;
-            -fx-border-radius: 50px;
-            -fx-border-color: #e0d8f5;
-            -fx-min-height: 43px;
-            -fx-border-width: 1.5;
-            -fx-padding: 0;
-            -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
-            -fx-alignment: CENTER;
-            -fx-hgap: 0;
-            -fx-vgap: 0;
-        }
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: -fx-primary-bg;
+    -fx-text-fill: -fx-primary-base;
+    -fx-background-radius: 10;
+}
 
-        #comboBoxHBox:hover {
-            -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.20), 14, 0, 0, 3);
-        }
+.combo-box-popup .list-cell:selected {
+    -fx-background-color: linear-gradient(to right, -fx-primary-bg, -fx-primary-bg);
+    -fx-text-fill: -fx-primary-base;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+}
 
-            /* les 2 ComboBox de la search bar */
-            .combo-box {
-                -fx-background-color: transparent;
-                -fx-border-color: transparent;
-                -fx-opacity: 0.5;
-                -fx-background-radius: 0;
-                -fx-padding: 10, 5, 10 5;
-                -fx-font-size: 13px;
-                -fx-text-fill: #b7b1b1;
-                -fx-alignment: CENTER;
-                -fx-prompt-text-fill: #aaa;
-                -fx-cursor: hand;
-                -fx-pref-width: 0;
-            }
+#rechercherButton {
+    -fx-background-color: linear-gradient(to right, -fx-primary-light, -fx-primary-base);
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 40px;
+    -fx-border-radius: 40px;
+    -fx-padding: 8 22 8 22;
+    -fx-cursor: hand;
+    -fx-min-height: 41px;
+    -fx-effect: dropshadow(gaussian, -fx-primary-shadow, 12, 0, 0, 3);
+}
 
-            /* Cellule affichée dans le bouton */
-            .combo-box .list-cell {
-                -fx-text-fill: #555;
-                -fx-font-size: 13px;
-                -fx-background-color: transparent;
-                -fx-padding: 0 0 0 20;
-            }
+#rechercherButton:hover {
+    -fx-background-color: linear-gradient(to right, -fx-primary-light-hover, -fx-primary-hover);
+    -fx-effect: dropshadow(gaussian, -fx-primary-shadow, 16, 0, 0, 4);
+}
 
-            /* Flèche */
-            .combo-box .arrow-button {
-                -fx-background-color: transparent;
-                -fx-padding: 0 20 0 0;
-            }
-            .combo-box .arrow {
-                -fx-background-color: #bbb;
-            }
+#rechercherButton:pressed {
+    -fx-background-color: -fx-primary-hover;
+}
 
-            /* ── Popup / liste déroulante ── */
-            .combo-box-popup .list-view {
-                -fx-background-color: white;
-                -fx-background-radius: 16;
-                -fx-border-radius: 16;
-                -fx-border-color: #e9d8fd;
-                -fx-border-width: 1;
-                -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.18), 20, 0, 0, 6);
-                -fx-padding: 4 0 4 0;
-            }
+/* ============================================================
+   Partie en dessous de la search bar
+   ============================================================ */
 
-            .combo-box-popup .list-cell {
-                -fx-background-color: transparent;
-                -fx-text-fill: #3d3553;
-                -fx-font-size: 13px;
-                -fx-padding: 8 16 8 16;
-                -fx-background-radius: 10;
-            }
+#lowVBox {
+    -fx-background-color: white;
+    -fx-background-radius: 0 0 25 25;
+    -fx-border-radius: 0 0 25 25;
+    -fx-border-width: 0 0.5 0.5 0.5;
+    -fx-border-color: #bdbdbd;
+    -fx-text-fill: #374151;
+    -fx-font-size: 13px;
+    -fx-padding: 0 24 12 24;
+    -fx-cursor: hand;
+    -fx-alignment: top-center;
+    -fx-min-height: 180px;
+    -fx-min-width: 610px;
+    -fx-graphic-text-gap: 8;
+}
 
-            .combo-box-popup .list-cell:hover {
-                -fx-background-color: #f5f0ff;
-                -fx-text-fill: #7c3aed;
-                -fx-background-radius: 10;
-            }
+#glisserDeposerWidget {
+    -fx-background-color: rgb(241, 241, 241);
+    -fx-background-radius: 0 0 25 25;
+    -fx-border-radius: 0 0 25 25;
+    -fx-border-width: 0 1 1 1;
+    -fx-border-color: #bdbdbd;
+    -fx-border-style: segments(8, 4);
+    -fx-text-fill: #585858;
+    -fx-font-size: 13px;
+    -fx-padding: 12 24 12 24;
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 8;
+    -fx-min-height: 121px;
+    -fx-min-width: 550px;
+}
 
-            .combo-box-popup .list-cell:selected {
-                -fx-background-color: linear-gradient(to right, #ede9fe, #ddd6fe);
-                -fx-text-fill: #6d28d9;
-                -fx-font-weight: bold;
-                -fx-background-radius: 10;
-            }
+#creerCSVButton {
+    -fx-background-color: white;
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+    -fx-border-width: 0.5;
+    -fx-border-color: #bdbdbd;
+    -fx-text-fill: #585858;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 8;
+    -fx-min-height: 30px;
+    -fx-min-width: 550;
+}
 
+#creerCSVButton:hover {
+    -fx-background-color: #f9f5ff;
+    -fx-text-fill: #7c3aed;
+}
 
-            /* Bouton Rechercher (VBox > Hbox > HBox > Button)*/
-            /*--partie style--*/
-            #rechercherButton {
-                -fx-background-color: linear-gradient(to right, #c84af5, #a855f7);
-                -fx-text-fill: white;
-                -fx-font-size: 11px;
-                -fx-font-weight: bold;
-                -fx-background-radius: 40px;
-                -fx-border-radius: 40px;
-                -fx-padding: 8 22 8 22;
-                -fx-cursor: hand;
-                -fx-min-height: 41px;
-                -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.35), 12, 0, 0, 3);
-            }
+#creerCSVButton:pressed {
+    -fx-background-color: #f3eeff;
+}
 
-            /*--partie intéraction--*/
+#glisserDeposerWidget:hover {
+    -fx-background-color: #efd4f6;
+    -fx-border-color: #b380c0;
+    -fx-text-fill: #571c65;
+}
 
-            #rechercherButton:hover {
-                -fx-background-color: linear-gradient(to right, #b83af0, #9333ea);
-                -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.50), 16, 0, 0, 4);
-            }
+/* ============================================================
+   Les 4 boutons ronds
+   ============================================================ */
 
-            #rechercherButton:pressed {
-                -fx-background-color: #7c3aed;
-            }
+#ponderationsButton,
+#themeButton,
+#compteButton {
+    -fx-background-color: white;
+    -fx-background-radius: 50%;
+    -fx-border-radius: 50%;
+    -fx-border-color: #e0d9f5;
+    -fx-border-width: 1.5;
+    -fx-min-width: 38px;
+    -fx-min-height: 38px;
+    -fx-max-width: 38px;
+    -fx-max-height: 38px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);
+}
 
+#themeButton {
+    -fx-min-width: 41px;
+    -fx-min-height: 41px;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-    /*  ============================================================
-        Partie en dessous de la search bar
-        ============================================================ */
-
-    /*--partie style--*/
-    #lowVBox{
-        -fx-background-color: white;
-        -fx-background-radius: 0 0 25 25;
-        -fx-border-radius: 0 0 25 25;
-        -fx-border-color: transparent;
-        -fx-border-width: 0 0.5 0.5 0.5;
-        -fx-border-top-width: 0px;
-        -fx-border-color: #bdbdbd;
-        -fx-text-fill: #374151;
-        -fx-font-size: 13px;
-        -fx-padding: 0 24 12 24;
-        -fx-cursor: hand;
-        -fx-alignment: top-center;
-        -fx-justify-content:start;
-        -fx-min-height: 180px;
-        -fx-min-width: 610px;
-        -fx-graphic-text-gap: 8;
-    }
-
-        #glisserDeposerWidget {
-            /* -fx-background-color: transparent;
-            -fx-background-radius: 50;
-            -fx-border-color: transparent transparent #e0d8f5 transparent;
-            -fx-border-left: 10px;
-            -fx-border-right: #374151;
-            -fx-border-width: 0 0 1.5 0;
-            -fx-border-style: segments(6, 4) segments(6, 4) dashed segments(6, 4);
-            -fx-padding: 18 30 18 30;
-            -fx-text-fill: #585858;*/
-            -fx-background-color: rgb(241, 241, 241);
-            -fx-background-radius: 0 0 25 25;
-            -fx-border-radius: 0 0 25 25;
-            -fx-border-color: transparent;
-            -fx-border-width: 0 1 1 1;
-            -fx-border-color:#bdbdbd;
-            -fx-border-style: segments(8, 4);
-            -fx-text-fill: #585858;
-            -fx-font-size: 13px;
-            -fx-padding: 12 24 12 24;
-            -fx-cursor: hand;
-            -fx-graphic-text-gap: 8;
-            -fx-min-height: 121px;
-            -fx-min-width: 550px;
-            -fx-cursor: hand;
-        }
-
-        #creerCSVButton {
-            -fx-background-color: white;
-            -fx-background-radius: 50;
-            -fx-border-radius: 50;
-            -fx-border-color: transparent;
-            -fx-border-width: 0.5;
-            -fx-border-color: #bdbdbd;
-            -fx-text-fill: #585858;
-            -fx-font-size: 13px;
-            -fx-cursor: hand;
-            -fx-graphic-text-gap: 8;
-            -fx-min-height: 30px;
-            -fx-min-width: 550;
-        }
-
-        /*--partie intéraction--*/
-
-        #creerCSVButton:hover {
-            -fx-background-color: #f9f5ff;
-            -fx-text-fill: #7c3aed;
-        }
-
-        #creerCSVButton:pressed {
-            -fx-background-color: #f3eeff;
-        }
-
-        #glisserDeposerWidget:hover {
-            -fx-background-color: #efd4f6;
-            -fx-border-color:#b380c0;
-            -fx-text-fill: #571c65;
-        }
-
-
-
-
-
-
-
-
-
-
-    /* ============================================================
-    Les 4 boutons ronds
-    ============================================================ */
-
-    /*--partie style--*/
-    #ponderationsButton,
-    #themeButton,
-    #compteButton {
-        -fx-background-color: white;
-        -fx-background-radius: 50%;
-        -fx-border-radius: 50%;
-        -fx-border-color: #e0d9f5;
-        -fx-border-width: 1.5;
-        -fx-min-width: 38px;
-        -fx-min-height: 38px;
-        -fx-max-width: 38px;
-        -fx-max-height: 38px;
-        -fx-cursor: hand;
-        -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);
-    }
-
-    #themeButton{
-        -fx-min-width: 41px;
-        -fx-min-height: 41px;
-    }
-
-    /*--partie intéraction--*/
-
-    #ponderationsButton:hover,
-    #themeButton:hover,
-    #compteButton:hover{
-        -fx-background-color: #f3eeff;
-        -fx-border-color: #c4b5fd;
-    }
-
+#ponderationsButton:hover,
+#themeButton:hover,
+#compteButton:hover {
+    -fx-background-color: #f3eeff;
+    -fx-border-color: #c4b5fd;
+}

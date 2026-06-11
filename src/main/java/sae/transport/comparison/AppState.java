@@ -15,6 +15,9 @@ import sae.transport.comparison.models.Trajet;
 import sae.transport.comparison.models.TypeCout;
 import sae.transport.comparison.models.Voyageur;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +50,21 @@ public class AppState {
 
     /** Les 10 plus court chemins en partant de villeDepart à villeArrivee. Poids : Co2. */
     private List<Chemin> multiGraphe;
+
+    /** Couleur d'accentuation dynamique */
+    private final ObjectProperty<Color> themeColor = new SimpleObjectProperty<>(Color.web("#a855f7")); // Default purple
+
+    public ObjectProperty<Color> themeColorProperty() {
+        return themeColor;
+    }
+
+    public Color getThemeColor() {
+        return themeColor.get();
+    }
+
+    public void setThemeColor(Color color) {
+        this.themeColor.set(color);
+    }
 
     // ---------------------------------------------------------------
     // Singleton
@@ -98,7 +116,8 @@ public class AppState {
                 Parent newRoot = loader.load();
                 newRoot.setOpacity(0.0);
                 AppFX.getScene().setRoot(newRoot);
-
+                appliquerTheme(newRoot, getThemeColor());
+                
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(400), newRoot);
                 fadeIn.setFromValue(0.0);
                 fadeIn.setToValue(1.0);
@@ -239,5 +258,59 @@ public class AppState {
 
     public void setMultiGraphe(List<Chemin> multiGraphe) {
         this.multiGraphe = multiGraphe;
+    }
+
+    // ---------------------------------------------------------------
+    // Thème Dynamique
+    // ---------------------------------------------------------------
+
+    /**
+     * Applique la couleur de thème au composant racine.
+     * Génère les variables CSS (looked-up colors).
+     */
+    public void appliquerTheme(Parent root, Color baseColor) {
+        if (root == null || baseColor == null) return;
+        
+        Color lightColor = baseColor.deriveColor(0, 0.8, 1.2, 1.0);
+        Color hoverColor = baseColor.deriveColor(0, 1.0, 0.9, 1.0);
+        Color lightHover = lightColor.deriveColor(0, 1.0, 0.9, 1.0);
+        Color bgLight = baseColor.deriveColor(0, 0.2, 2.5, 1.0);
+        Color shadowColor = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0.35);
+
+        String style = String.format(
+            "-fx-primary-base: %s; " +
+            "-fx-primary-light: %s; " +
+            "-fx-primary-hover: %s; " +
+            "-fx-primary-light-hover: %s; " +
+            "-fx-primary-bg: %s; " +
+            "-fx-primary-shadow: %s;",
+            toHexString(baseColor),
+            toHexString(lightColor),
+            toHexString(hoverColor),
+            toHexString(lightHover),
+            toHexString(bgLight),
+            toRgbaString(shadowColor)
+        );
+        
+        // Conserve les styles existants (si c'est un Node avec d'autres styles inline)
+        String currentStyle = root.getStyle();
+        // Retire les anciennes variables pour éviter l'accumulation
+        currentStyle = currentStyle.replaceAll("-fx-primary-[^;]+;\\s*", "");
+        root.setStyle(currentStyle + style);
+    }
+
+    private String toHexString(Color color) {
+        return String.format("#%02X%02X%02X",
+            (int) (color.getRed() * 255),
+            (int) (color.getGreen() * 255),
+            (int) (color.getBlue() * 255));
+    }
+
+    private String toRgbaString(Color color) {
+        return String.format("rgba(%d,%d,%d,%f)",
+            (int) (color.getRed() * 255),
+            (int) (color.getGreen() * 255),
+            (int) (color.getBlue() * 255),
+            color.getOpacity());
     }
 }

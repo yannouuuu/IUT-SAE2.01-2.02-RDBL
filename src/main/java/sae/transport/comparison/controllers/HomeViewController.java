@@ -355,18 +355,15 @@ public class HomeViewController implements Initializable {
         AppState.getInstance().setVilleArrivee(AppState.getInstance().getPlateforme().getVille(arrivee));
 
         MultiGrapheOrienteValue m = new MultiGrapheOrienteValue();
-        for(Lieu l:AppState.getInstance().getPlateforme().getVilles()){
+        for (Lieu l : AppState.getInstance().getPlateforme().getVilles()) {
             m.ajouterSommet(l);
         }
 
-        for(Trajet t:AppState.getInstance().getPlateforme().getTrajets()){
-            m.ajouterArete(t,
-                    t.getCout().getValeur(TypeCout.CO2)*
-                    AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.CO2) +
-                    t.getCout().getValeur(TypeCout.TEMPS)*
-                    AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.TEMPS) +
-                    t.getCout().getValeur(TypeCout.PRIX)*
-                    AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.PRIX));
+        for (Trajet t : AppState.getInstance().getPlateforme().getTrajets()) {
+            double poids = t.getCout().getValeur(TypeCout.CO2) * AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.CO2) +
+                           t.getCout().getValeur(TypeCout.TEMPS) * AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.TEMPS) +
+                           t.getCout().getValeur(TypeCout.PRIX) * AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.PRIX);
+            m.ajouterArete(t, poids);
         }
         AppState.getInstance().setMultiGraphe(AlgorithmeKPCC.kpcc(m, AppState.getInstance().getVilleDepart(), AppState.getInstance().getVilleArrivee(), 20));
 

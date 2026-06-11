@@ -5,21 +5,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import sae.transport.comparison.AppState;
 import sae.transport.comparison.models.*;
 
-import javax.xml.validation.Schema;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Contrôleur de la vue des résultats de recherche (app-view.fxml).
@@ -150,25 +146,6 @@ public class ResultsViewController implements Initializable {
         }
 
         // --- Configurer la ListView ---
-//        itinerairesListView.setCellFactory(lv -> new ListCell<>() {
-//            @Override
-//            protected void updateItem(Trajet trajet, boolean empty) {
-//                super.updateItem(trajet, empty);
-//                if (empty || trajet == null) {
-//                    setText(null);
-//                } else {
-//                    setText(String.format(
-//                        "%s → %s  [%s]  %.2f€  %.0fmin  %.2fkg CO₂",
-//                        trajet.getDepart().toString(),
-//                        trajet.getArrivee().toString(),
-//                        trajet.getModalite().name(),
-//                        trajet.getCout().getValeur(TypeCout.PRIX),
-//                        trajet.getCout().getValeur(TypeCout.TEMPS),
-//                        trajet.getCout().getValeur(TypeCout.CO2)
-//                    ));
-//                }
-//            }
-//        });
 
         // --- Sélection → afficher détails ---
         itinerairesListView.getSelectionModel().selectedItemProperty().addListener(
@@ -479,7 +456,7 @@ public class ResultsViewController implements Initializable {
         VBox.setVgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
 
         Button ajouterBtn = new Button("+ Ajouter à l'historique");
-        //ajouterBtn.setOnAction(e -> ajouterHistoriqueAction(trajet));
+        ajouterBtn.setOnAction(e -> ajouterHistoriqueAction(trajet));
         
         detailsVBox.getChildren().addAll(spacer, ajouterBtn);
     }
@@ -516,21 +493,27 @@ public class ResultsViewController implements Initializable {
     }
 
     /**
-     * Ajoute le trajet sélectionné à l'historique du voyageur courant.
+     * Ajoute le chemin sélectionné à l'historique du voyageur courant.
      * Sans-op si aucun voyageur n'est connecté.
      *
-     * @param trajet le trajet à enregistrer
+     * @param chemin le chemin à enregistrer
      */
-    private void ajouterHistoriqueAction(Trajet trajet) {
+    private void ajouterHistoriqueAction(Chemin chemin) {
         AppState state = AppState.getInstance();
         if (state.getVoyageur() == null) {
             afficherErreurDetails("Connectez-vous pour sauvegarder dans l'historique.");
             return;
         }
 
-        List<Trajet> liste = new ArrayList<>();
-        liste.add(trajet);
-        Voyage voyage = new Voyage(liste);
+        List<Trajet> listeTrajets = new ArrayList<>();
+        for (Connexion c : chemin.aretes()) {
+            Trajet t = retrouverTrajet(c);
+            if (t != null) {
+                listeTrajets.add(t);
+            }
+        }
+        
+        Voyage voyage = new Voyage(listeTrajets);
         state.getVoyageur().ajouterVoyage(voyage);
 
         // Persistance
@@ -542,6 +525,9 @@ public class ResultsViewController implements Initializable {
         HistoriqueManager manager = new HistoriqueManager(cheminFichier);
         try {
             manager.ajouterEtSauvegarder(voyage);
+            Label succes = new Label("Trajet ajouté à l'historique !");
+            succes.setStyle("-fx-text-fill: #4caf50; -fx-font-weight: bold;");
+            detailsVBox.getChildren().add(succes);
         } catch (IOException e) {
             afficherErreurDetails("Erreur lors de la sauvegarde : " + e.getMessage());
         }
@@ -553,9 +539,8 @@ public class ResultsViewController implements Initializable {
      * @param message le message à afficher
      */
     private void afficherErreurDetails(String message) {
-        detailsVBox.getChildren().clear();
         Label erreur = new Label(message);
-        erreur.setStyle("-fx-text-fill: #e53935;");
+        erreur.setStyle("-fx-text-fill: #e53935; -fx-font-weight: bold;");
         detailsVBox.getChildren().add(erreur);
     }
 
@@ -569,17 +554,6 @@ public class ResultsViewController implements Initializable {
      */
     @FXML
     private void rechercherAction() {
-//        String depart  = departComboBox.getValue();
-//        String arrivee = arriverComboBox.getValue();
-//
-//        if (depart == null || arrivee == null) {
-//            return;
-//        }
-//
-//        AppState.getInstance().setVilleDepart(AppState.getInstance().getPlateforme().getVille(depart));
-//        AppState.getInstance().setVilleArrivee(AppState.getInstance().getPlateforme().getVille(arrivee));
-//        filtreTransportComboBox.setValue(null);
-        // Transmettre la sélection à AppState avant navigation
         String depart  = departComboBox.getValue();
         String arrivee = arriverComboBox.getValue();
 
@@ -587,18 +561,15 @@ public class ResultsViewController implements Initializable {
         AppState.getInstance().setVilleArrivee(AppState.getInstance().getPlateforme().getVille(arrivee));
 
         MultiGrapheOrienteValue m = new MultiGrapheOrienteValue();
-        for(Lieu l:AppState.getInstance().getPlateforme().getVilles()){
+        for (Lieu l : AppState.getInstance().getPlateforme().getVilles()) {
             m.ajouterSommet(l);
         }
 
-        for(Trajet t:AppState.getInstance().getPlateforme().getTrajets()){
-            m.ajouterArete(t,
-                    t.getCout().getValeur(TypeCout.CO2)*
-                            AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.CO2) +
-                            t.getCout().getValeur(TypeCout.TEMPS)*
-                                    AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.TEMPS) +
-                            t.getCout().getValeur(TypeCout.PRIX)*
-                                    AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.PRIX));
+        for (Trajet t : AppState.getInstance().getPlateforme().getTrajets()) {
+            double poids = t.getCout().getValeur(TypeCout.CO2) * AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.CO2) +
+                           t.getCout().getValeur(TypeCout.TEMPS) * AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.TEMPS) +
+                           t.getCout().getValeur(TypeCout.PRIX) * AppState.getInstance().getVoyageur().getPreferences().get(TypeCout.PRIX);
+            m.ajouterArete(t, poids);
         }
         AppState.getInstance().setMultiGraphe(AlgorithmeKPCC.kpcc(m, AppState.getInstance().getVilleDepart(), AppState.getInstance().getVilleArrivee(), 20));
         lancerRecherche();
@@ -656,23 +627,6 @@ public class ResultsViewController implements Initializable {
     }
 
     /**
-     * Déclenché par le changement de valeur dans {@link #filtreTransportComboBox}.
-     * Filtre la liste affichée selon la modalité sélectionnée ({@code null} = tous).
-     */
-//    @FXML
-//    private void filtrerModaliteAction() {
-//        ModaliteTransport modalite = filtreTransportComboBox.getValue();
-//        if (modalite == null) {
-//            afficherResultats(resultatsActuels);
-//        } else {
-//            List<Trajet> filtres = resultatsActuels.stream()
-//                .filter(t -> t.getModalite() == modalite)
-//                .collect(Collectors.toList());
-//            afficherResultats(filtres);
-//        }
-//    }
-
-    /**
      * Déclenché par le bouton retour accueil.
      * Navigue vers la vue d'accueil avec animation fade.
      */
@@ -697,14 +651,22 @@ public class ResultsViewController implements Initializable {
     }
 
     /**
-     * Déclenché par le bouton thème.
-     * Ouvre la popup de configuration de l'apparence.
+     * Action déclenchée par le bouton de changement de thème.
      */
     @FXML
     private void themeAction() {
-        AppState.getInstance().ouvrirPopup(
-            "/sae/transport/comparison/fxml/apparence-view.fxml"
-        );
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/sae/transport/comparison/fxml/apparence-view.fxml"));
+            javafx.scene.Parent root = loader.load();
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.setTitle("Apparence");
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.show();
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

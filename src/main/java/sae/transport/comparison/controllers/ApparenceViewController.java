@@ -3,6 +3,7 @@ package sae.transport.comparison.controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ToggleButton;
 import javafx.stage.Stage;
 import sae.transport.comparison.AppFX;
@@ -29,9 +30,9 @@ public class ApparenceViewController implements Initializable {
     @FXML
     private ToggleButton modeSombreButton;
 
-    /** Bouton d'ouverture du sélecteur de thème/couleur. */
+    /** Sélecteur de thème/couleur. */
     @FXML
-    private Button themeButton;
+    private ColorPicker themeColorPicker;
 
     // ---------------------------------------------------------------
     // Initialisation
@@ -46,6 +47,15 @@ public class ApparenceViewController implements Initializable {
             .anyMatch(css -> css.contains("dark"));
         modeSombreButton.setSelected(sombreActif);
         modeSombreButton.setText(sombreActif ? "ON" : "OFF");
+
+        themeColorPicker.setValue(sae.transport.comparison.AppState.getInstance().getThemeColor());
+        themeColorPicker.valueProperty().addListener((obs, oldVal, newVal) -> {
+            sae.transport.comparison.AppState state = sae.transport.comparison.AppState.getInstance();
+            state.setThemeColor(newVal);
+            if (sae.transport.comparison.AppFX.getScene() != null && sae.transport.comparison.AppFX.getScene().getRoot() != null) {
+                state.appliquerTheme(sae.transport.comparison.AppFX.getScene().getRoot(), newVal);
+            }
+        });
     }
 
     // ---------------------------------------------------------------
@@ -78,14 +88,5 @@ public class ApparenceViewController implements Initializable {
         } else {
             stylesheets.remove(cssUrl);
         }
-    }
-
-    /**
-     * Déclenché par le bouton « Thème ».
-     * TODO : ouvrir un sélecteur de couleur d'accent.
-     */
-    @FXML
-    private void themeAction() {
-        // TODO : implémenter un ColorPicker et appliquer la couleur d'accent via CSS
     }
 }
