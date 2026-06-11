@@ -1,7 +1,6 @@
 package sae.transport.comparison.controllers;
 
 import fr.ulille.but.sae_s2_2026.AlgorithmeKPCC;
-import fr.ulille.but.sae_s2_2026.Connexion;
 import fr.ulille.but.sae_s2_2026.Lieu;
 import fr.ulille.but.sae_s2_2026.MultiGrapheOrienteValue;
 import javafx.fxml.FXML;
@@ -13,18 +12,17 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import sae.transport.comparison.AppState;
 import sae.transport.comparison.exceptions.DonneesInvalidesException;
-import sae.transport.comparison.models.Cout;
 import sae.transport.comparison.models.Plateforme;
 import sae.transport.comparison.models.Trajet;
 import sae.transport.comparison.models.TypeCout;
 
 import java.io.File;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -53,7 +51,7 @@ public class HomeViewController implements Initializable {
 
     /** Conteneur interne des deux ComboBox départ/arrivée. */
     @FXML
-    private HBox comboBoxHBox;
+    private GridPane comboBoxHBox;
 
     /** ComboBox de sélection de la ville de départ. */
     @FXML

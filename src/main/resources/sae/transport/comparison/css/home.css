@@ -54,7 +54,7 @@
         -fx-spacing: 0;
     }
 
-        /* Conteneur des comboBox (VBox > HBox > Hbox) */
+        /* Conteneur des comboBox (VBox > HBox > GridPane) */
         #comboBoxHBox {
             -fx-background-color: white;
             -fx-background-radius: 50px;
@@ -65,10 +65,11 @@
             -fx-padding: 0 0 0 0;
             -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
             -fx-alignment: CENTER;
-            -fx-spacing: 0;
+            -fx-hgap: 0;
+            -fx-vgap: 0;
         }
 
-            /* les 2 ComboBox de la search bar (VBox > Hbox > HBox > ComboBox)*/
+            /* les 2 ComboBox de la search bar */
             .combo-box {
                 -fx-background-color: transparent;
                 -fx-border-color: transparent;
@@ -77,9 +78,10 @@
                 -fx-padding: 10, 5, 10 5;
                 -fx-font-size: 13px;
                 -fx-text-fill: #b7b1b1;
-                -fx-alignment:CENTER;
+                -fx-alignment: CENTER;
                 -fx-prompt-text-fill: #aaa;
                 -fx-cursor: hand;
+                -fx-pref-width: 0;
             }
 
             #comboBoxHBox:hover {

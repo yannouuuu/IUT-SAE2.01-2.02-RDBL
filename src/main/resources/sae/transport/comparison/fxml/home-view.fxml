@@ -8,6 +8,8 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
@@ -61,16 +63,21 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <HBox fx:id="comboBoxHBox" prefHeight="43.0" prefWidth="613.0" styleClass="search-bar" HBox.hgrow="NEVER">
+                        <GridPane fx:id="comboBoxHBox" prefHeight="43.0" prefWidth="613.0" styleClass="search-bar" HBox.hgrow="NEVER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="50.0" />
+                              <ColumnConstraints minWidth="1.0" maxWidth="1.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="50.0" />
+                           </columnConstraints>
                            <children>
-                              <ComboBox fx:id="departComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="0.0" prefHeight="41.0" promptText="Départ" styleClass="c" HBox.hgrow="ALWAYS" />
-                              <Separator maxHeight="70.0" maxWidth="-Infinity" orientation="VERTICAL" prefHeight="20.0" prefWidth="38.0" />
-                              <ComboBox fx:id="arriverComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="0.0" prefHeight="48.0" prefWidth="216.0" promptText="Arrivée" styleClass="combo-box" HBox.hgrow="ALWAYS" />
+                              <ComboBox fx:id="departComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="0.0" prefHeight="41.0" promptText="Départ" styleClass="combo-box" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" />
+                              <Separator maxHeight="70.0" orientation="VERTICAL" prefHeight="20.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                              <ComboBox fx:id="arriverComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="0.0" prefHeight="48.0" promptText="Arrivée" styleClass="combo-box" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
                            </children>
                            <padding>
                               <Insets left="10.0" right="10.0" />
                            </padding>
-                        </HBox>
+                        </GridPane>
                         <Button fx:id="rechercherButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="0.0" mnemonicParsing="false" onAction="#rechercherAction" prefHeight="41.0" text="Rechercher">
                            <font>
                               <Font size="16.0" />
