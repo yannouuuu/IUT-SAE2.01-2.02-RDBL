@@ -200,7 +200,7 @@
             }
 
             /* Apparence originale du filtre transport (inchangée) */
-            .filter-button, .combo-box-transports {
+            .filter-button {
                 -fx-background-color: white;
                 -fx-background-radius: 50px;
                 -fx-border-radius: 50px;
@@ -213,21 +213,32 @@
                 -fx-font-size: 11px;
                 -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);
             }
+
             .combo-box-transports {
-                -fx-min-width: 200px;
-                -fx-padding: 0;
-                -fx-opacity: 1;
+                -fx-background-color: transparent;
+                -fx-background-radius: 8px;
+                -fx-border-radius: 8px;
+                -fx-border-color: #cbd5e1;
+                -fx-border-width: 1.5;
+                -fx-min-height: 35px;
+                -fx-max-height: 35px;
+                -fx-padding: 0 10 0 15;
+                -fx-cursor: hand;
             }
 
-            .combo-box-transports .list-cell {
-                -fx-text-fill: #b2acc4;
+            .combo-box-transports .label {
+                -fx-text-fill: black;
                 -fx-font-size: 11px;
-                -fx-padding: 0 0 0 20;
+                -fx-font-weight: normal;
             }
+
             .combo-box-transports .arrow-button {
-                -fx-text-fill: #b2acc4;
-                -fx-font-size: 11px;
-                -fx-padding: 0 20 0 0;
+                -fx-padding: 0 5 0 10;
+                -fx-background-color: transparent;
+            }
+            
+            .combo-box-transports .arrow {
+                -fx-background-color: black;
             }
 
             /* Popup filtre transport (style unifié) */
@@ -333,46 +344,92 @@
         -fx-spacing: 0;
     }
 
-    .details-vbox{
+    .details-scrollpane{
         -fx-background-color: white;
         -fx-background-radius: 0 15 15 0;
+        -fx-background-insets: 0;
         -fx-border-radius: 0 15 15 0;
         -fx-border-color: #afaeb1;
         -fx-border-width: 0.5;
-        -fx-padding: 15 8 15 8;
         -fx-min-width: 350px;
         -fx-effect: dropshadow(gaussian, rgba(120,80,220,0.12), 18, 0, 0, 4);
-        -fx-alignment: CENTER;
+    }
+    
+    .details-scrollpane .viewport {
+        -fx-background-color: transparent;
+    }
+
+    .details-vbox{
+        -fx-background-color: transparent;
+        -fx-padding: 15 8 15 8;
+        -fx-alignment: TOP_LEFT;
         -fx-spacing: 0;
     }
 
 .list-view-itineraires .list-cell:filled {
-    -fx-padding: 10px 10px;
-    -fx-margin: 2.5px, 0px;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
-    -fx-border-color: #afaeb1;
-    -fx-border-width: 0.5;
+    -fx-padding: 15px 10px;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #e5e7eb transparent;
+    -fx-border-width: 0 0 1 0;
 }
 
 .list-view-itineraires .list-cell:filled:hover {
-    -fx-background-color: #f3eeff;
-    -fx-border-color: #c4b5fd;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
+    -fx-background-color: #f8fafc;
+    -fx-border-color: transparent transparent #e5e7eb transparent;
 }
 
 .list-view-itineraires .list-cell:filled:selected {
-    -fx-background-color: #c4b5fd;
+    -fx-background-color: #f1f5f9;
     -fx-text-fill: black;
-    -fx-border-color: #a855f7;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
+    -fx-border-color: transparent transparent #e5e7eb transparent;
 }
 
 .list-view-itineraires .list-cell:filled:selected:hover {
-    -fx-background-color: #c4b5fd;
+    -fx-background-color: #e2e8f0;
     -fx-text-fill: black;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
+    -fx-border-color: transparent transparent #e5e7eb transparent;
+}
+
+/* --- ScrollBar Esthétique --- */
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 8;
+}
+
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-pref-height: 8;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 4;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #94a3b8;
+}
+
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
+    -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow, .scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0;
+}
+
+/* On interdit formellement le scroll horizontal dans la liste */
+.list-view-itineraires .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-pref-height: 0;
+    -fx-padding: 0;
 }

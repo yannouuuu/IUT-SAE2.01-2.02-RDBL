@@ -112,6 +112,42 @@ public class HomeViewController implements Initializable {
         if (AppState.getInstance().getVilleArrivee() != null) {
             arriverComboBox.setValue(AppState.getInstance().getVilleArrivee().toString());
         }
+
+        setupFiltreDoublon();
+    }
+
+    private boolean isUpdatingCombos = false;
+
+    /**
+     * Empêche de choisir la même ville au départ et à l'arrivée en mettant à jour 
+     * dynamiquement les listes des ComboBox.
+     */
+    private void setupFiltreDoublon() {
+        departComboBox.valueProperty().addListener((obs, oldVal, newVal) -> updateComboBoxes(departComboBox, arriverComboBox));
+        arriverComboBox.valueProperty().addListener((obs, oldVal, newVal) -> updateComboBoxes(arriverComboBox, departComboBox));
+    }
+
+    private void updateComboBoxes(ComboBox<String> source, ComboBox<String> target) {
+        if (isUpdatingCombos) return;
+        isUpdatingCombos = true;
+        
+        String targetSelected = target.getValue();
+        String sourceSelected = source.getValue();
+        
+        target.getItems().clear();
+        for (sae.transport.comparison.models.Ville ville : AppState.getInstance().getPlateforme().getVilles()) {
+            if (sourceSelected == null || !ville.getNom().equals(sourceSelected)) {
+                target.getItems().add(ville.getNom());
+            }
+        }
+        
+        if (targetSelected != null && !targetSelected.equals(sourceSelected)) {
+            target.setValue(targetSelected);
+        } else {
+            target.setValue(null);
+        }
+        
+        isUpdatingCombos = false;
     }
 
     // ---------------------------------------------------------------

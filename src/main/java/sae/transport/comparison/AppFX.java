@@ -10,8 +10,8 @@ import java.io.IOException;
 
 public class AppFX extends Application {
 
-    private static final double DEFAULT_WIDTH  = 1000;
-    private static final double DEFAULT_HEIGHT = 666;
+    private static final double DEFAULT_WIDTH  = 1050;
+    private static final double DEFAULT_HEIGHT = 750;
     private static final String WINDOW_TITLE = "Comparaison de Transport";
 
     private static Scene scene;
@@ -26,8 +26,8 @@ public class AppFX extends Application {
         scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         stage.setTitle(WINDOW_TITLE);
         stage.setScene(scene);
-        stage.setMinWidth(1000);
-        stage.setMinHeight(666);
+        stage.setMinWidth(1050);
+        stage.setMinHeight(750);
         stage.show();
 
         // Enregistrer la fenêtre principale dans l'état partagé

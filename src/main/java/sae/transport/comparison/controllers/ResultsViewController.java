@@ -68,9 +68,12 @@ public class ResultsViewController implements Initializable {
     @FXML
     private Button lePlusRapideButton;
 
-    /** ComboBox de filtrage par modalité de transport. */
+    /** MenuButton de filtrage multi-sélection par modalité de transport. */
     @FXML
-    private ComboBox<ModaliteTransport> filtreTransportComboBox;
+    private MenuButton filtreTransportMenu;
+
+    /** Liste des modes de transport actuellement cochés. */
+    private List<ModaliteTransport> modesSelectionnes = new ArrayList<>();
 
     /** ListView affichant les trajets trouvés. */
     @FXML
@@ -124,11 +127,27 @@ public class ResultsViewController implements Initializable {
             arriverComboBox.setValue(state.getVilleArrivee().toString());
         }
 
-        // --- Peupler le filtre transport ---
-        filtreTransportComboBox.getItems().add(null); // option "Tous"
-        filtreTransportComboBox.getItems().addAll(ModaliteTransport.values());
-        filtreTransportComboBox.setPromptText("Tous");
-        //filtreTransportComboBox.setOnAction(e -> filtrerModaliteAction());
+        setupFiltreDoublon();
+
+        // --- Peupler le filtre transport (multi-sélection) ---
+        for (ModaliteTransport mod : ModaliteTransport.values()) {
+            CheckBox cb = new CheckBox(mod.toString());
+            cb.setSelected(true); // Cochés par défaut
+            modesSelectionnes.add(mod);
+
+            cb.selectedProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal) {
+                    if (!modesSelectionnes.contains(mod)) modesSelectionnes.add(mod);
+                } else {
+                    modesSelectionnes.remove(mod);
+                }
+                lancerRecherche(); // Met à jour l'affichage en temps réel
+            });
+
+            CustomMenuItem item = new CustomMenuItem(cb);
+            item.setHideOnClick(false); // Le menu ne se ferme pas après un clic
+            filtreTransportMenu.getItems().add(item);
+        }
 
         // --- Configurer la ListView ---
 //        itinerairesListView.setCellFactory(lv -> new ListCell<>() {
@@ -164,6 +183,40 @@ public class ResultsViewController implements Initializable {
         lancerRecherche();
     }
 
+    private boolean isUpdatingCombos = false;
+
+    /**
+     * Empêche de choisir la même ville au départ et à l'arrivée en mettant à jour 
+     * dynamiquement les listes des ComboBox.
+     */
+    private void setupFiltreDoublon() {
+        departComboBox.valueProperty().addListener((obs, oldVal, newVal) -> updateComboBoxes(departComboBox, arriverComboBox));
+        arriverComboBox.valueProperty().addListener((obs, oldVal, newVal) -> updateComboBoxes(arriverComboBox, departComboBox));
+    }
+
+    private void updateComboBoxes(ComboBox<String> source, ComboBox<String> target) {
+        if (isUpdatingCombos) return;
+        isUpdatingCombos = true;
+        
+        String targetSelected = target.getValue();
+        String sourceSelected = source.getValue();
+        
+        target.getItems().clear();
+        for (sae.transport.comparison.models.Ville ville : AppState.getInstance().getPlateforme().getVilles()) {
+            if (sourceSelected == null || !ville.getNom().equals(sourceSelected)) {
+                target.getItems().add(ville.getNom());
+            }
+        }
+        
+        if (targetSelected != null && !targetSelected.equals(sourceSelected)) {
+            target.setValue(targetSelected);
+        } else {
+            target.setValue(null);
+        }
+        
+        isUpdatingCombos = false;
+    }
+
     // ---------------------------------------------------------------
     // Logique de recherche / tri / filtre
     // ---------------------------------------------------------------
@@ -180,7 +233,25 @@ public class ResultsViewController implements Initializable {
             return;
         }
 
-        afficherResultats(AppState.getInstance().getMultiGraphe());
+        List<Chemin> allChemins = AppState.getInstance().getMultiGraphe();
+        List<Chemin> filtered = new ArrayList<>();
+
+        if (allChemins != null) {
+            for (Chemin c : allChemins) {
+                boolean isValid = true;
+                for (Connexion conn : c.aretes()) {
+                    if (!modesSelectionnes.contains(conn.getModalite())) {
+                        isValid = false;
+                        break;
+                    }
+                }
+                if (isValid) {
+                    filtered.add(c);
+                }
+            }
+        }
+
+        afficherResultats(filtered);
     }
 
     /**
@@ -195,16 +266,86 @@ public class ResultsViewController implements Initializable {
         itinerairesListView.setCellFactory(list -> new ListCell<Chemin>() {
             protected void updateItem(Chemin item, boolean empty) {
                 super.updateItem(item, empty);
-                if(empty || item == null) {
+                if (empty || item == null || item.aretes().isEmpty()) {
                     setText(null);
-                } else if(item.aretes().size() == 1){
-                    setText("Trajet directe (" + item.aretes().get(0).getModalite() + ")");
-                }else{
-                    String texte = "Trajet indirecte : " + item.aretes().get(0).getDepart() + " --> ";
-                    for(int i = 0; i < item.aretes().size()-1; i++){
-                        texte += item.aretes().get(i).getArrivee() + " --> ";
+                    setGraphic(null);
+                    setStyle("-fx-background-color: transparent; -fx-padding: 5;");
+                } else {
+                    setText(null);
+
+                    // Calcul des coûts totaux
+                    double totalPrix = 0, totalTemps = 0, totalCO2 = 0;
+                    List<String> modalitesList = new ArrayList<>();
+                    for (Connexion c : item.aretes()) {
+                        Trajet t = retrouverTrajet(c);
+                        if (t != null) {
+                            totalPrix += t.getCout().getValeur(TypeCout.PRIX);
+                            totalTemps += t.getCout().getValeur(TypeCout.TEMPS);
+                            totalCO2 += t.getCout().getValeur(TypeCout.CO2);
+                        }
+                        if (!modalitesList.contains(c.getModalite().toString())) {
+                            modalitesList.add(c.getModalite().toString());
+                        }
                     }
-                    setText(texte + item.aretes().get(item.aretes().size()-1).getArrivee() + ".");
+
+                    // VBox gauche : Titre et Description
+                    VBox leftBox = new VBox(5);
+                    leftBox.setAlignment(Pos.CENTER_LEFT);
+                    
+                    String titleStr;
+                    String detailsStr;
+                    
+                    if (item.aretes().size() == 1) {
+                        titleStr = "Trajet Direct";
+                        detailsStr = "Mode : " + item.aretes().get(0).getModalite();
+                    } else {
+                        List<String> etapes = new ArrayList<>();
+                        for (int i = 0; i < item.aretes().size() - 1; i++) {
+                            etapes.add(item.aretes().get(i).getArrivee().toString());
+                        }
+                        titleStr = "Via " + String.join(", ", etapes);
+                        detailsStr = (item.aretes().size() - 1) + " correspondance(s) • " + String.join(", ", modalitesList);
+                    }
+                    
+                    Label titleLabel = new Label(titleStr);
+                    titleLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #333;");
+                    titleLabel.setWrapText(true);
+
+                    Label detailsLabel = new Label(detailsStr);
+                    detailsLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #777;");
+                    detailsLabel.setWrapText(true);
+
+                    leftBox.setMaxWidth(Double.MAX_VALUE);
+                    HBox.setHgrow(leftBox, javafx.scene.layout.Priority.ALWAYS);
+                    leftBox.getChildren().addAll(titleLabel, detailsLabel);
+
+                    // Region flexible pour pousser les stats à droite (si le texte est court)
+                    Region spacer = new Region();
+                    HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
+                    // HBox droite : Stats (Prix, Temps, CO2)
+                    HBox rightBox = new HBox(15);
+                    rightBox.setAlignment(Pos.CENTER_RIGHT);
+
+                    // Nudging écologique : CO2 en vert, Prix en gris, Temps en indigo
+                    Label co2Label = new Label(String.format("%.1f kg CO₂", totalCO2));
+                    co2Label.setStyle("-fx-font-size: 12px; -fx-text-fill: #10b981; -fx-background-color: #d1fae5; -fx-padding: 2 6; -fx-background-radius: 8;"); // Vert
+
+                    Label tempsLabel = new Label(toHeure(totalTemps));
+                    tempsLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #6366f1; -fx-background-color: #e0e7ff; -fx-padding: 2 6; -fx-background-radius: 8;"); // Indigo
+                    
+                    Label prixLabel = new Label(String.format("%.2f €", totalPrix));
+                    prixLabel.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #475569;"); // Gris foncé
+
+                    rightBox.getChildren().addAll(co2Label, tempsLabel, prixLabel);
+
+                    // Conteneur principal de la cellule
+                    HBox rootBox = new HBox(leftBox, spacer, rightBox);
+                    rootBox.setAlignment(Pos.CENTER);
+                    rootBox.setPadding(new Insets(10));
+                    rootBox.prefWidthProperty().bind(list.widthProperty().subtract(45));
+                    
+                    setGraphic(rootBox);
                 }
             }
         });
@@ -250,80 +391,116 @@ public class ResultsViewController implements Initializable {
 
     }
 
-    /**
-     * Affiche le détail d'un trajet dans le panneau de droite.
-     *
-     * @param trajet le trajet sélectionné
-     */
     private void afficherDetails(Chemin trajet) {
         detailsVBox.getChildren().clear();
-        detailsVBox.setPadding(new Insets(25, 25, 25, 25));
-        detailsVBox.alignmentProperty().setValue(Pos.TOP_LEFT);
+        detailsVBox.setPadding(new Insets(25));
+        detailsVBox.setAlignment(Pos.TOP_LEFT);
+        detailsVBox.setSpacing(20);
 
         double prix = 0;
         double temps = 0;
         double ecolo = 0;
 
-        HBox totalHBox = new HBox();
-
-        detailsVBox.getChildren().add(totalHBox);
-
-        detailsVBox.setAlignment(Pos.TOP_LEFT);
-        for(Connexion c:trajet.aretes()){
+        for(Connexion c : trajet.aretes()){
             Trajet t = retrouverTrajet(c);
-            prix += t.getCout().getValeur(TypeCout.PRIX);
-            temps += t.getCout().getValeur(TypeCout.TEMPS);
-            ecolo += t.getCout().getValeur(TypeCout.CO2);
-
-            Label ville = new Label("(" + c.getDepart().toString() + ")");
-            ville.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
-            detailsVBox.getChildren().add(ville);
-            detailsVBox.getChildren().add(new Label("|"));
-            detailsVBox.getChildren().add(new Label("| (" + c.getModalite() + ") : " + toHeure(t.getCout().getValeur(TypeCout.TEMPS)) + " et " + t.getCout().getValeur(TypeCout.PRIX) + "€"));
-            detailsVBox.getChildren().add(new Label("|"));
+            if (t != null) {
+                prix += t.getCout().getValeur(TypeCout.PRIX);
+                temps += t.getCout().getValeur(TypeCout.TEMPS);
+                ecolo += t.getCout().getValeur(TypeCout.CO2);
+            }
         }
-        Label ville = new Label("(" + trajet.aretes().get(trajet.aretes().size()-1).getArrivee().toString() + ")");
-        ville.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-        detailsVBox.getChildren().add(ville);
 
-        VBox vbPrix = new VBox();
-        VBox vbTemps = new VBox();
-        VBox vbEcolo = new VBox();
+        // --- 1. Cartes de résumé (En-tête) ---
+        HBox summaryHBox = new HBox(15);
+        summaryHBox.setAlignment(Pos.CENTER_LEFT);
 
-        vbPrix.setPadding(new Insets(0, 25, 10, 25));
-        vbTemps.setPadding(new Insets(0, 25, 10, 25));
-        vbEcolo.setPadding(new Insets(0, 25, 10, 25));
+        // Nudging: Le CO2 est mis en valeur avec la couleur verte pour inciter au choix écologique
+        VBox vbEcolo = creerCarteInfo("Émissions CO₂", String.format("%.1f kg", ecolo), "#10b981", "#d1fae5");
+        VBox vbTemps = creerCarteInfo("Temps estimé", toHeure(temps), "#6366f1", "#e0e7ff");
+        VBox vbPrix = creerCarteInfo("Prix total", String.format("%.2f €", prix), "#64748b", "#f1f5f9");
 
-        Label labelPrix = new Label("Prix total");
-        Label labelTemps = new Label("Durée du trajet");
-        Label labelEcolo = new Label("CO2 émi");
+        summaryHBox.getChildren().addAll(vbEcolo, vbTemps, vbPrix);
+        detailsVBox.getChildren().add(summaryHBox);
 
-        Label labelTotPrix = new Label(String.format("%.2f", prix) + "€");
-        Label labelTotTemps = new Label(toHeure(temps));
-        Label labelTotEcolo = new Label(String.format("%.2f",ecolo) + "kg");
+        // Ligne de séparation
+        javafx.scene.shape.Line separator = new javafx.scene.shape.Line(0, 0, 400, 0);
+        separator.setStroke(javafx.scene.paint.Color.web("#e5e7eb"));
+        detailsVBox.getChildren().add(separator);
 
-        labelPrix.setStyle("-fx-font-size: 15px;");
-        labelTemps.setStyle("-fx-font-size: 15px;");
-        labelEcolo.setStyle("-fx-font-size: 15px;");
+        // --- 2. Frise chronologique du trajet ---
+        VBox timelineVBox = new VBox();
+        timelineVBox.setSpacing(0);
 
-        labelTotPrix.setStyle("-fx-font-size: 17px; -fx-font-weight: bold;");
-        labelTotTemps.setStyle("-fx-font-size: 17px; -fx-font-weight: bold;");
-        labelTotEcolo.setStyle("-fx-font-size: 17px; -fx-font-weight: bold;");
+        for (Connexion c : trajet.aretes()) {
+            Trajet t = retrouverTrajet(c);
+            
+            // Ville de départ de cette étape
+            Label ville = new Label(c.getDepart().toString());
+            ville.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #1f2937;");
+            timelineVBox.getChildren().add(ville);
 
-        vbPrix.getChildren().addAll(labelPrix, labelTotPrix);
-        vbTemps.getChildren().addAll(labelTemps, labelTotTemps);
-        vbEcolo.getChildren().addAll(labelEcolo, labelTotEcolo);
+            // Détails du transport (Ligne verticale + infos)
+            HBox stepBox = new HBox(15);
+            stepBox.setPadding(new Insets(5, 0, 5, 8)); // Aligné avec le texte de la ville
+            
+            // La barre verticale
+            Region verticalLine = new Region();
+            verticalLine.setPrefWidth(2);
+            verticalLine.setStyle("-fx-background-color: #cbd5e1;");
+            
+            VBox transportDetails = new VBox(2);
+            transportDetails.setPadding(new Insets(10, 0, 10, 0));
+            
+            Label modeLabel = new Label("Mode : " + c.getModalite());
+            modeLabel.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #4b5563;");
+            
+            String infosExtra = "Détails introuvables";
+            if (t != null) {
+                infosExtra = "Durée : " + toHeure(t.getCout().getValeur(TypeCout.TEMPS)) + "   |   Coût : " + String.format("%.2f €", t.getCout().getValeur(TypeCout.PRIX));
+            }
+            Label infoLabel = new Label(infosExtra);
+            infoLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #6b7280;");
 
-        totalHBox.getChildren().addAll(vbPrix, vbTemps, vbEcolo);
+            transportDetails.getChildren().addAll(modeLabel, infoLabel);
+            stepBox.getChildren().addAll(verticalLine, transportDetails);
+            
+            timelineVBox.getChildren().add(stepBox);
+        }
+        
+        // Ville d'arrivée finale
+        Label villeArrivee = new Label(trajet.aretes().get(trajet.aretes().size()-1).getArrivee().toString());
+        villeArrivee.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #111827;");
+        timelineVBox.getChildren().add(villeArrivee);
 
-        // Bouton « Ajouter à l'historique »
+        detailsVBox.getChildren().add(timelineVBox);
+
+        // --- 3. Bouton d'action en bas ---
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
         Button ajouterBtn = new Button("+ Ajouter à l'historique");
         //ajouterBtn.setOnAction(e -> ajouterHistoriqueAction(trajet));
-        VBox.setMargin(ajouterBtn, new javafx.geometry.Insets(15, 0, 0, 0));
-        Region spacer = new Region();
-        spacer.setPrefHeight(Double.MAX_VALUE);
+        
         detailsVBox.getChildren().addAll(spacer, ajouterBtn);
+    }
 
+    /**
+     * Crée une carte de résumé colorée pour le haut du panneau de détails.
+     */
+    private VBox creerCarteInfo(String titre, String valeur, String textColor, String bgColor) {
+        VBox card = new VBox(5);
+        card.setAlignment(Pos.CENTER);
+        card.setPadding(new Insets(10, 15, 10, 15));
+        card.setStyle("-fx-background-color: " + bgColor + "; -fx-background-radius: 10;");
+        
+        Label titreLabel = new Label(titre);
+        titreLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #6b7280; -fx-font-weight: bold;");
+        
+        Label valeurLabel = new Label(valeur);
+        valeurLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: " + textColor + ";");
+        
+        card.getChildren().addAll(titreLabel, valeurLabel);
+        return card;
     }
 
     /**

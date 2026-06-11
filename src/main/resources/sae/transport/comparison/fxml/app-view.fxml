@@ -5,6 +5,8 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="676.0" prefWidth="1000.0" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.ResultsViewController">
+<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sae.transport.comparison.controllers.ResultsViewController">
    <children>
       <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="690.0" prefWidth="960.0" VBox.vgrow="ALWAYS">
          <children>
@@ -87,7 +89,7 @@
                               <Insets right="5.0" />
                            </HBox.margin>
                            <font>
-                              <Font size="11.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                         <Button fx:id="leMoinsCouteuxButton" alignment="CENTER" mnemonicParsing="false" onAction="#leMoinsCouteuxAction" prefHeight="20.0" prefWidth="74.0" styleClass="filter-button" text="Le moins couteux" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
@@ -113,27 +115,27 @@
                         </Button>
                         <Label layoutX="152.0" layoutY="11.0" text="Filtrer par :">
                            <font>
-                              <Font size="11.0" />
+                              <Font size="13.0" />
                            </font>
                            <HBox.margin>
                               <Insets left="15.0" right="5.0" />
                            </HBox.margin>
                         </Label>
-                        <ComboBox fx:id="filtreTransportComboBox" minWidth="94.0" prefHeight="7.0" prefWidth="94.0" promptText="Transport" styleClass="combo-box-transports" />
+                        <MenuButton fx:id="filtreTransportMenu" minWidth="130.0" prefHeight="35.0" prefWidth="150.0" text="Type de transport" styleClass="combo-box-transports" />
                      </children>
                   </HBox>
                </children>
             </VBox>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="960.0" styleClass="hbox-dessous">
+            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="960.0" styleClass="hbox-dessous" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox prefHeight="314.0" prefWidth="458.0">
+                  <VBox prefHeight="420.0" prefWidth="475.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Label text="Itinéraires">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Label>
-                        <ListView fx:id="itinerairesListView" maxHeight="1.7976931348623157E308" styleClass="list-view-itineraires">
+                        <ListView fx:id="itinerairesListView" maxHeight="1.7976931348623157E308" styleClass="list-view-itineraires" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets right="5.0" />
                            </VBox.margin>
@@ -143,18 +145,18 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox layoutX="471.0" layoutY="10.0">
+                  <VBox prefHeight="420.0" prefWidth="475.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Label text="Détails">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Label>
-                        <VBox fx:id="detailsVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="347.0" prefHeight="285.0" prefWidth="437.0" styleClass="details-vbox" VBox.vgrow="ALWAYS">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </VBox>
+                        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="390.0" styleClass="details-scrollpane" VBox.vgrow="ALWAYS">
+                           <content>
+                              <VBox fx:id="detailsVBox" minWidth="347.0" prefWidth="437.0" styleClass="details-vbox" />
+                           </content>
+                        </ScrollPane>
                      </children>
                      <HBox.margin>
                         <Insets left="5.0" />
