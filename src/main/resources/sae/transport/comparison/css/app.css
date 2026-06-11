@@ -301,4 +301,33 @@
         -fx-spacing: 0;
     }
 
+.list-view .list-cell:filled {
+    -fx-padding: 10px 10px;
+    -fx-margin: 2.5px, 0px
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #afaeb1;
+    -fx-border-width: 0.5;
+}
 
+.list-view .list-cell:filled:hover {
+    -fx-background-color: #f3eeff;
+    -fx-border-color: #c4b5fd;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.list-view .list-cell:filled:selected {
+    -fx-background-color: #c4b5fd;
+    -fx-text-fill: black;
+    -fx-border-color: #a855f7;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.list-view .list-cell:filled:selected:hover {
+    -fx-background-color: #c4b5fd;
+    -fx-text-fill: black;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}

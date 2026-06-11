@@ -101,6 +101,8 @@ public class HomeViewController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
         configurerDragOver();
 
         // Si la plateforme contient déjà des données (retour en arrière), repeupler

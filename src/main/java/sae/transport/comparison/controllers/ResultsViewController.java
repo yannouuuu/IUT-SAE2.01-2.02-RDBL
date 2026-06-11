@@ -3,12 +3,18 @@ package sae.transport.comparison.controllers;
 import fr.ulille.but.sae_s2_2026.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import sae.transport.comparison.AppState;
 import sae.transport.comparison.models.*;
 
+import javax.xml.validation.Schema;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -102,6 +108,8 @@ public class ResultsViewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         AppState state = AppState.getInstance();
 
+
+
         // --- Peupler les ComboBox villes ---
         for (Ville ville : state.getPlateforme().getVilles()) {
             departComboBox.getItems().add(ville.getNom());
@@ -144,13 +152,13 @@ public class ResultsViewController implements Initializable {
 //        });
 
         // --- Sélection → afficher détails ---
-//        itinerairesListView.getSelectionModel().selectedItemProperty().addListener(
-//            (obs, oldVal, newVal) -> {
-//                if (newVal != null) {
-//                    afficherDetails(newVal);
-//                }
-//            }
-//        );
+        itinerairesListView.getSelectionModel().selectedItemProperty().addListener(
+            (obs, oldVal, newVal) -> {
+                if (newVal != null) {
+                    afficherDetails(newVal);
+                }
+            }
+        );
 
         // --- Lancer la première recherche ---
         lancerRecherche();
@@ -183,6 +191,7 @@ public class ResultsViewController implements Initializable {
     private void afficherResultats(List<Chemin> trajets) {
 
         itinerairesListView.getItems().clear();
+        itinerairesListView.setPadding(new Insets(10, 10, 10, 10));
         itinerairesListView.setCellFactory(list -> new ListCell<Chemin>() {
             protected void updateItem(Chemin item, boolean empty) {
                 super.updateItem(item, empty);
@@ -190,16 +199,10 @@ public class ResultsViewController implements Initializable {
                     setText(null);
                 } else if(item.aretes().size() == 1){
                     setText("Trajet directe (" + item.aretes().get(0).getModalite() + ")");
-                } else if(item.aretes().size() < 4){
-                    String texte = item.aretes().get(0).getDepart() + " -> ";
+                }else{
+                    String texte = "Trajet indirecte : " + item.aretes().get(0).getDepart() + " --> ";
                     for(int i = 0; i < item.aretes().size()-1; i++){
-                        texte += item.aretes().get(i).getArrivee() + " (" + item.aretes().get(i).getModalite() + ") -> ";
-                    }
-                    setText(texte + item.aretes().get(item.aretes().size()-1).getArrivee() + " (" + item.aretes().get(item.aretes().size()-1).getModalite() + ").");
-                } else{
-                    String texte = item.aretes().get(0).getDepart() + " -> ";
-                    for(int i = 0; i < item.aretes().size()-1; i++){
-                        texte += item.aretes().get(i).getArrivee() + "-> ";
+                        texte += item.aretes().get(i).getArrivee() + " --> ";
                     }
                     setText(texte + item.aretes().get(item.aretes().size()-1).getArrivee() + ".");
                 }
@@ -214,27 +217,113 @@ public class ResultsViewController implements Initializable {
     }
 
     /**
+     * Cherche au sein de la plateforme, le trajet équivalent à une connexion du multigraphe.
+     *
+     * @param connexion la connexion ayant un équivalent de type trajet
+     * @return la conversion de la connexion vers son trajet respectif.
+     */
+    private Trajet retrouverTrajet(Connexion connexion){
+        for(Trajet t:AppState.getInstance().getPlateforme().getTrajets()){
+            if(t.getDepart() == connexion.getDepart() &&
+                t.getArrivee() == connexion.getArrivee() &&
+                t.getModalite() == connexion.getModalite()){
+                return t;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Traduit un nombre de minutes en un String exprimant ce temps
+     *
+     * @param minutes le nombre de minutes
+     * @return la conversion de la valeur en String
+     */
+    private String toHeure(double minutes){
+        if(minutes > 59) {
+            if(minutes % 60 < 10){
+                return (int)minutes / 60 + "h0" + (int)minutes % 60;
+            }
+            return (int)minutes / 60 + "h" + (int)minutes % 60;
+        }
+        return (int)minutes + "mn";
+
+    }
+
+    /**
      * Affiche le détail d'un trajet dans le panneau de droite.
      *
      * @param trajet le trajet sélectionné
      */
-    private void afficherDetails(Trajet trajet) {
+    private void afficherDetails(Chemin trajet) {
         detailsVBox.getChildren().clear();
+        detailsVBox.setPadding(new Insets(25, 25, 25, 25));
+        detailsVBox.alignmentProperty().setValue(Pos.TOP_LEFT);
 
-        detailsVBox.getChildren().addAll(
-            creerLabelDetail("Départ :",     trajet.getDepart().toString()),
-            creerLabelDetail("Arrivée :",    trajet.getArrivee().toString()),
-            creerLabelDetail("Transport :",  trajet.getModalite().name()),
-            creerLabelDetail("Prix :",       String.format("%.2f €", trajet.getCout().getValeur(TypeCout.PRIX))),
-            creerLabelDetail("Durée :",      String.format("%.0f min", trajet.getCout().getValeur(TypeCout.TEMPS))),
-            creerLabelDetail("CO₂ :",        String.format("%.2f kg", trajet.getCout().getValeur(TypeCout.CO2)))
-        );
+        double prix = 0;
+        double temps = 0;
+        double ecolo = 0;
+
+        HBox totalHBox = new HBox();
+
+        detailsVBox.getChildren().add(totalHBox);
+
+        detailsVBox.setAlignment(Pos.TOP_LEFT);
+        for(Connexion c:trajet.aretes()){
+            Trajet t = retrouverTrajet(c);
+            prix += t.getCout().getValeur(TypeCout.PRIX);
+            temps += t.getCout().getValeur(TypeCout.TEMPS);
+            ecolo += t.getCout().getValeur(TypeCout.CO2);
+
+            Label ville = new Label("(" + c.getDepart().toString() + ")");
+            ville.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
+            detailsVBox.getChildren().add(ville);
+            detailsVBox.getChildren().add(new Label("|"));
+            detailsVBox.getChildren().add(new Label("| (" + c.getModalite() + ") : " + toHeure(t.getCout().getValeur(TypeCout.TEMPS)) + " et " + t.getCout().getValeur(TypeCout.PRIX) + "€"));
+            detailsVBox.getChildren().add(new Label("|"));
+        }
+        Label ville = new Label("(" + trajet.aretes().get(trajet.aretes().size()-1).getArrivee().toString() + ")");
+        ville.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        detailsVBox.getChildren().add(ville);
+
+        VBox vbPrix = new VBox();
+        VBox vbTemps = new VBox();
+        VBox vbEcolo = new VBox();
+
+        vbPrix.setPadding(new Insets(0, 25, 10, 25));
+        vbTemps.setPadding(new Insets(0, 25, 10, 25));
+        vbEcolo.setPadding(new Insets(0, 25, 10, 25));
+
+        Label labelPrix = new Label("Prix total");
+        Label labelTemps = new Label("Durée du trajet");
+        Label labelEcolo = new Label("CO2 émi");
+
+        Label labelTotPrix = new Label(String.format("%.2f", prix) + "€");
+        Label labelTotTemps = new Label(toHeure(temps));
+        Label labelTotEcolo = new Label(String.format("%.2f",ecolo) + "kg");
+
+        labelPrix.setStyle("-fx-font-size: 15px;");
+        labelTemps.setStyle("-fx-font-size: 15px;");
+        labelEcolo.setStyle("-fx-font-size: 15px;");
+
+        labelTotPrix.setStyle("-fx-font-size: 17px; -fx-font-weight: bold;");
+        labelTotTemps.setStyle("-fx-font-size: 17px; -fx-font-weight: bold;");
+        labelTotEcolo.setStyle("-fx-font-size: 17px; -fx-font-weight: bold;");
+
+        vbPrix.getChildren().addAll(labelPrix, labelTotPrix);
+        vbTemps.getChildren().addAll(labelTemps, labelTotTemps);
+        vbEcolo.getChildren().addAll(labelEcolo, labelTotEcolo);
+
+        totalHBox.getChildren().addAll(vbPrix, vbTemps, vbEcolo);
 
         // Bouton « Ajouter à l'historique »
         Button ajouterBtn = new Button("+ Ajouter à l'historique");
-        ajouterBtn.setOnAction(e -> ajouterHistoriqueAction(trajet));
+        //ajouterBtn.setOnAction(e -> ajouterHistoriqueAction(trajet));
         VBox.setMargin(ajouterBtn, new javafx.geometry.Insets(15, 0, 0, 0));
-        detailsVBox.getChildren().add(ajouterBtn);
+        Region spacer = new Region();
+        spacer.setPrefHeight(Double.MAX_VALUE);
+        detailsVBox.getChildren().addAll(spacer, ajouterBtn);
+
     }
 
     /**
@@ -449,6 +538,7 @@ public class ResultsViewController implements Initializable {
     @FXML
     private void ponderationAction(javafx.scene.input.MouseEvent event) {
         event.consume();
+        rechercherAction();
     }
 
     /**
