@@ -31,7 +31,7 @@
       </Label>
       <HBox prefHeight="0.0" prefWidth="574.0">
          <children>
-            <Label text="Compte : ">
+            <Label text="Nom : ">
                <font>
                   <Font name="System Bold" size="10.0" />
                </font>
@@ -47,6 +47,46 @@
          </children>
          <VBox.margin>
             <Insets bottom="5.0" left="5.0" top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefHeight="0.0" prefWidth="574.0">
+         <children>
+            <Label text="Trajets enregistrés : ">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="statsTrajetsLabel" text="0 trajets">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" top="0.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefHeight="0.0" prefWidth="574.0">
+         <children>
+            <Label text="Dépenses cumulées : ">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="statsPrixLabel" text="0.00 €">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" top="0.0" />
          </VBox.margin>
       </HBox>
       <HBox prefHeight="24.0" prefWidth="186.0">
@@ -72,18 +112,7 @@
             <Insets top="5.0" />
          </VBox.margin>
       </HBox>
-      <HBox alignment="TOP_CENTER" layoutX="25.0" layoutY="71.0" prefHeight="29.0" prefWidth="196.0">
-         <children>
-            <Button fx:id="gestionnaireCSVButton" mnemonicParsing="false" onAction="#gestionnaireCSVAction" prefHeight="13.0" prefWidth="179.0" text="Gestionnaire de CSV">
-               <font>
-                  <Font size="11.0" />
-               </font>
-               <HBox.margin>
-                  <Insets top="5.0" />
-               </HBox.margin>
-            </Button>
-         </children>
-      </HBox>
+
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

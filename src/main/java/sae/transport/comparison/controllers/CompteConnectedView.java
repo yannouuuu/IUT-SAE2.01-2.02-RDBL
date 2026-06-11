@@ -33,9 +33,13 @@ public class CompteConnectedView implements Initializable {
     @FXML
     private Button seDeconnecterButton;
 
-    /** Bouton d'ouverture du gestionnaire de CSV. */
+    /** Label affichant le nombre de trajets enregistrés dans l'historique. */
     @FXML
-    private Button gestionnaireCSVButton;
+    private Label statsTrajetsLabel;
+
+    /** Label affichant le total des dépenses cumulées. */
+    @FXML
+    private Label statsPrixLabel;
 
     // ---------------------------------------------------------------
     // Initialisation
@@ -47,7 +51,14 @@ public class CompteConnectedView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (AppState.getInstance().getVoyageur() != null) {
-            nomCompteLabel.setText(AppState.getInstance().getVoyageur().getNom());
+            sae.transport.comparison.models.Voyageur v = AppState.getInstance().getVoyageur();
+            nomCompteLabel.setText(v.getNom());
+            
+            int nbTrajets = v.getHistorique().size();
+            statsTrajetsLabel.setText(nbTrajets + (nbTrajets > 1 ? " trajets" : " trajet"));
+            
+            double totalPrix = v.getTotalHistorique(sae.transport.comparison.models.TypeCout.PRIX);
+            statsPrixLabel.setText(String.format("%.2f €", totalPrix));
         }
     }
 
@@ -77,17 +88,6 @@ public class CompteConnectedView implements Initializable {
         fermerPopup();
     }
 
-    /**
-     * Déclenché par le bouton « Gestionnaire de CSV ».
-     * Ouvre la popup du gestionnaire CSV.
-     */
-    @FXML
-    private void gestionnaireCSVAction() {
-        fermerPopup();
-        AppState.getInstance().ouvrirPopup(
-            "/sae/transport/comparison/fxml/gestionnaire-csv-view.fxml"
-        );
-    }
 
     /**
      * Ferme la fenêtre popup courante.
