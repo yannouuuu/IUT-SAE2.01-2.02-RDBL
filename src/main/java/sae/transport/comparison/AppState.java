@@ -19,11 +19,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.paint.Color;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.prefs.Preferences;
 
 /**
@@ -59,9 +56,6 @@ public class AppState {
 
     /** Dit si le dark mode est activé ou non. */
     private boolean darkMode;
-
-    /** Point d'entrée vers les fichiers de préférences. */
-    private final String preferencePath = "src/main/resources/sae/transport/comparison/preferences/";
 
     private boolean firstTime = true;
 
@@ -114,21 +108,15 @@ public class AppState {
     }
 
     /**
-     * Change la couleur de préférence, aussi bien dans le Singleton que dans le fichier de préférences.
+     * Change la couleur de préférence.
      *
      * @param color la couleur qui va remplacer l'ancienne.
      */
     public void setThemeColor(Color color) {
         this.themeColor.set(color);
-        try{
-            List<String> lignes = Files.readAllLines(Path.of(preferencePath + "apparence.txt"));
-            lignes.set(0, toHexString(color));
-            Files.write(Path.of(preferencePath + "apparence.txt"), lignes);
-        }catch(IOException ignore){ignore.printStackTrace();}
+        Preferences prefs = Preferences.userNodeForPackage(AppState.class);
+        prefs.put("themeColor", toHexString(color));
     }
-
-
-
 
 
     public boolean getDarkMode(){
@@ -136,7 +124,7 @@ public class AppState {
     }
 
     /**
-     * Change l'état du darkmode, aussi bien dans le Singleton que dans le fichier de préférences.
+     * Change l'état du darkmode.
      *
      * @param darkMode l'état qui va remplacer l'ancien.
      */

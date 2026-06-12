@@ -1,4 +1,4 @@
-#C149F4
+#FFFF00
 false
 --------------------- Dans l'ordre :
 1 - couleur préférence

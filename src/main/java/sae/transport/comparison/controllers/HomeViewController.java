@@ -15,7 +15,6 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import sae.transport.comparison.AppFX;
 import sae.transport.comparison.AppState;
 import sae.transport.comparison.exceptions.DonneesInvalidesException;
 import sae.transport.comparison.models.Plateforme;
