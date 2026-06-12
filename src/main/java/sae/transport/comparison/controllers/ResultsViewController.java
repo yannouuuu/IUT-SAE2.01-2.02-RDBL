@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import sae.transport.comparison.AppFX;
 import sae.transport.comparison.AppState;
 import sae.transport.comparison.models.*;
 
@@ -108,7 +109,6 @@ public class ResultsViewController implements Initializable {
         AppState state = AppState.getInstance();
 
 
-
         // --- Peupler les ComboBox villes ---
         for (Ville ville : state.getPlateforme().getVilles()) {
             departComboBox.getItems().add(ville.getNom());
@@ -143,9 +143,8 @@ public class ResultsViewController implements Initializable {
             CustomMenuItem item = new CustomMenuItem(cb);
             item.setHideOnClick(false); // Le menu ne se ferme pas après un clic
             filtreTransportMenu.getItems().add(item);
+            state.appliquerTheme(AppFX.getScene().getRoot(), state.getThemeColor(), state.getDarkMode());
         }
-
-        // --- Configurer la ListView ---
 
         // --- Sélection → afficher détails ---
         itinerairesListView.getSelectionModel().selectedItemProperty().addListener(
@@ -456,6 +455,51 @@ public class ResultsViewController implements Initializable {
         VBox.setVgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
 
         Button ajouterBtn = new Button("+ Ajouter à l'historique");
+        ajouterBtn.setStyle("-fx-background-color: white;\n" +
+                "                -fx-background-radius: 50px;\n" +
+                "                -fx-border-radius: 50px;\n" +
+                "                -fx-border-color: #e0d9f5;\n" +
+                "                -fx-border-width: 1.5;\n" +
+                "                -fx-cursor: hand;\n" +
+                "                -fx-font-size: 11px;\n" +
+                "                -fx-text-fill: black;\n" +
+                "                -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);");
+        ajouterBtn.setOnMouseEntered(e -> ajouterBtn.setStyle("-fx-background-color: #d4d4d4;\n" +
+                "                -fx-background-radius: 50px;\n" +
+                "                -fx-border-radius: 50px;\n" +
+                "                -fx-border-color: #e0d9f5;\n" +
+                "                -fx-border-width: 1.5;\n" +
+                "                -fx-cursor: hand;\n" +
+                "                -fx-font-size: 11px;\n" +
+                "                -fx-text-fill: black;\n" +
+                "                -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);"));
+        ajouterBtn.setOnMouseExited(e -> ajouterBtn.setStyle("-fx-background-color: white;\n" +
+                "                -fx-background-radius: 50px;\n" +
+                "                -fx-border-radius: 50px;\n" +
+                "                -fx-border-color: #e0d9f5;\n" +
+                "                -fx-border-width: 1.5;\n" +
+                "                -fx-cursor: hand;\n" +
+                "                -fx-font-size: 11px;\n" +
+                "                -fx-text-fill: black;\n" +
+                "                -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);"));
+        ajouterBtn.setOnMousePressed(e -> ajouterBtn.setStyle("-fx-background-color: #bdbdbd;\n" +
+                "                -fx-background-radius: 50px;\n" +
+                "                -fx-border-radius: 50px;\n" +
+                "                -fx-border-color: #e0d9f5;\n" +
+                "                -fx-border-width: 1.5;\n" +
+                "                -fx-cursor: hand;\n" +
+                "                -fx-font-size: 11px;\n" +
+                "                -fx-text-fill: black;\n" +
+                "                -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);"));
+        ajouterBtn.setOnMouseReleased(e -> ajouterBtn.setStyle("-fx-background-color: white;\n" +
+                "                -fx-background-radius: 50px;\n" +
+                "                -fx-border-radius: 50px;\n" +
+                "                -fx-border-color: #e0d9f5;\n" +
+                "                -fx-border-width: 1.5;\n" +
+                "                -fx-cursor: hand;\n" +
+                "                -fx-font-size: 11px;\n" +
+                "                -fx-text-fill: black;\n" +
+                "                -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);"));
         ajouterBtn.setOnAction(e -> ajouterHistoriqueAction(trajet));
         
         detailsVBox.getChildren().addAll(spacer, ajouterBtn);

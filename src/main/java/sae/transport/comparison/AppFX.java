@@ -22,12 +22,12 @@ public class AppFX extends Application {
             getClass().getResource("/sae/transport/comparison/fxml/home-view.fxml")
         );
         Parent root = loader.load();
-
         scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         stage.setTitle(WINDOW_TITLE);
         stage.setScene(scene);
         stage.setMinWidth(1050);
         stage.setMinHeight(750);
+        AppState.getInstance().appliquerTheme(root, AppState.getInstance().getThemeColor(), AppState.getInstance().getDarkMode());
         stage.show();
 
         // Enregistrer la fenêtre principale dans l'état partagé

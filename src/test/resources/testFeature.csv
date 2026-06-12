@@ -1,0 +1,5 @@
+Lille;Paris;TRAIN;30;1.2;80
+Paris;Woipy;AVION;80;12;2
+Lille;Woipy;BUS;2;5;120
+Lille;Woipy;TRAIN;15;1;50
+Woipy;Paris;BUS;5;5.3;1563

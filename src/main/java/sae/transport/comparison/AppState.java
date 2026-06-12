@@ -7,6 +7,7 @@ import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.effect.BlendMode;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -18,7 +19,10 @@ import sae.transport.comparison.models.Voyageur;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.paint.Color;
-import java.io.IOException;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +56,13 @@ public class AppState {
     private List<Chemin> multiGraphe;
 
     /** Couleur d'accentuation dynamique */
-    private final ObjectProperty<Color> themeColor = new SimpleObjectProperty<>(Color.web("#a855f7")); // Default purple
+    private ObjectProperty<Color> themeColor;
+
+    private boolean darkMode;
+
+    private boolean firstTime = true;
+
+    private final String preferencePath = "src/main/resources/sae/transport/comparison/preferences/";
 
     public ObjectProperty<Color> themeColorProperty() {
         return themeColor;
@@ -64,6 +74,11 @@ public class AppState {
 
     public void setThemeColor(Color color) {
         this.themeColor.set(color);
+        try{
+            List<String> lignes = Files.readAllLines(Path.of(preferencePath + "apparence.txt"));
+            lignes.set(0, toHexString(color));
+            Files.write(Path.of(preferencePath + "apparence.txt"), lignes);
+        }catch(IOException ignore){ignore.printStackTrace();}
     }
 
     // ---------------------------------------------------------------
@@ -82,13 +97,38 @@ public class AppState {
     public static AppState getInstance() {
         if (instance == null) {
             instance = new AppState();
+
             HashMap<TypeCout, Double> map = new HashMap<>();
             map.put(TypeCout.CO2, 33.0);
             map.put(TypeCout.TEMPS, 33.0);
             map.put(TypeCout.PRIX, 34.0);
             instance.voyageur = new Voyageur(map);
+
+            String themeColor = "#a855f7";
+            boolean darkMode = false;
+            try{
+                BufferedReader br = new BufferedReader(new FileReader(instance.preferencePath + "apparence.txt"));
+                themeColor = br.readLine();
+                darkMode = Boolean.parseBoolean(br.readLine());
+                br.close();
+            }catch(IOException ignore){ignore.printStackTrace();}
+            instance.themeColor = new SimpleObjectProperty<>(Color.web(themeColor));
+            instance.darkMode = darkMode;
         }
         return instance;
+    }
+
+    public boolean getDarkMode(){
+        return darkMode;
+    }
+
+    public void setDarkMode(boolean darkMode){
+        this.darkMode = darkMode;
+        try{
+            List<String> lignes = Files.readAllLines(Path.of(preferencePath + "apparence.txt"));
+            lignes.set(1, String.valueOf(darkMode));
+            Files.write(Path.of(preferencePath + "apparence.txt"), lignes);
+        }catch(IOException ignore){ignore.printStackTrace();}
     }
 
     // ---------------------------------------------------------------
@@ -116,7 +156,7 @@ public class AppState {
                 Parent newRoot = loader.load();
                 newRoot.setOpacity(0.0);
                 AppFX.getScene().setRoot(newRoot);
-                appliquerTheme(newRoot, getThemeColor());
+                appliquerTheme(newRoot, instance.getThemeColor(), instance.darkMode);
                 
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(400), newRoot);
                 fadeIn.setFromValue(0.0);
@@ -268,8 +308,8 @@ public class AppState {
      * Applique la couleur de thème au composant racine.
      * Génère les variables CSS (looked-up colors).
      */
-    public void appliquerTheme(Parent root, Color baseColor) {
-        if (root == null || baseColor == null) return;
+    public void appliquerTheme(Parent root, Color baseColor, boolean darkMode) {
+        if (root == null || baseColor == null)return;
         
         Color lightColor = baseColor.deriveColor(0, 0.8, 1.2, 1.0);
         Color hoverColor = baseColor.deriveColor(0, 1.0, 0.9, 1.0);
@@ -297,6 +337,11 @@ public class AppState {
         // Retire les anciennes variables pour éviter l'accumulation
         currentStyle = currentStyle.replaceAll("-fx-primary-[^;]+;\\s*", "");
         root.setStyle(currentStyle + style);
+        if(darkMode){
+            root.setBlendMode(BlendMode.DIFFERENCE);
+        }else{
+            root.setBlendMode(BlendMode.SRC_OVER);
+        }
     }
 
     private String toHexString(Color color) {

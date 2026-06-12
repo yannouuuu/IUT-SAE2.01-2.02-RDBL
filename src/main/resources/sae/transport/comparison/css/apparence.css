@@ -50,10 +50,10 @@
     -fx-border-radius: 40px;
     -fx-padding: 8 22 8 22;
     -fx-cursor: hand;
-    -fx-min-height: 41px;
-    -fx-min-width: 41px;
-    -fx-max-height: 41px;
-    -fx-max-width: 41px;
+    -fx-min-height: 30px;
+    -fx-min-width: 100px;
+    -fx-max-height: 30px;
+    -fx-max-width: 100px;
     -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.35), 12, 0, 0, 3);
             
 }

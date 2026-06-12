@@ -5,8 +5,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import sae.transport.comparison.AppFX;
+import sae.transport.comparison.AppState;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,6 +36,9 @@ public class ApparenceViewController implements Initializable {
     @FXML
     private ColorPicker themeColorPicker;
 
+    @FXML
+    private Button resetButton;
+
     // ---------------------------------------------------------------
     // Initialisation
     // ---------------------------------------------------------------
@@ -43,8 +48,9 @@ public class ApparenceViewController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        boolean sombreActif = AppFX.getScene().getStylesheets().stream()
-            .anyMatch(css -> css.contains("dark"));
+//        boolean sombreActif = AppFX.getScene().getStylesheets().stream()
+//            .anyMatch(css -> css.contains("dark"));
+        boolean sombreActif = AppState.getInstance().getDarkMode();
         modeSombreButton.setSelected(sombreActif);
         modeSombreButton.setText(sombreActif ? "ON" : "OFF");
 
@@ -53,7 +59,7 @@ public class ApparenceViewController implements Initializable {
             sae.transport.comparison.AppState state = sae.transport.comparison.AppState.getInstance();
             state.setThemeColor(newVal);
             if (sae.transport.comparison.AppFX.getScene() != null && sae.transport.comparison.AppFX.getScene().getRoot() != null) {
-                state.appliquerTheme(sae.transport.comparison.AppFX.getScene().getRoot(), newVal);
+                state.appliquerTheme(sae.transport.comparison.AppFX.getScene().getRoot(), state.getThemeColor(), AppState.getInstance().getDarkMode());
             }
         });
     }
@@ -76,17 +82,26 @@ public class ApparenceViewController implements Initializable {
             ? getClass().getResource(CSS_SOMBRE).toExternalForm()
             : null;
 
-        if (cssUrl == null) {
-            // CSS dark.css non trouvé — fonctionnalité à implémenter
-            return;
-        }
+//        if (cssUrl == null) {
+//            // CSS dark.css non trouvé — fonctionnalité à implémenter
+//            return;
+//        }
+//
+//        if (actif) {
+//            if (!stylesheets.contains(cssUrl)) {
+//                stylesheets.add(cssUrl);
+//            }
+//        } else {
+//            stylesheets.remove(cssUrl);
+//        }
+        AppState.getInstance().setDarkMode(actif);
+        AppState.getInstance().appliquerTheme(sae.transport.comparison.AppFX.getScene().getRoot(), AppState.getInstance().getThemeColor(), actif);
+    }
 
-        if (actif) {
-            if (!stylesheets.contains(cssUrl)) {
-                stylesheets.add(cssUrl);
-            }
-        } else {
-            stylesheets.remove(cssUrl);
-        }
+    @FXML
+    private void resetAction() {
+        AppState.getInstance().setDarkMode(false);
+        AppState.getInstance().setThemeColor(new Color(0.7607, 0.2901, 0.9607, 1));
+        AppState.getInstance().appliquerTheme(AppFX.getScene().getRoot(), AppState.getInstance().getThemeColor(), AppState.getInstance().getDarkMode());
     }
 }
