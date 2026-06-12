@@ -447,3 +447,26 @@
     -fx-pref-height: 0;
     -fx-padding: 0;
 }
+
+/* ============================================================
+   Bouton Ajouter à l'historique
+   ============================================================ */
+.ajouter-btn {
+    -fx-background-color: white;
+    -fx-background-radius: 50px;
+    -fx-border-radius: 50px;
+    -fx-border-color: #e0d9f5;
+    -fx-border-width: 1.5;
+    -fx-cursor: hand;
+    -fx-font-size: 11px;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);
+}
+
+.ajouter-btn:hover {
+    -fx-background-color: #d4d4d4;
+}
+
+.ajouter-btn:pressed {
+    -fx-background-color: #bdbdbd;
+}

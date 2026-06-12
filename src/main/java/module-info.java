@@ -4,6 +4,7 @@ module sae.transport.comparison {
     requires transitive sae.s2;
     requires java.xml;
     requires java.desktop;
+    requires java.prefs;
 
     opens sae.transport.comparison to javafx.fxml;
     opens sae.transport.comparison.controllers to javafx.fxml;

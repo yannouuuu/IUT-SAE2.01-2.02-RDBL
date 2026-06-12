@@ -23,6 +23,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.prefs.Preferences;
 
 /**
  * Point de communication entre tous les controllers de l'application.
@@ -61,6 +63,14 @@ public class AppState {
     /** Point d'entrée vers les fichiers de préférences. */
     private final String preferencePath = "src/main/resources/sae/transport/comparison/preferences/";
 
+    private boolean firstTime = true;
+
+    private String currentFxml = "/sae/transport/comparison/fxml/home-view.fxml";
+    private String previousFxml = "/sae/transport/comparison/fxml/home-view.fxml";
+
+    public String getPreviousFxml() {
+        return previousFxml;
+    }
 
     // ---------------------------------------------------------------
     // Singleton
@@ -85,14 +95,10 @@ public class AppState {
             map.put(TypeCout.PRIX, 34.0);
             instance.voyageur = new Voyageur(map);
 
-            String themeColor = "#a855f7";
-            boolean darkMode = false;
-            try{
-                BufferedReader br = new BufferedReader(new FileReader(instance.preferencePath + "apparence.txt"));
-                themeColor = br.readLine();
-                darkMode = Boolean.parseBoolean(br.readLine());
-                br.close();
-            }catch(IOException ignore){ignore.printStackTrace();}
+            Preferences prefs = Preferences.userNodeForPackage(AppState.class);
+            String themeColor = prefs.get("themeColor", "#a855f7");
+            boolean darkMode = prefs.getBoolean("darkMode", false);
+
             instance.themeColor = new SimpleObjectProperty<>(Color.web(themeColor));
             instance.darkMode = darkMode;
         }
@@ -122,6 +128,9 @@ public class AppState {
     }
 
 
+
+
+
     public boolean getDarkMode(){
         return darkMode;
     }
@@ -133,11 +142,8 @@ public class AppState {
      */
     public void setDarkMode(boolean darkMode){
         this.darkMode = darkMode;
-        try{
-            List<String> lignes = Files.readAllLines(Path.of(preferencePath + "apparence.txt"));
-            lignes.set(1, String.valueOf(darkMode));
-            Files.write(Path.of(preferencePath + "apparence.txt"), lignes);
-        }catch(IOException ignore){ignore.printStackTrace();}
+        Preferences prefs = Preferences.userNodeForPackage(AppState.class);
+        prefs.putBoolean("darkMode", darkMode);
     }
 
     // ---------------------------------------------------------------

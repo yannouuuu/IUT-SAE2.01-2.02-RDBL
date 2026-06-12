@@ -65,7 +65,7 @@
       <Button fx:id="resetButton" alignment="CENTER" maxWidth="100.0" minHeight="6.0" mnemonicParsing="false" onAction="#resetAction" prefHeight="6.0" prefWidth="80.0" text="Reset">
          <HBox.margin>
             <Insets left="50.0" />
-         </HBox.margin>>
+         </HBox.margin>
       </Button>
    </children>
    <padding>
