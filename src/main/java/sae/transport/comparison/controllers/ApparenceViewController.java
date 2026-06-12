@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import sae.transport.comparison.AppFX;
 import sae.transport.comparison.AppState;
 
