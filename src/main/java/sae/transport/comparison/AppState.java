@@ -58,8 +58,6 @@ public class AppState {
     /** Dit si le dark mode est activé ou non. */
     private boolean darkMode;
 
-    private boolean firstTime = true;
-
     private String currentFxml = "/sae/transport/comparison/fxml/home-view.fxml";
     private String previousFxml = "/sae/transport/comparison/fxml/home-view.fxml";
 
