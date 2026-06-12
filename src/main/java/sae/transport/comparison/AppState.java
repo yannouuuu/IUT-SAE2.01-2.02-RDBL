@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.prefs.Preferences;
+import java.io.File;
 
 /**
  * Point de communication entre tous les controllers de l'application.
@@ -88,6 +89,16 @@ public class AppState {
             map.put(TypeCout.TEMPS, 33.0);
             map.put(TypeCout.PRIX, 34.0);
             instance.voyageur = new Voyageur(map);
+
+            String cheminFichier = System.getProperty("user.home") + File.separator
+                + ".sae-transport" + File.separator
+                + instance.voyageur.getNom() + ".ser";
+            try {
+                sae.transport.comparison.models.HistoriqueManager manager = new sae.transport.comparison.models.HistoriqueManager(cheminFichier);
+                for (sae.transport.comparison.models.Voyage v : manager.charger()) {
+                    instance.voyageur.ajouterVoyage(v);
+                }
+            } catch (Exception ignore) {}
 
             Preferences prefs = Preferences.userNodeForPackage(AppState.class);
             String themeColor = prefs.get("themeColor", "#a855f7");

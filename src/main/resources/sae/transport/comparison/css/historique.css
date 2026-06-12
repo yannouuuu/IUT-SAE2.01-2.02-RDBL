@@ -153,19 +153,6 @@
                 -fx-background-color: #7c3aed;
             }
 
-            /* #leMoinsCouteuxButton{
-                -fx-background-color: white;
-                -fx-background-radius: 50px;
-                -fx-border-radius: 50px;
-                -fx-border-color: #e0d9f5;
-                -fx-border-width: 1.5;
-                -fx-min-width: 150px;
-                -fx-min-height: 38px;
-                -fx-cursor: hand;
-                -fx-text-fill: black;
-                -fx-font-size: 11px;
-                -fx-effect: dropshadow(gaussian, rgba(100,80,200,0.10), 8, 0, 0, 2);
-            } */
 
             .filter-button.selected{
                 -fx-background-color: linear-gradient(to right, #c84af5, #a855f7);
