@@ -108,7 +108,7 @@ La collaboration entre Yann et Tom sur les controllers a permis de combiner la v
 
 - JAR exécutable : **E5-app-gui-linux.jar**  |  **E5-app-gui-mac.jar**  |  **E5-app-gui-win.jar** (JavaFX 21.0.7)
 - Mockups : export HTML/PDF des maquettes Figma dans le dossier `mockups/`
-- Vidéo de présentation : https://www.youtube.com/watch?
+- Vidéo de présentation : https://youtu.be/Ique2JBwTrQ
 
 ### 5.2  Lancement de l'application
 

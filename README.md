@@ -7,13 +7,13 @@
 
 <p align="center">
     <a href="docs/poo/rapport_v3.pdf"><strong>Rendu POO »</strong></a> &nbsp;&nbsp;
-    <a href="renduIHM/rapport.pdf"><strong>Rendu IHM »</strong></a> &nbsp;&nbsp;
+    <a href="renduIHM/README.md"><strong>Rendu IHM »</strong></a> &nbsp;&nbsp;
     <a href="docs/graphes/pdf/rapport_v2.pdf"><strong>Rendu Graphes »</strong></a>
     <br/>
 </p>
 
 <p align="center">
-    <a href="renduIHM/video_demo.mp4"><strong>Voir la vidéo de demonstration</strong></a> &nbsp;&nbsp;
+    <a href="https://youtu.be/Ique2JBwTrQ"><strong>Voir la vidéo de demonstration</strong></a> &nbsp;&nbsp;
     <a href="http://gitlabpages.univ-lille.fr/e5-3d7e40/"><strong>Voir la Javadoc (depuis GitLab)</strong></a> &nbsp;&nbsp;
     <a href="http://yannouuuu.github.io/IUT-SAE2.01-2.02-RDBL/"><strong>Voir la Javadoc (depuis GitHub)</strong></a>
     <br/>
