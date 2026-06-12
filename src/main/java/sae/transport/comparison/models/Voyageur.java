@@ -103,6 +103,13 @@ public class Voyageur implements Serializable {
     }
 
     /**
+     * Vide l'historique complet des voyages en mémoire.
+     */
+    public void viderHistorique() {
+        historique.clear();
+    }
+
+    /**
      * Retourne l'historique complet des voyages.
      *
      * @return la liste des voyages de l'historique

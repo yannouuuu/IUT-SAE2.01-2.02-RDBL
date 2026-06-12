@@ -7,10 +7,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sae.transport.comparison.AppState;
+import sae.transport.comparison.models.HistoriqueManager;
 import sae.transport.comparison.models.TypeCout;
+import sae.transport.comparison.models.Voyage;
 import sae.transport.comparison.models.Voyageur;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -65,6 +70,21 @@ public class CompteNotConnectedView implements Initializable {
         }
 
         Voyageur voyageur = new Voyageur(nom, TypeCout.PRIX);
+        
+        // Charger l'historique en mémoire dès la connexion
+        String cheminFichier = System.getProperty("user.home") + File.separator
+            + ".sae-transport" + File.separator
+            + nom + ".ser";
+        HistoriqueManager manager = new HistoriqueManager(cheminFichier);
+        try {
+            List<Voyage> voyages = manager.charger();
+            for (Voyage v : voyages) {
+                voyageur.ajouterVoyage(v);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Erreur lors du chargement de l'historique : " + e.getMessage(), e);
+        }
+        
         AppState.getInstance().setVoyageur(voyageur);
 
         fermerPopup();

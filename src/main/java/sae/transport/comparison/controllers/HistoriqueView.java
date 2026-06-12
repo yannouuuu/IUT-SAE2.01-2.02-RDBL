@@ -90,17 +90,9 @@ public class HistoriqueView implements Initializable {
             + ".sae-transport" + File.separator
             + state.getVoyageur().getNom() + ".ser";
 
-        HistoriqueManager manager = new HistoriqueManager(cheminFichier);
-        try {
-            List<Voyage> voyages = manager.charger();
-            // Synchronise l'historique en mémoire du voyageur
-            for (Voyage voyage : voyages) {
-                state.getVoyageur().ajouterVoyage(voyage);
-            }
-            mettreAJourStats(voyages);
-        } catch (IOException e) {
-            mettreAJourStats(List.of());
-        }
+        // L'historique est déjà chargé en mémoire à la connexion
+        List<Voyage> voyages = state.getVoyageur().getHistorique();
+        mettreAJourStats(voyages);
 
         configurerListView();
     }
@@ -228,6 +220,7 @@ public class HistoriqueView implements Initializable {
         if (cheminFichier != null) {
             new File(cheminFichier).delete();
         }
+        AppState.getInstance().getVoyageur().viderHistorique();
         mettreAJourStats(List.of());
     }
 
