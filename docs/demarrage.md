@@ -60,6 +60,36 @@ mvn clean compile exec:java
 
 ---
 
+## Générer les JAR
+
+### JAR terminal
+
+```bash
+mvn clean package
+```
+
+Le fichier `E5-app-cli.jar` est généré à la racine du projet.
+
+### JAR interface graphique par plateforme
+
+JavaFX contient des bibliothèques natives différentes selon le système. Il faut donc générer un JAR graphique par plateforme, avec un seul classifier JavaFX à la fois :
+
+```bash
+mvn clean package -Djavafx.platform=mac-aarch64
+mvn clean package -Djavafx.platform=mac
+mvn clean package -Djavafx.platform=linux
+mvn clean package -Djavafx.platform=win
+```
+
+Ces commandes génèrent les fichiers suivants à la racine du projet :
+
+- `E5-app-gui-mac-aarch64.jar` pour macOS Apple Silicon
+- `E5-app-gui-mac.jar` pour macOS Intel
+- `E5-app-gui-linux.jar` pour Linux
+- `E5-app-gui-win.jar` pour Windows
+
+---
+
 ## Compiler sans lancer
 
 Si vous voulez juste vérifier que le code compile sans l'exécuter :
