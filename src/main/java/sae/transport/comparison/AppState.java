@@ -67,17 +67,6 @@ public class AppState {
 
     private String currentFxml = "/sae/transport/comparison/fxml/home-view.fxml";
     private String previousFxml = "/sae/transport/comparison/fxml/home-view.fxml";
-<<<<<<< HEAD
-=======
-
-    public String getPreviousFxml() {
-        return previousFxml;
-    }
-
-    public ObjectProperty<Color> themeColorProperty() {
-        return themeColor;
-    }
->>>>>>> 1750693 (feat: implement dynamic navigation history, enhance UI for history list, and add duplicate travel prevention)
 
     public String getPreviousFxml() {
         return previousFxml;
