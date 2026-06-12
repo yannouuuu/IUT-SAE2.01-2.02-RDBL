@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.ulille.but.sae_s2_2026.ModaliteTransport;
-import fr.ulille.but.sae_s2_2026.MultiGrapheOrienteValue;
 import sae.transport.comparison.exceptions.AucunCheminException;
 import sae.transport.comparison.exceptions.DonneesInvalidesException;
 

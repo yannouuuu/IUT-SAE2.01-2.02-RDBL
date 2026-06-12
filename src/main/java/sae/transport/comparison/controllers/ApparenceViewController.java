@@ -19,9 +19,6 @@ import java.util.ResourceBundle;
  */
 public class ApparenceViewController implements Initializable {
 
-    /** Chemin de la feuille CSS thème sombre. */
-    private static final String CSS_SOMBRE =
-        "/sae/transport/comparison/css/dark.css";
 
     // ---------------------------------------------------------------
     // Champs injectés depuis le FXML
@@ -48,8 +45,6 @@ public class ApparenceViewController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        boolean sombreActif = AppFX.getScene().getStylesheets().stream()
-//            .anyMatch(css -> css.contains("dark"));
         boolean sombreActif = AppState.getInstance().getDarkMode();
         modeSombreButton.setSelected(sombreActif);
         modeSombreButton.setText(sombreActif ? "ON" : "OFF");
@@ -77,23 +72,6 @@ public class ApparenceViewController implements Initializable {
         boolean actif = modeSombreButton.isSelected();
         modeSombreButton.setText(actif ? "ON" : "OFF");
 
-        var stylesheets = AppFX.getScene().getStylesheets();
-        String cssUrl = getClass().getResource(CSS_SOMBRE) != null
-            ? getClass().getResource(CSS_SOMBRE).toExternalForm()
-            : null;
-
-//        if (cssUrl == null) {
-//            // CSS dark.css non trouvé — fonctionnalité à implémenter
-//            return;
-//        }
-//
-//        if (actif) {
-//            if (!stylesheets.contains(cssUrl)) {
-//                stylesheets.add(cssUrl);
-//            }
-//        } else {
-//            stylesheets.remove(cssUrl);
-//        }
         AppState.getInstance().setDarkMode(actif);
         AppState.getInstance().appliquerTheme(sae.transport.comparison.AppFX.getScene().getRoot(), AppState.getInstance().getThemeColor(), actif);
     }
