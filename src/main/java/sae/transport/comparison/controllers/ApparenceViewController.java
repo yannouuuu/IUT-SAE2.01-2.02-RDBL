@@ -36,6 +36,7 @@ public class ApparenceViewController implements Initializable {
     @FXML
     private ColorPicker themeColorPicker;
 
+    /** Permet de revenir aux settings initiaux. */
     @FXML
     private Button resetButton;
 
@@ -69,8 +70,8 @@ public class ApparenceViewController implements Initializable {
     // ---------------------------------------------------------------
 
     /**
-     * Déclenché par le ToggleButton « Mode sombre ».
-     * Ajoute ou retire la feuille CSS de thème sombre sur la scène principale.
+     * Déclenché par le ToggleButton "Mode sombre".
+     * Ajoute un effet "différence" sur root, lui permettant d'avoir les couleurs opposées.
      */
     @FXML
     private void modeSombreAction() {
@@ -98,6 +99,9 @@ public class ApparenceViewController implements Initializable {
         AppState.getInstance().appliquerTheme(sae.transport.comparison.AppFX.getScene().getRoot(), AppState.getInstance().getThemeColor(), actif);
     }
 
+    /** Déclanchée par le bouton "reset".
+     * Permet de revenir aux settings initiaux.
+     */
     @FXML
     private void resetAction() {
         AppState.getInstance().setDarkMode(false);

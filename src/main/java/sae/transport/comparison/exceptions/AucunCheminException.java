@@ -1,6 +1,8 @@
 package sae.transport.comparison.exceptions;
 
-// TODO : Ajouter la JavaDoc manquante avant de tag POO-v2
+/**
+ * Erreur qui se produit lorsque l'algorithme KPCC ne trouve aucun chemin.
+ */
 
 public class AucunCheminException extends Exception {
     public AucunCheminException(String message) {

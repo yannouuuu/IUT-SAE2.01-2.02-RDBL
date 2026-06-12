@@ -2,7 +2,6 @@ package sae.transport.comparison;
 
 import fr.ulille.but.sae_s2_2026.Chemin;
 import fr.ulille.but.sae_s2_2026.Lieu;
-import fr.ulille.but.sae_s2_2026.MultiGrapheOrienteValue;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +11,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sae.transport.comparison.models.Plateforme;
-import sae.transport.comparison.models.Trajet;
 import sae.transport.comparison.models.TypeCout;
 import sae.transport.comparison.models.Voyageur;
 
@@ -23,18 +21,17 @@ import javafx.scene.paint.Color;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Partagé entre tous les controllers de l'application.
+ * Point de communication entre tous les controllers de l'application.
  * Centralise l'état global : plateforme de données, voyageur courant,
  * villes sélectionnées et méthodes de navigation.
  */
 public class AppState {
 
+    /** Instance par laquelle les controllers communiquent. */
     private static AppState instance;
 
     /** Réseau de transport chargé. */
@@ -58,28 +55,12 @@ public class AppState {
     /** Couleur d'accentuation dynamique */
     private ObjectProperty<Color> themeColor;
 
+    /** Dit si le dark mode est activé ou non. */
     private boolean darkMode;
 
-    private boolean firstTime = true;
-
+    /** Point d'entrée vers les fichiers de préférences. */
     private final String preferencePath = "src/main/resources/sae/transport/comparison/preferences/";
 
-    public ObjectProperty<Color> themeColorProperty() {
-        return themeColor;
-    }
-
-    public Color getThemeColor() {
-        return themeColor.get();
-    }
-
-    public void setThemeColor(Color color) {
-        this.themeColor.set(color);
-        try{
-            List<String> lignes = Files.readAllLines(Path.of(preferencePath + "apparence.txt"));
-            lignes.set(0, toHexString(color));
-            Files.write(Path.of(preferencePath + "apparence.txt"), lignes);
-        }catch(IOException ignore){ignore.printStackTrace();}
-    }
 
     // ---------------------------------------------------------------
     // Singleton
@@ -118,10 +99,38 @@ public class AppState {
         return instance;
     }
 
+    public ObjectProperty<Color> themeColorProperty() {
+        return themeColor;
+    }
+
+    public Color getThemeColor() {
+        return themeColor.get();
+    }
+
+    /**
+     * Change la couleur de préférence, aussi bien dans le Singleton que dans le fichier de préférences.
+     *
+     * @param color la couleur qui va remplacer l'ancienne.
+     */
+    public void setThemeColor(Color color) {
+        this.themeColor.set(color);
+        try{
+            List<String> lignes = Files.readAllLines(Path.of(preferencePath + "apparence.txt"));
+            lignes.set(0, toHexString(color));
+            Files.write(Path.of(preferencePath + "apparence.txt"), lignes);
+        }catch(IOException ignore){ignore.printStackTrace();}
+    }
+
+
     public boolean getDarkMode(){
         return darkMode;
     }
 
+    /**
+     * Change l'état du darkmode, aussi bien dans le Singleton que dans le fichier de préférences.
+     *
+     * @param darkMode l'état qui va remplacer l'ancien.
+     */
     public void setDarkMode(boolean darkMode){
         this.darkMode = darkMode;
         try{
@@ -307,6 +316,10 @@ public class AppState {
     /**
      * Applique la couleur de thème au composant racine.
      * Génère les variables CSS (looked-up colors).
+     *
+     * @param root La scene sur laquelle appliquer les changements.
+     * @param baseColor La couleur à appliquer.
+     * @param darkMode L'état du darkMode
      */
     public void appliquerTheme(Parent root, Color baseColor, boolean darkMode) {
         if (root == null || baseColor == null)return;
@@ -344,6 +357,11 @@ public class AppState {
         }
     }
 
+    /**
+     * Traduit une couleur en une chaine de caractère au format Hexadecimal. Exemple : #f335ab
+     *
+     * @param color La couleur qui va être traduite.
+     */
     private String toHexString(Color color) {
         return String.format("#%02X%02X%02X",
             (int) (color.getRed() * 255),
@@ -351,6 +369,12 @@ public class AppState {
             (int) (color.getBlue() * 255));
     }
 
+    /**
+     * Traduit une couleur en une chaine de caractère au format RGBA, ou Rouge, Vert, Bleu et Opacité. Rouge, Vert et Bleu
+     * peuvent fluctuer entre 0 et 255, tandis que Opacité fluctue entre 0 et 1. Exemple : rgba(150, 0, 255, 0.9)
+     *
+     * @param color La couleur qui va être traduite.
+     */
     private String toRgbaString(Color color) {
         return String.format("rgba(%d,%d,%d,%f)",
             (int) (color.getRed() * 255),

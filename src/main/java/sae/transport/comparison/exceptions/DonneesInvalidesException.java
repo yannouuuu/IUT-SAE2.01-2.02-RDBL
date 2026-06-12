@@ -1,6 +1,9 @@
 package sae.transport.comparison.exceptions;
 
-// TODO : Ajouter la JavaDoc manquante avant de tag POO-v2
+/**
+ * Erreur qui se produit lorsque le fichier CSV importé n'est pas aux normes. Pour verifier les normes, le bouton "créer fichier CSV"
+ * dans la page d'accueil vous donnera tous les détails.
+ */
 
 public class DonneesInvalidesException extends Exception {
     public DonneesInvalidesException(String message) {

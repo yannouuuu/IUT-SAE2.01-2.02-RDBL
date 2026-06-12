@@ -127,6 +127,9 @@ public class HomeViewController implements Initializable {
         arriverComboBox.valueProperty().addListener((obs, oldVal, newVal) -> updateComboBoxes(arriverComboBox, departComboBox));
     }
 
+    /**
+     * Remplit les champs "départ" et "arrivée" en s'assurant de ne pas avoir de doublons
+     */
     private void updateComboBoxes(ComboBox<String> source, ComboBox<String> target) {
         if (isUpdatingCombos) return;
         isUpdatingCombos = true;
