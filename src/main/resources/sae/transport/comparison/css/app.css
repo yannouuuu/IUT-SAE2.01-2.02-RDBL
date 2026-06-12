@@ -388,20 +388,22 @@
 }
 
 .list-view-itineraires .list-cell:filled:hover {
-    -fx-background-color: #f8fafc;
+    -fx-background-color: #f8f9fa;
     -fx-border-color: transparent transparent #e5e7eb transparent;
+    -fx-cursor: hand;
 }
 
 .list-view-itineraires .list-cell:filled:selected {
-    -fx-background-color: #f1f5f9;
+    -fx-background-color: #f1f3f5;
     -fx-text-fill: black;
     -fx-border-color: transparent transparent #e5e7eb transparent;
 }
 
 .list-view-itineraires .list-cell:filled:selected:hover {
-    -fx-background-color: #e2e8f0;
+    -fx-background-color: #e9ecef;
     -fx-text-fill: black;
     -fx-border-color: transparent transparent #e5e7eb transparent;
+    -fx-cursor: hand;
 }
 
 /* --- ScrollBar Esthétique --- */
@@ -469,4 +471,18 @@
 
 .ajouter-btn:pressed {
     -fx-background-color: #bdbdbd;
+}
+
+/* Couleurs specifiques au hover et selected pour les boutons de filtre */
+#leMoinsCouteuxButton:hover, #leMoinsCouteuxButton.selected {
+    -fx-background-color: #002FFF42;
+    -fx-text-fill: black;
+}
+#lePlusEcoloButton:hover, #lePlusEcoloButton.selected {
+    -fx-background-color: #C4FAC1;
+    -fx-text-fill: black;
+}
+#lePlusRapideButton:hover, #lePlusRapideButton.selected {
+    -fx-background-color: #FBF890;
+    -fx-text-fill: black;
 }

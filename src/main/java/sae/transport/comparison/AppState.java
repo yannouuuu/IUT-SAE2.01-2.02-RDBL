@@ -67,6 +67,17 @@ public class AppState {
 
     private String currentFxml = "/sae/transport/comparison/fxml/home-view.fxml";
     private String previousFxml = "/sae/transport/comparison/fxml/home-view.fxml";
+<<<<<<< HEAD
+=======
+
+    public String getPreviousFxml() {
+        return previousFxml;
+    }
+
+    public ObjectProperty<Color> themeColorProperty() {
+        return themeColor;
+    }
+>>>>>>> 1750693 (feat: implement dynamic navigation history, enhance UI for history list, and add duplicate travel prevention)
 
     public String getPreviousFxml() {
         return previousFxml;
@@ -157,6 +168,11 @@ public class AppState {
      * @param fxmlPath chemin absolu du FXML (ex: "/sae/transport/comparison/fxml/home-view.fxml")
      */
     public void naviguerVers(String fxmlPath) {
+        if (!fxmlPath.equals(this.currentFxml)) {
+            this.previousFxml = this.currentFxml;
+            this.currentFxml = fxmlPath;
+        }
+
         Parent root = AppFX.getScene().getRoot();
 
         FadeTransition fadeOut = new FadeTransition(Duration.millis(400), root);

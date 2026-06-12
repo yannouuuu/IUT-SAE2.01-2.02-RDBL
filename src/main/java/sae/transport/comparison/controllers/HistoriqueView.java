@@ -11,8 +11,17 @@ import sae.transport.comparison.models.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 /**
  * Contrôleur de la vue historique (historique-view.fxml).
@@ -45,9 +54,12 @@ public class HistoriqueView implements Initializable {
     @FXML
     private Button effacerHistoriqueButton;
 
-    /** Bouton de retour à l'accueil. */
     @FXML
     private Button annulerButton;
+
+    /** ListView affichant les voyages de l'historique. */
+    @FXML
+    private ListView<Voyage> historiqueListView;
 
     // ---------------------------------------------------------------
     // État interne
@@ -89,6 +101,85 @@ public class HistoriqueView implements Initializable {
         } catch (IOException e) {
             mettreAJourStats(List.of());
         }
+
+        configurerListView();
+    }
+
+    private void configurerListView() {
+        historiqueListView.setCellFactory(list -> new ListCell<Voyage>() {
+            protected void updateItem(Voyage item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                    setStyle("-fx-background-color: transparent; -fx-padding: 5;");
+                } else {
+                    setText(null);
+                    setStyle(null);
+
+                    double totalPrix = item.getCoutTotal(TypeCout.PRIX);
+                    double totalTemps = item.getCoutTotal(TypeCout.TEMPS);
+                    double totalCO2 = item.getCoutTotal(TypeCout.CO2);
+
+                    VBox leftBox = new VBox(5);
+                    leftBox.setAlignment(Pos.CENTER_LEFT);
+                    
+                    String titleStr;
+                    String detailsStr;
+                    
+                    if (item.getTrajets().size() == 1) {
+                        titleStr = item.getVilleDepart() + " → " + item.getVilleArrivee();
+                        detailsStr = "Mode : " + item.getTrajets().get(0).getModalite();
+                    } else {
+                        List<String> etapes = new ArrayList<>();
+                        for (int i = 0; i < item.getTrajets().size() - 1; i++) {
+                            etapes.add(item.getTrajets().get(i).getArrivee().toString());
+                        }
+                        titleStr = item.getVilleDepart() + " → " + item.getVilleArrivee();
+                        detailsStr = "Via " + String.join(", ", etapes) + " • " + (item.getTrajets().size() - 1) + " correspondance(s)";
+                    }
+                    
+                    Label titleLabel = new Label(titleStr);
+                    titleLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #333;");
+                    titleLabel.setWrapText(true);
+
+                    Label detailsLabel = new Label(detailsStr);
+                    detailsLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #777;");
+                    detailsLabel.setWrapText(true);
+
+                    leftBox.setMaxWidth(Double.MAX_VALUE);
+                    HBox.setHgrow(leftBox, javafx.scene.layout.Priority.ALWAYS);
+                    leftBox.getChildren().addAll(titleLabel, detailsLabel);
+
+                    Region spacer = new Region();
+                    HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
+                    HBox rightBox = new HBox(15);
+                    rightBox.setAlignment(Pos.CENTER_RIGHT);
+
+                    Label co2Label = new Label(String.format("%.1f kg CO₂", totalCO2));
+                    co2Label.setStyle("-fx-font-size: 12px; -fx-text-fill: #10b981; -fx-background-color: #d1fae5; -fx-padding: 2 6; -fx-background-radius: 8;");
+
+                    long h = (long) (totalTemps / 60);
+                    long m = (long) (totalTemps % 60);
+                    String tempsStr = h > 0 ? h + "h" + String.format("%02d", m) : m + "mn";
+                    Label tempsLabel = new Label(tempsStr);
+                    tempsLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #6366f1; -fx-background-color: #e0e7ff; -fx-padding: 2 6; -fx-background-radius: 8;");
+                    
+                    Label prixLabel = new Label(String.format("%.2f €", totalPrix));
+                    prixLabel.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #475569;");
+
+                    rightBox.getChildren().addAll(co2Label, tempsLabel, prixLabel);
+
+                    HBox rootBox = new HBox(leftBox, spacer, rightBox);
+                    rootBox.setAlignment(Pos.CENTER);
+                    rootBox.setPadding(new Insets(10));
+                    rootBox.prefWidthProperty().bind(list.widthProperty().subtract(45));
+                    
+                    setGraphic(rootBox);
+                }
+            }
+        });
     }
 
     // ---------------------------------------------------------------
@@ -110,6 +201,8 @@ public class HistoriqueView implements Initializable {
             totalCO2   += voyage.getCoutTotal(TypeCout.CO2);
             totalTemps += voyage.getCoutTotal(TypeCout.TEMPS);
         }
+
+        historiqueListView.getItems().setAll(voyages);
 
         totalDepensesLabel.setText(String.format("%.2f€", totalPrix));
         totalCO2Label.setText(String.format("%.2f kg de CO₂", totalCO2));
@@ -145,7 +238,7 @@ public class HistoriqueView implements Initializable {
     @FXML
     private void annulerAction() {
         AppState.getInstance().naviguerVers(
-            "/sae/transport/comparison/fxml/home-view.fxml"
+            AppState.getInstance().getPreviousFxml()
         );
     }
 }

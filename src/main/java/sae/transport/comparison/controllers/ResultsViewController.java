@@ -248,8 +248,7 @@ public class ResultsViewController implements Initializable {
                     setStyle("-fx-background-color: transparent; -fx-padding: 5;");
                 } else {
                     setText(null);
-
-                    // Calcul des coûts totaux
+                    setStyle(null);
                     double totalPrix = 0, totalTemps = 0, totalCO2 = 0;
                     List<String> modalitesList = new ArrayList<>();
                     for (Connexion c : item.aretes()) {
@@ -514,6 +513,15 @@ public class ResultsViewController implements Initializable {
         }
         
         Voyage voyage = new Voyage(listeTrajets);
+        
+        // Vérification anti-doublon
+        for (Voyage existant : state.getVoyageur().getHistorique()) {
+            if (estMemeVoyage(existant, voyage)) {
+                afficherErreurDetails("Ce trajet est déjà dans votre historique.");
+                return;
+            }
+        }
+
         state.getVoyageur().ajouterVoyage(voyage);
 
         // Persistance
@@ -581,9 +589,12 @@ public class ResultsViewController implements Initializable {
      */
     @FXML
     private void leMoinsCouteuxAction() {
-        leMoinsCouteuxButton.setStyle("-fx-background-color: green;");
-        lePlusEcoloButton.setStyle("-fx-background-color: white;");
-        lePlusRapideButton.setStyle("-fx-background-color: white;");
+        leMoinsCouteuxButton.setStyle("");
+        lePlusEcoloButton.setStyle("");
+        lePlusRapideButton.setStyle("");
+        if (!leMoinsCouteuxButton.getStyleClass().contains("selected")) leMoinsCouteuxButton.getStyleClass().add("selected");
+        lePlusEcoloButton.getStyleClass().remove("selected");
+        lePlusRapideButton.getStyleClass().remove("selected");
         Map<TypeCout, Double> prefs = new EnumMap<>(TypeCout.class);
         prefs.put(TypeCout.CO2, 0.0);
         prefs.put(TypeCout.PRIX, 100.0);
@@ -598,9 +609,12 @@ public class ResultsViewController implements Initializable {
      */
     @FXML
     private void lePlusEcoloAction() {
-        leMoinsCouteuxButton.setStyle("-fx-background-color: white;");
-        lePlusEcoloButton.setStyle("-fx-background-color: green;");
-        lePlusRapideButton.setStyle("-fx-background-color: white;");
+        leMoinsCouteuxButton.setStyle("");
+        lePlusEcoloButton.setStyle("");
+        lePlusRapideButton.setStyle("");
+        leMoinsCouteuxButton.getStyleClass().remove("selected");
+        if (!lePlusEcoloButton.getStyleClass().contains("selected")) lePlusEcoloButton.getStyleClass().add("selected");
+        lePlusRapideButton.getStyleClass().remove("selected");
         Map<TypeCout, Double> prefs = new EnumMap<>(TypeCout.class);
         prefs.put(TypeCout.CO2, 100.0);
         prefs.put(TypeCout.PRIX, 0.0);
@@ -615,9 +629,12 @@ public class ResultsViewController implements Initializable {
      */
     @FXML
     private void lePlusRapideAction() {
-        leMoinsCouteuxButton.setStyle("-fx-background-color: white;");
-        lePlusEcoloButton.setStyle("-fx-background-color: white;");
-        lePlusRapideButton.setStyle("-fx-background-color: green;");
+        leMoinsCouteuxButton.setStyle("");
+        lePlusEcoloButton.setStyle("");
+        lePlusRapideButton.setStyle("");
+        leMoinsCouteuxButton.getStyleClass().remove("selected");
+        lePlusEcoloButton.getStyleClass().remove("selected");
+        if (!lePlusRapideButton.getStyleClass().contains("selected")) lePlusRapideButton.getStyleClass().add("selected");
         Map<TypeCout, Double> prefs = new EnumMap<>(TypeCout.class);
         prefs.put(TypeCout.CO2, 0.0);
         prefs.put(TypeCout.PRIX, 0.0);
@@ -689,5 +706,23 @@ public class ResultsViewController implements Initializable {
         AppState.getInstance().ouvrirPopup(
             "/sae/transport/comparison/fxml/ponderations-view.fxml"
         );
+    }
+
+    /**
+     * Vérifie si deux voyages empruntent exactement les mêmes trajets
+     * avec les mêmes modalités.
+     */
+    private boolean estMemeVoyage(Voyage v1, Voyage v2) {
+        if (v1.getTrajets().size() != v2.getTrajets().size()) return false;
+        for (int i = 0; i < v1.getTrajets().size(); i++) {
+            Trajet t1 = v1.getTrajets().get(i);
+            Trajet t2 = v2.getTrajets().get(i);
+            if (!t1.getDepart().equals(t2.getDepart()) ||
+                !t1.getArrivee().equals(t2.getArrivee()) ||
+                !t1.getModalite().equals(t2.getModalite())) {
+                return false;
+            }
+        }
+        return true;
     }
 }

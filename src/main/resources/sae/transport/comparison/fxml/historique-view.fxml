@@ -7,6 +7,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -72,7 +73,7 @@
             </VBox>
          </children>
       </HBox>
-      <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+      <ListView fx:id="historiqueListView" styleClass="list-view-itineraires" VBox.vgrow="ALWAYS" />
       <HBox alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="960.0">
          <children>
             <Button fx:id="effacerHistoriqueButton" alignment="CENTER" mnemonicParsing="false" onAction="#effacerHistoriqueAction" styleClass="effacer" text="Effacer l'historique">
