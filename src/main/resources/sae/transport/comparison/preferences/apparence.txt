@@ -1,5 +1,0 @@
-#C149F4
-false
---------------------- Dans l'ordre :
-1 - couleur préférence
-2 - est-ce que le dark mode est activé

@@ -1,0 +1,23 @@
+Comines;Cambrai;Bus;38;0.46;13
+Comines;Bassin minié;Bus;55;0.66;17
+Cambrai;Grandville;Train;28;0.22;23
+Cambrai;Grandville;Bus;55;0.73;21
+Cambrai;Tournai;Avion;41;91.47;61
+Avon;Ancy;Bus;51;0.74;18
+Avon;Amsterdam;Avion;61;111.29;67
+Grandville;Lyon;Train;33;0.26;24
+Grandville;Ancy;Bus;66;0.82;23
+Ancy;Roubaix;Train;29;0.22;21
+Lyon;Ferfay;Train;37;0.27;27
+Lyon;Amsterdam;Train;74;0.65;53
+Lyon;Roubaix;Bus;81;1.02;28
+Cretail;Amsterdam;Bus;63;0.73;19
+Cretail;Montreuil;Avion;60;122.36;86
+Roubaix;Ferfay;Train;26;0.22;25
+Roubaix;Montreuil;Bus;123;1.45;41
+Ferfay;Tournai;Train;32;0.23;26
+Amsterdam;Rouen;Train;44;0.39;34
+Amsterdam;Rouen;Bus;91;1.05;27
+Tournai;Lille;Train;56;0.46;50
+Rouen;Lille;Train;28;0.24;21
+Rouen;Lille;Bus;53;0.73;15
