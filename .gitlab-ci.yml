@@ -29,7 +29,7 @@ deploy_to_yannouuuu_github:
     - git remote rm github || true
     - git remote add github https://$GITHUB_TOKEN@github.com/yannouuuu/IUT-SAE2.01-2.02-RDBL
     - git push --force github HEAD:refs/heads/main
-    - git push github --tags
+    - git push --force github --tags
   only:
     - main
 
