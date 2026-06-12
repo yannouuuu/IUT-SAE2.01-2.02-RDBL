@@ -6,6 +6,22 @@
 
 ---
 
+## Sommaire
+
+- [1 Capture d'écran de l'application finale](#1--capture-décran-de-lapplication-finale)
+- [2 Description des écrans](#2--description-des-écrans)
+- [3 Justification des choix de conception](#3--justification-des-choix-de-conception)
+  - [3.1 Critères de Scapin & Bastien](#31--critères-de-scapin--bastien)
+  - [3.2 Nudging écoresponsable](#32--nudging-écoresponsable)
+  - [3.3 Choix techniques JavaFX](#33--choix-techniques-javafx)
+- [4 Contributions de chaque membre](#4--contributions-de-chaque-membre)
+- [5 Informations complémentaires](#5--informations-complémentaires)
+  - [5.1 Fichiers rendus](#51--fichiers-rendus)
+  - [5.2 Lancement de l'application](#52--lancement-de-lapplication)
+  - [5.3 Maquettage Figma](#53--maquettage-figma)
+
+---
+
 ## 1  Capture d'écran de l'application finale
 
 L'application finale reprend fidèlement les maquettes haute fidélité réalisées sur Figma. L'interface présente une fenêtre desktop avec un fond dégradé mauve/violet, une barre de recherche centrale arrondie, et un système de vues flottantes (overlay) pour les actions secondaires.
